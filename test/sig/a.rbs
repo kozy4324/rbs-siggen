@@ -1,0 +1,7 @@
+class A
+  %a{
+    siggen:
+      def generated_<%= name %>: () -> void
+  }
+  def self.scope: (Symbol name) -> void
+end

@@ -1,0 +1,8 @@
+# Generated from lib/rbs/siggen.rb with RBS::Inline
+
+module RBS
+  class Siggen
+    # rubocop:disable Style/Documentation
+    def self.generate: () -> untyped
+  end
+end

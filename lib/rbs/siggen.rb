@@ -1,0 +1,159 @@
+# frozen_string_literal: true
+
+require "rbs"
+require "steep"
+require "parser"
+require "erb"
+require "stringio"
+require_relative "siggen/version"
+
+module RBS
+  class Siggen # rubocop:disable Style/Documentation
+    def self.generate
+      ruby_string = <<~RUBY
+        module M
+          class A
+            scope :hoge
+            scope "bar"
+          end
+        end
+      RUBY
+      sig_string = <<~SIG
+        module M
+          class A
+            %a{siggen:
+              def self.<%= name %>: () -> void
+            }
+            def self.scope: (Symbol name) -> bool | (String name) -> Integer
+          end
+        end
+      SIG
+
+      result = {}
+      new(ruby_string, sig_string).traverse do |node, call_of|
+        next unless node.type == :send
+
+        _, _, *args = node.children
+        args = args.map { |a| a.children[0] }
+
+        call_of.method_decls.each do |method_decl|
+          receiver_type = method_decl.method_name.type_name
+          class_name = "#{receiver_type.namespace}#{receiver_type.name}"
+          result[class_name] ||= []
+
+          rp = method_decl.method_def.type.type.required_positionals.map(&:name)
+          arg_hash = rp.zip(args).to_h
+          annos = method_decl.method_def
+                             .member_annotations
+                             .filter { |a| a.string.include?("siggen:") }
+                             .map { |a| a.string.split("siggen:")[1].strip }
+          annos.each do |anno|
+            result[class_name] << ERB.new(anno).result_with_hash(arg_hash)
+          end
+        end
+      end
+
+      result.each do |key, values|
+        puts "class #{key}"
+        values.each do |v|
+          puts "  #{v}"
+        end
+        puts "end"
+      end
+    end
+
+    def initialize(ruby_string, sig_string)
+      core_root = RBS::EnvironmentLoader::DEFAULT_CORE_ROOT
+      env_loader = RBS::EnvironmentLoader.new(core_root: core_root)
+      env_loader.add path: Pathname("sig")
+
+      env = RBS::Environment.new
+      env_loader.load(env: env)
+      env = env.resolve_type_names
+
+      buffer = RBS::Buffer.new(name: "a.rbs", content: sig_string)
+      _, dirs, decls = RBS::Parser.parse_signature(buffer)
+      env.add_signature(buffer: buffer, directives: dirs, decls: decls)
+
+      definition_builder = RBS::DefinitionBuilder.new(env: env)
+
+      factory = Steep::AST::Types::Factory.new(builder: definition_builder)
+      builder = Steep::Interface::Builder.new(factory, implicitly_returns_nil: true)
+      checker = Steep::Subtyping::Check.new(builder: builder)
+
+      source = Steep::Source.parse(ruby_string, path: Pathname("a.rb"), factory: factory)
+
+      annotations = source.annotations(block: source.node, factory: checker.factory, context: nil)
+      resolver = RBS::Resolver::ConstantResolver.new(builder: checker.factory.definition_builder)
+      const_env = Steep::TypeInference::ConstantEnv.new(factory: checker.factory, context: nil, resolver: resolver)
+
+      case annotations.self_type
+      when Steep::AST::Types::Name::Instance
+        module_name = annotations.self_type.name
+        module_type = Steep::AST::Types::Name::Singleton.new(name: module_name)
+        instance_type = annotations.self_type
+      when Steep::AST::Types::Name::Singleton
+        module_name = annotations.self_type.name
+        module_type = annotations.self_type
+        instance_type = annotations.self_type
+      else
+        module_name = Steep::AST::Builtin::Object.module_name
+        module_type = Steep::AST::Builtin::Object.module_type
+        instance_type = Steep::AST::Builtin::Object.instance_type
+      end
+
+      type_env = Steep::TypeInference::TypeEnvBuilder.new(
+        Steep::TypeInference::TypeEnvBuilder::Command::ImportGlobalDeclarations.new(checker.factory),
+        Steep::TypeInference::TypeEnvBuilder::Command::ImportInstanceVariableAnnotations.new(annotations),
+        Steep::TypeInference::TypeEnvBuilder::Command::ImportConstantAnnotations.new(annotations),
+        Steep::TypeInference::TypeEnvBuilder::Command::ImportLocalVariableAnnotations.new(annotations)
+      ).build(Steep::TypeInference::TypeEnv.new(const_env))
+
+      context = Steep::TypeInference::Context.new(
+        block_context: nil,
+        method_context: nil,
+        module_context: Steep::TypeInference::Context::ModuleContext.new(
+          instance_type: instance_type,
+          module_type: module_type,
+          implement_name: nil,
+          nesting: nil,
+          class_name: module_name,
+          instance_definition: checker.factory.definition_builder.build_instance(module_name),
+          module_definition: checker.factory.definition_builder.build_singleton(module_name)
+        ),
+        break_context: nil,
+        self_type: instance_type,
+        type_env: type_env,
+        call_context: Steep::TypeInference::MethodCall::TopLevelContext.new,
+        variable_context: Steep::TypeInference::Context::TypeVariableContext.empty
+      )
+
+      typing = Steep::Typing.new(source: source, root_context: context, cursor: nil)
+      construction = Steep::TypeConstruction.new(checker: checker,
+                                                 source: source,
+                                                 annotations: annotations,
+                                                 context: context,
+                                                 typing: typing)
+      construction.synthesize(source.node)
+
+      @typing = typing
+      @node = source.node
+    end
+
+    def traverse(node = @node, &block)
+      return unless node.is_a?(::Parser::AST::Node)
+
+      call_of = begin
+        @typing.call_of(node:)
+      rescue StandardError
+        nil
+      end
+
+      yield node, call_of
+
+      node.children.each do |child|
+        traverse(child, &block)
+      end
+    end
+  end
+end
