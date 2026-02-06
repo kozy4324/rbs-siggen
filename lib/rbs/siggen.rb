@@ -14,7 +14,6 @@ module RBS
         module M
           class A
             scope :hoge
-            scope "bar"
           end
         end
       RUBY
@@ -24,64 +23,41 @@ module RBS
             %a{siggen:
               def self.<%= name %>: () -> void
             }
-            def self.scope: (Symbol name) -> bool | (String name) -> Integer
+            def self.scope: (Symbol name) -> void
           end
         end
       SIG
 
-      result = {}
-      new(ruby_string, sig_string).traverse do |node, call_of|
-        next unless node.type == :send
-
-        _, _, *args = node.children
-        args = args.map { |a| a.children[0] }
-
-        call_of.method_decls.each do |method_decl|
-          receiver_type = method_decl.method_name.type_name
-          class_name = "#{receiver_type.namespace}#{receiver_type.name}"
-          result[class_name] ||= []
-
-          rp = method_decl.method_def.type.type.required_positionals.map(&:name)
-          arg_hash = rp.zip(args).to_h
-          annos = method_decl.method_def
-                             .member_annotations
-                             .filter { |a| a.string.include?("siggen:") }
-                             .map { |a| a.string.split("siggen:")[1].strip }
-          annos.each do |anno|
-            result[class_name] << ERB.new(anno).result_with_hash(arg_hash)
-          end
-        end
-      end
-
-      result.each do |key, values|
-        puts "class #{key}"
-        values.each do |v|
-          puts "  #{v}"
-        end
-        puts "end"
-      end
+      siggen = new
+      siggen.add_signature(sig_string)
+      siggen.analyze_ruby(ruby_string)
+      puts siggen.generate
     end
 
-    def initialize(ruby_string, sig_string)
+    def initialize
       core_root = RBS::EnvironmentLoader::DEFAULT_CORE_ROOT
       env_loader = RBS::EnvironmentLoader.new(core_root: core_root)
       env_loader.add path: Pathname("sig")
 
       env = RBS::Environment.new
       env_loader.load(env: env)
-      env = env.resolve_type_names
+      @env = env.resolve_type_names
+    end
 
-      buffer = RBS::Buffer.new(name: "a.rbs", content: sig_string)
+    def add_signature(sig_string, name: "a.rbs")
+      buffer = RBS::Buffer.new(name:, content: sig_string)
       _, dirs, decls = RBS::Parser.parse_signature(buffer)
-      env.add_signature(buffer: buffer, directives: dirs, decls: decls)
+      @env.add_signature(buffer: buffer, directives: dirs, decls: decls)
+    end
 
-      definition_builder = RBS::DefinitionBuilder.new(env: env)
+    def analyze_ruby(ruby_string, name: "a.rb")
+      definition_builder = RBS::DefinitionBuilder.new(env: @env)
 
       factory = Steep::AST::Types::Factory.new(builder: definition_builder)
       builder = Steep::Interface::Builder.new(factory, implicitly_returns_nil: true)
       checker = Steep::Subtyping::Check.new(builder: builder)
 
-      source = Steep::Source.parse(ruby_string, path: Pathname("a.rb"), factory: factory)
+      source = Steep::Source.parse(ruby_string, path: Pathname(name), factory: factory)
 
       annotations = source.annotations(block: source.node, factory: checker.factory, context: nil)
       resolver = RBS::Resolver::ConstantResolver.new(builder: checker.factory.definition_builder)
@@ -140,7 +116,45 @@ module RBS
       @node = source.node
     end
 
-    def traverse(node = @node, &block)
+    def generate
+      result = {}
+
+      traverse(@node) do |node, call_of|
+        next unless node.type == :send
+
+        _, _, *args = node.children
+        args = args.map { |a| a.children[0] }
+
+        call_of.method_decls.each do |method_decl|
+          receiver_type = method_decl.method_name.type_name
+          class_name = "#{receiver_type.namespace}#{receiver_type.name}"
+          result[class_name] ||= []
+
+          rp = method_decl.method_def.type.type.required_positionals.map(&:name)
+          arg_hash = rp.zip(args).to_h
+          annos = method_decl.method_def
+                             .member_annotations
+                             .filter { |a| a.string.include?("siggen:") }
+                             .map { |a| a.string.split("siggen:")[1].strip }
+          annos.each do |anno|
+            result[class_name] << ERB.new(anno).result_with_hash(arg_hash)
+          end
+        end
+      end
+
+      io = ::StringIO.new
+      result.each do |key, values|
+        io.puts "class #{key}"
+        values.each do |v|
+          io.puts "  #{v}"
+        end
+        io.puts "end"
+      end
+      io.rewind
+      io.read || ""
+    end
+
+    def traverse(node, &block)
       return unless node.is_a?(::Parser::AST::Node)
 
       call_of = begin
