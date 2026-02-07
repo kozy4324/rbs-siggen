@@ -13,6 +13,11 @@ module RBS
       new.generate
     end
 
+    # @rbs @env: RBS::Environment
+    # @rbs @typing: untyped
+    # @rbs @node: Parser::AST::Node
+
+    #: () -> void
     def initialize
       core_root = RBS::EnvironmentLoader::DEFAULT_CORE_ROOT
       env_loader = RBS::EnvironmentLoader.new(core_root: core_root)
@@ -23,13 +28,16 @@ module RBS
       @env = env.resolve_type_names
     end
 
+    #: (String sig_string, ?name: String) -> void
     def add_signature(sig_string, name: "a.rbs")
       buffer = RBS::Buffer.new(name:, content: sig_string)
       _, dirs, decls = RBS::Parser.parse_signature(buffer)
       @env.add_signature(buffer: buffer, directives: dirs, decls: decls)
     end
 
+    #: (String ruby_string, ?name: String) -> void
     def analyze_ruby(ruby_string, name: "a.rb")
+      # steep:ignore:start
       definition_builder = RBS::DefinitionBuilder.new(env: @env)
 
       factory = Steep::AST::Types::Factory.new(builder: definition_builder)
@@ -93,10 +101,12 @@ module RBS
 
       @typing = typing
       @node = source.node
+      # steep:ignore:end
     end
 
+    #: () -> String
     def generate
-      result = {}
+      result = {} #: Hash[String, Array[String]]
 
       traverse(@node) do |node, call_of|
         next unless node.type == :send
@@ -133,6 +143,7 @@ module RBS
       io.read || ""
     end
 
+    #: (untyped node) ?{ (Parser::AST::Node node, untyped call_of) -> void } -> void
     def traverse(node, &block)
       return unless node.is_a?(::Parser::AST::Node)
 

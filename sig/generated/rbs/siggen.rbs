@@ -5,14 +5,25 @@ module RBS
     # rubocop:disable Style/Documentation
     def self.generate: () -> untyped
 
-    def initialize: () -> untyped
+    @env: RBS::Environment
 
-    def add_signature: (untyped sig_string, ?name: untyped) -> untyped
+    @typing: untyped
 
-    def analyze_ruby: (untyped ruby_string, ?name: untyped) -> untyped
+    @node: Parser::AST::Node
 
-    def generate: () -> untyped
+    # : () -> void
+    def initialize: () -> void
 
-    def traverse: (untyped node) ?{ (?) -> untyped } -> untyped
+    # : (String sig_string, ?name: String) -> void
+    def add_signature: (String sig_string, ?name: String) -> void
+
+    # : (String ruby_string, ?name: String) -> void
+    def analyze_ruby: (String ruby_string, ?name: String) -> void
+
+    # : () -> String
+    def generate: () -> String
+
+    # : (untyped node) ?{ (Parser::AST::Node node, untyped call_of) -> void } -> void
+    def traverse: (untyped node) ?{ (Parser::AST::Node node, untyped call_of) -> void } -> void
   end
 end
