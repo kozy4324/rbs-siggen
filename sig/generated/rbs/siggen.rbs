@@ -4,5 +4,15 @@ module RBS
   class Siggen
     # rubocop:disable Style/Documentation
     def self.generate: () -> untyped
+
+    def initialize: () -> untyped
+
+    def add_signature: (untyped sig_string, ?name: untyped) -> untyped
+
+    def analyze_ruby: (untyped ruby_string, ?name: untyped) -> untyped
+
+    def generate: () -> untyped
+
+    def traverse: (untyped node) ?{ (?) -> untyped } -> untyped
   end
 end

@@ -10,28 +10,7 @@ require_relative "siggen/version"
 module RBS
   class Siggen # rubocop:disable Style/Documentation
     def self.generate
-      ruby_string = <<~RUBY
-        module M
-          class A
-            scope :hoge
-          end
-        end
-      RUBY
-      sig_string = <<~SIG
-        module M
-          class A
-            %a{siggen:
-              def self.<%= name %>: () -> void
-            }
-            def self.scope: (Symbol name) -> void
-          end
-        end
-      SIG
-
-      siggen = new
-      siggen.add_signature(sig_string)
-      siggen.analyze_ruby(ruby_string)
-      puts siggen.generate
+      new.generate
     end
 
     def initialize
