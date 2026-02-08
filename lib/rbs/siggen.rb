@@ -160,7 +160,9 @@ module RBS
         nil
       end
 
-      unless call_of.nil? || call_of.is_a?(Steep::TypeInference::MethodCall::NoMethodError) # steep:ignore
+      unless call_of.nil? ||
+             call_of.is_a?(Steep::TypeInference::MethodCall::NoMethodError) || # steep:ignore
+             call_of.is_a?(Steep::TypeInference::MethodCall::Untyped) # steep:ignore
         yield(node, call_of)
       end
 

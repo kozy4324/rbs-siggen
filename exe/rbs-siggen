@@ -4,14 +4,37 @@
 $LOAD_PATH << File.join(__dir__, "../lib")
 require "rbs/siggen"
 require "pathname"
+require "optparse"
+
+options = { sig_dir: "sig" }
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage: rbs-siggen [options] <lib-path>"
+
+  opts.on("--sig-dir DIR", "Path to RBS signature directory (default: sig)") do |dir|
+    options[:sig_dir] = dir
+  end
+
+  opts.on("-v", "--version", "Show version") do
+    puts "rbs-siggen #{RBS::Siggen::VERSION}"
+    exit
+  end
+
+  opts.on("-h", "--help", "Show this help") do
+    puts opts
+    exit
+  end
+end
+
+parser.parse!
 
 if ARGV.empty?
-  puts "rbs-siggen #{RBS::Siggen::VERSION}"
+  puts parser
   exit 1
 end
 
-siggen = RBS::Siggen.new(path: "test/sig")
-siggen.analyze(path: Pathname("test/lib")) do |siggen, path|
-  puts path
+lib_path = ARGV[0]
+
+siggen = RBS::Siggen.new(path: options[:sig_dir])
+siggen.analyze(path: Pathname(lib_path)) do |siggen, _|
   puts siggen.generate
 end
