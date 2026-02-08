@@ -158,7 +158,9 @@ module RBS
         nil
       end
 
-      yield node, call_of unless call_of.is_a?(Steep::TypeInference::MethodCall::NoMethodError) # steep:ignore
+      unless call_of.nil? || call_of.is_a?(Steep::TypeInference::MethodCall::NoMethodError) # steep:ignore
+        yield(node, call_of)
+      end
 
       node.children.each do |child|
         traverse(child, &block)
