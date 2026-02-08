@@ -9,19 +9,15 @@ require_relative "siggen/version"
 
 module RBS
   class Siggen # rubocop:disable Style/Documentation
-    def self.generate
-      new.generate
-    end
-
     # @rbs @env: RBS::Environment
     # @rbs @typing: untyped
     # @rbs @node: Parser::AST::Node
 
-    #: () -> void
-    def initialize
+    #: (path: String) -> void
+    def initialize(path: "sig")
       core_root = RBS::EnvironmentLoader::DEFAULT_CORE_ROOT
       env_loader = RBS::EnvironmentLoader.new(core_root: core_root)
-      env_loader.add path: Pathname("sig")
+      env_loader.add path: Pathname(path)
 
       env = RBS::Environment.new
       env_loader.load(env: env)
@@ -33,6 +29,15 @@ module RBS
       buffer = RBS::Buffer.new(name:, content: sig_string)
       _, dirs, decls = RBS::Parser.parse_signature(buffer)
       @env.add_signature(buffer: buffer, directives: dirs, decls: decls)
+    end
+
+    #: (path: String) { (Siggen, String) -> void } -> void
+    def analyze(path:)
+      ruby_files = Dir.glob("#{path}/**/*.rb")
+      ruby_files.each do |file|
+        analyze_ruby(File.read(file), name: file)
+        yield self, file
+      end
     end
 
     #: (String ruby_string, ?name: String) -> void
@@ -153,7 +158,7 @@ module RBS
         nil
       end
 
-      yield node, call_of
+      yield node, call_of unless call_of.is_a?(Steep::TypeInference::MethodCall::NoMethodError) # steep:ignore
 
       node.children.each do |child|
         traverse(child, &block)

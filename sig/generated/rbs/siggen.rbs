@@ -2,20 +2,20 @@
 
 module RBS
   class Siggen
-    # rubocop:disable Style/Documentation
-    def self.generate: () -> untyped
-
     @env: RBS::Environment
 
     @typing: untyped
 
     @node: Parser::AST::Node
 
-    # : () -> void
-    def initialize: () -> void
+    # : (path: String) -> void
+    def initialize: (path: String) -> void
 
     # : (String sig_string, ?name: String) -> void
     def add_signature: (String sig_string, ?name: String) -> void
+
+    # : (path: String) { (Siggen, String) -> void } -> void
+    def analyze: (path: String) { (Siggen, String) -> void } -> void
 
     # : (String ruby_string, ?name: String) -> void
     def analyze_ruby: (String ruby_string, ?name: String) -> void

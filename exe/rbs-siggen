@@ -10,4 +10,8 @@ if ARGV.empty?
   exit 1
 end
 
-RBS::Siggen.generate
+siggen = RBS::Siggen.new(path: "test/sig")
+siggen.analyze(path: Pathname("test/lib")) do |siggen, path|
+  puts path
+  puts siggen.generate
+end
