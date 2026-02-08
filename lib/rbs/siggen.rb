@@ -122,7 +122,6 @@ module RBS
         call_of.method_decls.each do |method_decl|
           receiver_type = method_decl.method_name.type_name
           class_name = "#{receiver_type.namespace}#{receiver_type.name}"
-          result[class_name] ||= []
 
           rp = method_decl.method_def.type.type.required_positionals.map(&:name)
           arg_hash = rp.zip(args).to_h
@@ -130,6 +129,9 @@ module RBS
                              .member_annotations
                              .filter { |a| a.string.include?("siggen:") }
                              .map { |a| a.string.split("siggen:")[1].strip }
+          next if annos.empty?
+
+          result[class_name] ||= []
           annos.each do |anno|
             result[class_name] << ERB.new(anno).result_with_hash(arg_hash)
           end
