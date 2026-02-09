@@ -17,12 +17,7 @@ module RBS
     def initialize
       core_root = RBS::EnvironmentLoader::DEFAULT_CORE_ROOT
       env_loader = RBS::EnvironmentLoader.new(core_root: core_root)
-      if block_given?
-        yield env_loader
-      else
-        env_loader.add path: Pathname("sig")
-        env_loader.add path: Pathname(".gem_rbs_collection")
-      end
+      yield env_loader if block_given?
 
       env = RBS::Environment.new
       env_loader.load(env: env)

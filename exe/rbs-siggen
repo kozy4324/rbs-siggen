@@ -32,13 +32,21 @@ if ARGV.empty?
   exit 1
 end
 
-options[:sig_dirs] = ["sig", ".gem_rbs_collection"] if options[:sig_dirs].empty?
+options[:sig_dirs] = ["sig"] if options[:sig_dirs].empty?
 
 lib_path = ARGV[0]
 
 siggen = RBS::Siggen.new do |env_loader|
   options[:sig_dirs].each do |dir|
     env_loader.add path: Pathname(dir)
+  end
+  Dir.glob("#{Dir.pwd}/**/rbs_collection.lock.yaml").each do |path|
+    content = YAML.load_file(path)
+    content["gems"]&.each do |gem|
+      if env_loader.has_library?(library: gem["name"], version: gem["version"])
+        env_loader.add(library: gem["name"], version: gem["version"])
+      end
+    end
   end
 end
 siggen.analyze(path: Pathname(lib_path)) do |siggen, _|
