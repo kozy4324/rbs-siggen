@@ -6,12 +6,13 @@ require "rbs/siggen"
 require "pathname"
 require "optparse"
 
-options = { sig_dir: "sig" }
+options = { sig_dirs: [] }
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: rbs-siggen [options] <lib-path>"
 
-  opts.on("--sig-dir DIR", "Path to RBS signature directory (default: sig)") do |dir|
-    options[:sig_dir] = dir
+  opts.on("--sig-dir DIR",
+          "Path to RBS signature directory (can be specified multiple times, default: sig,.gem_rbs_collection)") do |dir|
+    options[:sig_dirs] << dir
   end
 
   opts.on("-v", "--version", "Show version") do
@@ -32,9 +33,15 @@ if ARGV.empty?
   exit 1
 end
 
+options[:sig_dirs] = ["sig", ".gem_rbs_collection"] if options[:sig_dirs].empty?
+
 lib_path = ARGV[0]
 
-siggen = RBS::Siggen.new(path: options[:sig_dir])
+siggen = RBS::Siggen.new do |env_loader|
+  options[:sig_dirs].each do |dir|
+    env_loader.add path: Pathname(dir)
+  end
+end
 siggen.analyze(path: Pathname(lib_path)) do |siggen, _|
   puts siggen.generate
 end

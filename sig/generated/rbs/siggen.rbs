@@ -8,8 +8,8 @@ module RBS
 
     @node: Parser::AST::Node
 
-    # : (path: String) -> void
-    def initialize: (path: String) -> void
+    # : () ?{ (RBS::EnvironmentLoader) -> void } -> void
+    def initialize: () ?{ (RBS::EnvironmentLoader) -> void } -> void
 
     # : (String sig_string, ?name: String) -> void
     def add_signature: (String sig_string, ?name: String) -> void

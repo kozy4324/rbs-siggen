@@ -13,11 +13,16 @@ module RBS
     # @rbs @typing: untyped
     # @rbs @node: Parser::AST::Node
 
-    #: (path: String) -> void
-    def initialize(path: "sig")
+    #: () ?{ (RBS::EnvironmentLoader) -> void } -> void
+    def initialize
       core_root = RBS::EnvironmentLoader::DEFAULT_CORE_ROOT
       env_loader = RBS::EnvironmentLoader.new(core_root: core_root)
-      env_loader.add path: Pathname(path)
+      if block_given?
+        yield env_loader
+      else
+        env_loader.add path: Pathname("sig")
+        env_loader.add path: Pathname(".gem_rbs_collection")
+      end
 
       env = RBS::Environment.new
       env_loader.load(env: env)
