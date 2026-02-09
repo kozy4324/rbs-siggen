@@ -10,8 +10,7 @@ options = { sig_dirs: [] }
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: rbs-siggen [options] <lib-path>"
 
-  opts.on("--sig-dir DIR",
-          "Path to RBS signature directory (can be specified multiple times, default: sig,.gem_rbs_collection)") do |dir|
+  opts.on("--sig-dir DIR", "Path to RBS signature directory (can be specified multiple times)") do |dir|
     options[:sig_dirs] << dir
   end
 
