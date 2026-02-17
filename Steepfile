@@ -12,5 +12,6 @@ target :test do
   unreferenced!
   signature "sig/test"
   check "test"
+  ignore "test/lib"
   configure_code_diagnostics(D::Ruby.lenient)
 end
