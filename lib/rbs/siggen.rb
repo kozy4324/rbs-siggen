@@ -114,7 +114,9 @@ module RBS
       result = {} #: Hash[String, Array[String]]
 
       traverse(@node) do |node, call_of|
-        next unless node.type == :send
+        next unless %i[send block].include?(node.type)
+
+        node, = node.children if node.type == :block
 
         _, _, *args = node.children
         args = args.map { |a| a.children[0] }
@@ -131,6 +133,8 @@ module RBS
                              .map { |a| a.string.split("siggen:")[1].strip }
           next if annos.empty?
 
+          arg_hash[:ctx] = { create_table: { name: "articles" } }
+
           result[class_name] ||= []
           annos.each do |anno|
             result[class_name] << ERB.new(anno).result_with_hash(arg_hash)
@@ -146,6 +150,11 @@ module RBS
         end
         io.puts "end"
       end
+      io.rewind
+      source = io.read || ""
+      _, _, decls = ::RBS::Parser.parse_signature(source)
+      io = ::StringIO.new
+      ::RBS::Writer.new(out: io).write(decls)
       io.rewind
       io.read || ""
     end

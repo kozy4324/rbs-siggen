@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     rbs-siggen (0.1.0)
+      activesupport
       rbs (~> 3.0)
       steep (~> 1.10)
 
