@@ -126,12 +126,11 @@ module RBS
         io.puts "end" if surround_class_def
       end
       io.rewind
-      source = io.read || ""
-      _, _, decls = ::RBS::Parser.parse_signature(source)
+      _, _, decls = ::RBS::Parser.parse_signature(io.read || "")
       io = ::StringIO.new
       ::RBS::Writer.new(out: io).write(merge_class_declarations(decls))
       io.rewind
-      io.read || ""
+      io.readlines.reject { |line| line.strip.empty? }.join("")
     end
 
     #: (untyped node, ?Array[untyped] stack) ?{ (String, untyped, Hash[untyped, untyped]) -> void } -> void

@@ -22,7 +22,6 @@ module RBS
       expected = <<~SIGGEN
         class A
           def self.bar: () -> void
-
           def self.baz: () -> void
         end
       SIGGEN
@@ -38,6 +37,7 @@ module RBS
         A.define do
           create_table "articles" do |t|
             t.text "body"
+            t.text "comment"
           end
         end
       RUBY
@@ -57,6 +57,7 @@ module RBS
       expected = <<~SIGGEN
         class Article
           def body: () -> String
+          def comment: () -> String
         end
       SIGGEN
       siggen = RBS::Siggen.new
