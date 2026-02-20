@@ -47,7 +47,7 @@ module RBS
           def create_table: (String name) { (A) -> void } -> void
 
           %a{siggen:
-            class ::<%= create_table.name.classify %>
+            class <%= create_table.name.classify %>
               def <%= name %>: () -> String
             end
           }
@@ -55,10 +55,8 @@ module RBS
         end
       SIG
       expected = <<~SIGGEN
-        class ::A
-          class ::Article
-            def body: () -> String
-          end
+        class Article
+          def body: () -> String
         end
       SIGGEN
       siggen = RBS::Siggen.new

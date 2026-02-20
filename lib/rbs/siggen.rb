@@ -113,9 +113,17 @@ module RBS
     def generate
       io = ::StringIO.new
       traverse(@node) do |class_name, anno, arg_hash|
-        io.puts "class #{class_name}"
-        io.puts ERB.new(anno).result_with_hash(arg_hash)
-        io.puts "end"
+        generated = ERB.new(anno).result_with_hash(arg_hash)
+        surround_class_def = false
+        begin
+          ::RBS::Parser.parse_signature(generated)
+        rescue ::RBS::ParsingError => e
+          surround_class_def = true if e.message =~ /Syntax error: cannot start a declaration/
+        end
+
+        io.puts "class #{class_name}" if surround_class_def
+        io.puts generated
+        io.puts "end" if surround_class_def
       end
       io.rewind
       source = io.read || ""
