@@ -20,7 +20,7 @@ module RBS
         end
       SIG
       expected = <<~SIGGEN
-        class ::A
+        class A
           def self.bar: () -> void
 
           def self.baz: () -> void

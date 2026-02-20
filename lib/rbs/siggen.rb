@@ -183,7 +183,7 @@ module RBS
 
     #: (untyped) -> String
     def create_class_name(method_decl)
-      receiver_type = method_decl.method_name.type_name
+      receiver_type = method_decl.method_name.type_name.relative!
       "#{receiver_type.namespace}#{receiver_type.name}"
     end
 
