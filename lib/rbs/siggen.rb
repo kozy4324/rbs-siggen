@@ -130,7 +130,7 @@ module RBS
       io = ::StringIO.new
       ::RBS::Writer.new(out: io).write(merge_class_declarations(decls))
       io.rewind
-      io.readlines.reject { |line| line.strip.empty? }.join("")
+      io.readlines.reject { |line| line.strip.empty? }.join
     end
 
     #: (untyped node, ?Array[untyped] stack) ?{ (String, untyped, Hash[untyped, untyped]) -> void } -> void
