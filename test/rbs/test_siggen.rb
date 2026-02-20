@@ -8,6 +8,7 @@ module RBS
       ruby_string = <<~RUBY
         class A
           foo :bar
+          foo :baz
         end
       RUBY
       sig_string = <<~SIG
@@ -21,6 +22,8 @@ module RBS
       expected = <<~SIGGEN
         class ::A
           def self.bar: () -> void
+
+          def self.baz: () -> void
         end
       SIGGEN
       siggen = RBS::Siggen.new

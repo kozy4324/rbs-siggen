@@ -121,7 +121,7 @@ module RBS
       source = io.read || ""
       _, _, decls = ::RBS::Parser.parse_signature(source)
       io = ::StringIO.new
-      ::RBS::Writer.new(out: io).write(decls)
+      ::RBS::Writer.new(out: io).write(merge_class_declarations(decls))
       io.rewind
       io.read || ""
     end
@@ -191,6 +191,62 @@ module RBS
     #: (Hash[untyped, untyped]) -> untyped
     def hash_to_data(hash)
       Data.define(*hash.keys).new(*hash.values)
+    end
+
+    #: (Array[untyped] -> Array[untyped])
+    def merge_class_declarations(decls)
+      # 同じ名前のClass宣言をグループ化
+      grouped = decls.group_by do |decl|
+        case decl
+        when RBS::AST::Declarations::Class
+          [:class,
+           decl.name]
+        when RBS::AST::Declarations::Module
+          [:module,
+           decl.name]
+        else
+          [:other, decl.object_id] # その他はマージしない
+        end
+      end
+
+      grouped.map do |(kind, _name), group|
+        if kind == :class && group.size > 1
+          # 複数のClass宣言をマージ
+          primary = group.find(&:super_class) || group.first
+          merged_members = group.flat_map(&:members)
+          merged_annotations = group.flat_map(&:annotations).uniq
+          merged_comment = group.map(&:comment).compact.first
+
+          RBS::AST::Declarations::Class.new(
+            name: primary.name,
+            type_params: primary.type_params,
+            super_class: primary.super_class,
+            members: merged_members,
+            annotations: merged_annotations,
+            location: primary.location,
+            comment: merged_comment
+          )
+        elsif kind == :module && group.size > 1
+          # 複数のModule宣言をマージ
+          primary = group.first
+          merged_members = group.flat_map(&:members)
+          merged_annotations = group.flat_map(&:annotations).uniq
+          merged_comment = group.map(&:comment).compact.first
+          merged_self_types = group.flat_map(&:self_types).uniq
+
+          RBS::AST::Declarations::Module.new(
+            name: primary.name,
+            type_params: primary.type_params,
+            self_types: merged_self_types,
+            members: merged_members,
+            annotations: merged_annotations,
+            location: primary.location,
+            comment: merged_comment
+          )
+        else
+          group
+        end
+      end.flatten
     end
   end
 end
