@@ -23,7 +23,16 @@ module RBS
     # : () -> String
     def generate: () -> String
 
-    # : (untyped node) ?{ (Parser::AST::Node node, untyped call_of) -> void } -> void
-    def traverse: (untyped node) ?{ (Parser::AST::Node node, untyped call_of) -> void } -> void
+    # : (untyped node, ?Array[untyped] stack) ?{ (String, untyped, Hash[untyped, untyped]) -> void } -> void
+    def traverse: (untyped node, ?Array[untyped] stack) ?{ (String, untyped, Hash[untyped, untyped]) -> void } -> void
+
+    # : (untyped) -> String
+    def create_class_name: (untyped) -> String
+
+    # : (untyped, untyped) -> Hash[untyped, untyped]
+    def create_arg_hash: (untyped, untyped) -> Hash[untyped, untyped]
+
+    # : (Hash[untyped, untyped]) -> untyped
+    def hash_to_data: (Hash[untyped, untyped]) -> untyped
   end
 end

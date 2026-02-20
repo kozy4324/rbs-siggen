@@ -44,7 +44,7 @@ module RBS
           def create_table: (String name) { (A) -> void } -> void
 
           %a{siggen:
-            class ::<%= ctx[:create_table][:name].classify %>
+            class ::<%= create_table.name.classify %>
               def <%= name %>: () -> String
             end
           }

@@ -111,43 +111,10 @@ module RBS
 
     #: () -> String
     def generate
-      result = {} #: Hash[String, Array[String]]
-
-      traverse(@node) do |node, call_of|
-        next unless %i[send block].include?(node.type)
-
-        node, = node.children if node.type == :block
-
-        _, _, *args = node.children
-        args = args.map { |a| a.children[0] }
-
-        call_of.method_decls.each do |method_decl|
-          receiver_type = method_decl.method_name.type_name
-          class_name = "#{receiver_type.namespace}#{receiver_type.name}"
-
-          rp = method_decl.method_def.type.type.required_positionals.map(&:name)
-          arg_hash = rp.zip(args).to_h
-          annos = method_decl.method_def
-                             .member_annotations
-                             .filter { |a| a.string.include?("siggen:") }
-                             .map { |a| a.string.split("siggen:")[1].strip }
-          next if annos.empty?
-
-          arg_hash[:ctx] = { create_table: { name: "articles" } }
-
-          result[class_name] ||= []
-          annos.each do |anno|
-            result[class_name] << ERB.new(anno).result_with_hash(arg_hash)
-          end
-        end
-      end
-
       io = ::StringIO.new
-      result.each do |key, values|
-        io.puts "class #{key}"
-        values.each do |v|
-          io.puts "  #{v}"
-        end
+      traverse(@node) do |class_name, anno, arg_hash|
+        io.puts "class #{class_name}"
+        io.puts ERB.new(anno).result_with_hash(arg_hash)
         io.puts "end"
       end
       io.rewind
@@ -159,8 +126,8 @@ module RBS
       io.read || ""
     end
 
-    #: (untyped node) ?{ (Parser::AST::Node node, untyped call_of) -> void } -> void
-    def traverse(node, &block)
+    #: (untyped node, ?Array[untyped] stack) ?{ (String, untyped, Hash[untyped, untyped]) -> void } -> void
+    def traverse(node, stack = [], &block)
       return unless node.is_a?(::Parser::AST::Node)
 
       call_of = begin
@@ -169,15 +136,61 @@ module RBS
         nil
       end
 
-      unless call_of.nil? ||
-             call_of.is_a?(Steep::TypeInference::MethodCall::NoMethodError) || # steep:ignore
-             call_of.is_a?(Steep::TypeInference::MethodCall::Untyped) # steep:ignore
-        yield(node, call_of)
-      end
+      if call_of.nil? ||
+         call_of.is_a?(Steep::TypeInference::MethodCall::NoMethodError) || # steep:ignore
+         call_of.is_a?(Steep::TypeInference::MethodCall::Untyped) # steep:ignore
+        node.children.each do |child|
+          traverse(child, stack, &block)
+        end
+      elsif %i[send block].include?(node.type) # steep:ignore
+        call_of.method_decls.each do |method_decl|
+          annos = method_decl.method_def
+                             .member_annotations
+                             .filter { |a| a.string.include?("siggen:") }
+                             .map { |a| a.string.split("siggen:")[1].strip }
+          next if annos.empty?
 
-      node.children.each do |child|
-        traverse(child, &block)
+          arg_hash = {} #: Hash[untyped, untyped]
+          stack.each do |n, c|
+            arg_hash.merge!({ c.method_name.to_sym => hash_to_data(create_arg_hash(n, c.method_decls.first)) })
+          end
+          arg_hash.merge!(create_arg_hash(node, method_decl))
+
+          annos.each { |anno| yield(create_class_name(method_decl), anno, arg_hash) }
+        end
+
+        if node.type == :block
+          stack << [node, call_of]
+          node.children.each do |child|
+            traverse(child, stack, &block)
+          end
+          stack.pop
+        end
+      else # rubocop:disable Lint/DuplicateBranch
+        node.children.each do |child|
+          traverse(child, stack, &block)
+        end
       end
+    end
+
+    #: (untyped) -> String
+    def create_class_name(method_decl)
+      receiver_type = method_decl.method_name.type_name
+      "#{receiver_type.namespace}#{receiver_type.name}"
+    end
+
+    #: (untyped, untyped) -> Hash[untyped, untyped]
+    def create_arg_hash(node, method_decl)
+      send_node = node.type == :block ? node.children.first : node
+      _, _, *args = send_node.children
+      args = args.map { |a| a.children[0] }
+      rp = method_decl.method_def.type.type.required_positionals.map(&:name)
+      rp.zip(args).to_h
+    end
+
+    #: (Hash[untyped, untyped]) -> untyped
+    def hash_to_data(hash)
+      Data.define(*hash.keys).new(*hash.values)
     end
   end
 end
