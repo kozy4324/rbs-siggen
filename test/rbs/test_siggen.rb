@@ -32,6 +32,38 @@ module RBS
       assert_equal expected, siggen.generate
     end
 
+    def test_generate_with_namespace
+      ruby_string = <<~RUBY
+        module M
+          class A
+            foo :bar
+            foo :baz
+          end
+        end
+      RUBY
+      sig_string = <<~SIG
+        module M
+          class A
+            %a{siggen:
+              def self.<%= name %>: () -> void
+            }
+            def self.foo: (Symbol name) -> void
+          end
+        end
+      SIG
+      expected = <<~SIGGEN
+        class M::A
+          def self.bar: () -> void
+          def self.baz: () -> void
+        end
+      SIGGEN
+      siggen = RBS::Siggen.new
+      siggen.add_signature(sig_string)
+      siggen.analyze_ruby(ruby_string)
+
+      assert_equal expected, siggen.generate
+    end
+
     def test_nesting
       ruby_string = <<~RUBY
         A.define do
