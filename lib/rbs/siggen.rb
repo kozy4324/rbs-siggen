@@ -33,7 +33,7 @@ module RBS
 
     #: (path: String) { (Siggen, String) -> void } -> void
     def analyze(path:)
-      ruby_files = Dir.glob("#{path}/**/*.rb")
+      ruby_files = Dir.glob(path) + Dir.glob("#{path}/**/*.rb")
       ruby_files.each do |file|
         analyze_ruby(File.read(file), name: file)
         yield self, file
