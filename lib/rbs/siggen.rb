@@ -102,7 +102,7 @@ module RBS
                                                  annotations: annotations,
                                                  context: context,
                                                  typing: typing)
-      construction.synthesize(source.node)
+      construction.synthesize(source.node) unless source.node.nil?
 
       @typing = typing
       @node = source.node
@@ -127,6 +127,8 @@ module RBS
       end
       io.rewind
       _, _, decls = ::RBS::Parser.parse_signature(io.read || "")
+      return "" if decls.empty?
+
       io = ::StringIO.new
       ::RBS::Writer.new(out: io).write(merge_class_declarations(decls))
       io.rewind

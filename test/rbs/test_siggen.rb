@@ -98,5 +98,25 @@ module RBS
 
       assert_equal expected, siggen.generate
     end
+
+    def test_comment_only_ruby_code
+      ruby_string = <<~RUBY
+        # class A
+        #   foo :bar
+        #   foo :baz
+        # end
+      RUBY
+      sig_string = <<~SIG
+        class A
+          def foo: (Symbol name) -> void
+        end
+      SIG
+      expected = ""
+      siggen = RBS::Siggen.new
+      siggen.add_signature(sig_string)
+      siggen.analyze_ruby(ruby_string)
+
+      assert_equal expected, siggen.generate
+    end
   end
 end
