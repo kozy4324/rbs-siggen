@@ -40,13 +40,9 @@ siggen = RBS::Siggen.new do |env_loader|
   options[:sig_dirs].each do |dir|
     env_loader.add path: Pathname(dir)
   end
-  Dir.glob("#{Dir.pwd}/**/rbs_collection.lock.yaml").each do |path|
+  Dir.glob("#{Dir.pwd}/**/rbs_collection.yaml").each do |path|
     content = YAML.load_file(path)
-    content["gems"]&.each do |gem|
-      if env_loader.has_library?(library: gem["name"], version: gem["version"])
-        env_loader.add(library: gem["name"], version: gem["version"])
-      end
-    end
+    env_loader.add path: Pathname(content["path"]) if Dir.exist?(content["path"])
   end
 end
 siggen.analyze(path: Pathname(lib_path)) do |siggen, _|
