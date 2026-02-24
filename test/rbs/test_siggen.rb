@@ -118,5 +118,53 @@ module RBS
 
       assert_equal expected, siggen.generate
     end
+
+    def test_activerecord_schema
+      ruby_string = <<~RUBY
+        ActiveRecord::Schema[8.1].define(version: 2026_01_31_051626) do
+          create_table "articles", force: :cascade do |t|
+            t.text "body"
+          end
+        end
+      RUBY
+      sig_string = <<~SIG
+        module ActiveRecord
+          class Schema
+            def self.[]: (untyped version) -> ActiveRecord::Migration::Current
+          end
+          class Migration
+            class Current
+              def define: (version: untyped) { () [self: instance] -> void } -> void
+              def create_table: (untyped table_name, **untyped options) { (ActiveRecord::ConnectionAdapters::ColumnMethods t) -> void } -> void
+            end
+          end
+          module ConnectionAdapters
+            module ColumnMethods
+              %a{siggen:
+                class <%= create_table.table_name.classify %>
+                  <% names.each do |name| %>
+                  def <%= name %>: () -> void
+                  <% end %>
+                end
+              }
+              def text: (*Array[untyped] names, **untyped options) -> void
+            end
+            class TableDefinition
+              include ColumnMethods
+            end
+          end
+        end
+      SIG
+      expected = <<~SIGGEN
+        class Article
+          def body: () -> String
+        end
+      SIGGEN
+      siggen = RBS::Siggen.new
+      siggen.add_signature(sig_string)
+      siggen.analyze_ruby(ruby_string)
+
+      assert_equal expected, siggen.generate
+    end
   end
 end
