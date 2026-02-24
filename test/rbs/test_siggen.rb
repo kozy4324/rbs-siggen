@@ -143,7 +143,7 @@ module RBS
               %a{siggen:
                 class <%= create_table.table_name.classify %>
                   <% names.each do |name| %>
-                  def <%= name %>: () -> void
+                    def <%= name %>: () -> String
                   <% end %>
                 end
               }

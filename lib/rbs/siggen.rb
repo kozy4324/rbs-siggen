@@ -192,9 +192,24 @@ module RBS
     def create_arg_hash(node, method_decl)
       send_node = node.type == :block ? node.children.first : node
       _, _, *args = send_node.children
-      args = args.map { |a| a.children[0] }
-      rp = method_decl.method_def.type.type.required_positionals.map(&:name)
-      rp.zip(args).to_h
+      args = args.map { |arg_node| arg_node.children[0] }
+      positional_args = args.reject { |arg_node| arg_node.respond_to?(:type) && arg_node.type == :pair }
+      keyword_args = args.filter { |arg_node| arg_node.respond_to?(:type) && arg_node.type == :pair }
+
+      type = method_decl.method_def.type.type
+      hash = {}
+      type.required_positionals.map(&:name).each do |name|
+        hash[name] = positional_args.shift
+      end
+      type.optional_positionals.map(&:name).each do |name|
+        hash[name] = positional_args.shift
+      end
+      hash[type.rest_positionals.name] = positional_args.dup unless type.rest_positionals.nil?
+      keyword_args.each do |pair_node|
+        k, v = pair_node.children.map { |n| n.children[0] }
+        hash[k] = v
+      end
+      hash
     end
 
     #: (Hash[untyped, untyped]) -> untyped
