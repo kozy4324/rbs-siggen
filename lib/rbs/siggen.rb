@@ -197,7 +197,7 @@ module RBS
       keyword_args = args.filter { |arg_node| arg_node.respond_to?(:type) && arg_node.type == :pair }
 
       type = method_decl.method_def.type.type
-      hash = {}
+      hash = {} #: Hash[String | Symbol, untyped]
       type.required_positionals.map(&:name).each do |name|
         hash[name] = positional_args.shift
       end
