@@ -143,6 +143,11 @@ module RBS
               %a{siggen:
                 class <%= create_table.table_name.classify %>
                   <% names.each do |name| %>
+                    # In schema.rb, this column is declared as:
+                    #
+                    # ```ruby
+                    # <%= ___source %>
+                    # ```
                     def <%= name %>: () -> String
                   <% end %>
                 end
@@ -157,6 +162,11 @@ module RBS
       SIG
       expected = <<~SIGGEN
         class Article
+          # In schema.rb, this column is declared as:
+          #
+          # ```ruby
+          # t.text "body"
+          # ```
           def body: () -> String
         end
       SIGGEN

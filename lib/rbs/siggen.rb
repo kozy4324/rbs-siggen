@@ -118,7 +118,13 @@ module RBS
         begin
           ::RBS::Parser.parse_signature(generated)
         rescue ::RBS::ParsingError => e
-          surround_class_def = true if e.message =~ /Syntax error: cannot start a declaration/
+          if e.message =~ /Syntax error: cannot start a declaration/
+            surround_class_def = true
+          else
+            # TODO: Should output human readable error messages
+            puts generated # for debug
+            raise e
+          end
         end
 
         io.puts "class #{class_name}" if surround_class_def
@@ -198,6 +204,9 @@ module RBS
 
       type = method_decl.method_def.type.type
       hash = {} #: Hash[String | Symbol, untyped]
+      hash[:___node] = send_node
+      hash[:___source] = send_node.location.expression.source.gsub("\n", "")
+
       type.required_positionals.map(&:name).each do |name|
         hash[name] = positional_args.shift
       end
