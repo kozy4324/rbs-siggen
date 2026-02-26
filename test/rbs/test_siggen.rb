@@ -156,6 +156,7 @@ module RBS
         ActiveRecord::Schema[8.1].define(version: 2026_01_31_051626) do
           create_table "articles", force: :cascade do |t|
             t.text "body"
+            t.text "tag", null: false
           end
         end
       RUBY
@@ -180,7 +181,7 @@ module RBS
                     # ```ruby
                     # <%= ___source %>
                     # ```
-                    def <%= name %>: () -> String
+                    def <%= name %>: () -> String<%= options[:null] == false ? "" : "?" %>
                   <% end %>
                 end
               }
@@ -199,7 +200,13 @@ module RBS
           # ```ruby
           # t.text "body"
           # ```
-          def body: () -> String
+          def body: () -> String?
+          # In schema.rb, this column is declared as:
+          #
+          # ```ruby
+          # t.text "tag", null: false
+          # ```
+          def tag: () -> String
         end
       SIGGEN
       siggen = RBS::Siggen.new
