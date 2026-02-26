@@ -119,6 +119,38 @@ module RBS
       assert_equal expected, siggen.generate
     end
 
+    def test_reference_keyword_args
+      ruby_string = <<~RUBY
+        class A
+          foo :bar, baz: true, qux: 123, quux: "aaa"
+        end
+      RUBY
+      sig_string = <<~SIG
+        class A
+          %a{siggen:
+            # baz     = <%= baz %>
+            # qux     = <%= qux %>
+            # options = <%= options %>
+            def self.<%= name %>: () -> void
+          }
+          def self.foo: (Symbol name, baz: bool, ?qux: Integer, **untyped options) -> void
+        end
+      SIG
+      expected = <<~SIGGEN
+        class A
+          # baz     = true
+          # qux     = 123
+          # options = {quux: "aaa"}
+          def self.bar: () -> void
+        end
+      SIGGEN
+      siggen = RBS::Siggen.new
+      siggen.add_signature(sig_string)
+      siggen.analyze_ruby(ruby_string)
+
+      assert_equal expected, siggen.generate
+    end
+
     def test_activerecord_schema
       ruby_string = <<~RUBY
         ActiveRecord::Schema[8.1].define(version: 2026_01_31_051626) do

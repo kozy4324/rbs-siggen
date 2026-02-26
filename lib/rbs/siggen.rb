@@ -198,9 +198,17 @@ module RBS
     def create_arg_hash(node, method_decl)
       send_node = node.type == :block ? node.children.first : node
       _, _, *args = send_node.children
-      args = args.map { |arg_node| arg_node.children[0] }
+      args = args.map { |arg_node| arg_node.type == :kwargs ? arg_node.children : arg_node.children[0] }.flatten
       positional_args = args.reject { |arg_node| arg_node.respond_to?(:type) && arg_node.type == :pair }
-      keyword_args = args.filter { |arg_node| arg_node.respond_to?(:type) && arg_node.type == :pair }
+      keyword_args = args.filter do |arg_node|
+                       arg_node.respond_to?(:type) && arg_node.type == :pair
+                     end.to_h do |pair_node| # rubocop:disable Style/MultilineBlockChain
+                       key = pair_node.children[0].children[0]
+                       val_node = pair_node.children[1]
+                       val = val_node.children[0] || val_node
+                       val = val.type == :true if val.respond_to?(:type) # rubocop:disable Lint/BooleanSymbol
+                       [key, val]
+                     end
 
       type = method_decl.method_def.type.type
       hash = {} #: Hash[String | Symbol, untyped]
@@ -214,10 +222,16 @@ module RBS
         hash[name] = positional_args.shift
       end
       hash[type.rest_positionals.name] = positional_args.dup unless type.rest_positionals.nil?
-      keyword_args.each do |pair_node|
-        k, v = pair_node.children.map { |n| n.children[0] }
-        hash[k] = v
+
+      type.required_keywords.each_key do |name|
+        hash[name] = keyword_args[name]
+        keyword_args.delete(name)
       end
+      type.optional_keywords.each_key do |name|
+        hash[name] = keyword_args[name]
+        keyword_args.delete(name)
+      end
+      hash[type.rest_keywords.name] = keyword_args.dup unless type.rest_keywords.nil?
       hash
     end
 
