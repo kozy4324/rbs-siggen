@@ -130,7 +130,7 @@ module RBS
           %a{siggen:
             # baz     = <%= baz %>
             # qux     = <%= qux %>
-            # options = <%= options %>
+            # options = <%= options.to_json %>
             def self.<%= name %>: () -> void
           }
           def self.foo: (Symbol name, baz: bool, ?qux: Integer, **untyped options) -> void
@@ -140,7 +140,7 @@ module RBS
         class A
           # baz     = true
           # qux     = 123
-          # options = {quux: "aaa"}
+          # options = {"quux":"aaa"}
           def self.bar: () -> void
         end
       SIGGEN
