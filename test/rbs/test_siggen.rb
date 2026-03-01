@@ -181,7 +181,7 @@ module RBS
                     # ```ruby
                     # <%= ___source %>
                     # ```
-                    def <%= name %>: () -> String<%= options[:null] == false ? "" : "?" %>
+                    def <%= name %>: () -> String<%= "?" unless options[:null] == false %>
                   <% end %>
                 end
               }
