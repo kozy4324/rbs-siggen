@@ -171,6 +171,13 @@ module RBS
               def create_table: (untyped table_name, **untyped options) { (ActiveRecord::ConnectionAdapters::ColumnMethods t) -> void } -> void
             end
           end
+          module AttributeMethods
+            module Read
+              # The comment for this line is inserted
+              # by the ___comment_of method.
+              def read_attribute: () -> void
+            end
+          end
           module ConnectionAdapters
             module ColumnMethods
               %a{siggen:
@@ -181,6 +188,8 @@ module RBS
                     # ```ruby
                     # <%= ___source %>
                     # ```
+                    #
+                    # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                     def <%= name %>: () -> String<%= "?" unless options[:null] == false %>
                   <% end %>
                 end
@@ -200,12 +209,18 @@ module RBS
           # ```ruby
           # t.text "body"
           # ```
+          #
+          # The comment for this line is inserted
+          # by the ___comment_of method.
           def body: () -> String?
           # In schema.rb, this column is declared as:
           #
           # ```ruby
           # t.text "tag", null: false
           # ```
+          #
+          # The comment for this line is inserted
+          # by the ___comment_of method.
           def tag: () -> String
         end
       SIGGEN

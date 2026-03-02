@@ -214,6 +214,7 @@ module RBS
       hash = {} #: Hash[Symbol, untyped]
       hash[:___node] = send_node
       hash[:___source] = send_node.location.expression.source.gsub("\n", "")
+      hash[:___comment_of] = self
 
       type.required_positionals.map(&:name).each do |name|
         hash[name] = positional_args.shift
@@ -327,6 +328,16 @@ module RBS
     #: (String) -> String
     def comment_of(type_with_name)
       method_definitions(type_with_name).map(&:comment).map(&:string).join("\n")
+    end
+
+    #: (String) -> String
+    def commentify(string)
+      string.each_line.map { |line| "# #{line}" }.join.chomp
+    end
+
+    #: (String) -> String
+    def [](type_with_name)
+      commentify(comment_of(type_with_name)).gsub(/\A# /, "")
     end
   end
 end

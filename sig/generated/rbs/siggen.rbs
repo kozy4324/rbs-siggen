@@ -2,11 +2,11 @@
 
 module RBS
   class Siggen
-    @env: RBS::Environment
+    @node: Parser::AST::Node
 
     @typing: untyped
 
-    @node: Parser::AST::Node
+    @env: RBS::Environment
 
     # : () ?{ (RBS::EnvironmentLoader) -> void } -> void
     def initialize: () ?{ (RBS::EnvironmentLoader) -> void } -> void
@@ -43,5 +43,11 @@ module RBS
 
     # : (String) -> String
     def comment_of: (String) -> String
+
+    # : (String) -> String
+    def commentify: (String) -> String
+
+    # : (String) -> String
+    def []: (String) -> String
   end
 end
