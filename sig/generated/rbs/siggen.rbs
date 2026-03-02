@@ -35,7 +35,13 @@ module RBS
     # : (Hash[Symbol, untyped]) -> untyped
     def hash_to_data: (Hash[Symbol, untyped]) -> untyped
 
-    # : (Array[untyped] -> Array[untyped])
-    def merge_class_declarations: (untyped decls) -> untyped
+    # : (Array[untyped]) -> Array[untyped]
+    def merge_class_declarations: (Array[untyped]) -> Array[untyped]
+
+    # : (String) -> Array[untyped]
+    def method_definitions: (String) -> Array[untyped]
+
+    # : (String) -> String
+    def comment_of: (String) -> String
   end
 end

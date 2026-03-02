@@ -240,7 +240,7 @@ module RBS
       Data.define(*hash.keys).new(*hash.values)
     end
 
-    #: (Array[untyped] -> Array[untyped])
+    #: (Array[untyped]) -> Array[untyped]
     def merge_class_declarations(decls)
       # 同じ名前のClass宣言をグループ化
       grouped = decls.group_by do |decl|
@@ -294,6 +294,39 @@ module RBS
           group
         end
       end.flatten
+    end
+
+    #: (String) -> Array[untyped]
+    def method_definitions(type_with_name)
+      definition_builder = RBS::DefinitionBuilder.new(env: @env)
+
+      definition = if type_with_name.include?("#")
+                     type, name = type_with_name.split("#")
+                     return [] if type.nil? || name.nil?
+
+                     type_name = TypeName.parse(type).absolute!
+                     return [] unless @env.module_name?(type_name)
+
+                     definition_builder.build_instance(type_name)
+                   else
+                     type, name = type_with_name.split(".")
+                     return [] if type.nil? || name.nil?
+
+                     type_name = TypeName.parse(type).absolute!
+                     return [] unless @env.module_name?(type_name)
+
+                     definition_builder.build_singleton(TypeName.parse(type).absolute!)
+                   end
+
+      method = definition.methods[name.to_sym]
+      return [] unless method
+
+      method.defs.map(&:member)
+    end
+
+    #: (String) -> String
+    def comment_of(type_with_name)
+      method_definitions(type_with_name).map(&:comment).map(&:string).join("\n")
     end
   end
 end
