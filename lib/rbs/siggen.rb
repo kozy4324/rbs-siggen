@@ -141,7 +141,7 @@ module RBS
       io.readlines.reject { |line| line.strip.empty? }.join
     end
 
-    #: (untyped node, ?Array[untyped] stack) ?{ (String, untyped, Hash[untyped, untyped]) -> void } -> void
+    #: (Parser::AST::Node node, ?Array[untyped] stack) ?{ (String, untyped, Hash[untyped, untyped]) -> void } -> void
     def traverse(node, stack = [], &block)
       return unless node.is_a?(::Parser::AST::Node)
 
@@ -194,7 +194,7 @@ module RBS
       "#{receiver_type.namespace}#{receiver_type.name}"
     end
 
-    #: (untyped, untyped) -> Hash[untyped, untyped]
+    #: (Parser::AST::Node, untyped) -> Hash[Symbol, untyped]
     def create_arg_hash(node, method_decl)
       send_node = node.type == :block ? node.children.first : node
       _, _, *args = send_node.children
@@ -211,7 +211,7 @@ module RBS
                      end
 
       type = method_decl.method_def.type.type
-      hash = {} #: Hash[String | Symbol, untyped]
+      hash = {} #: Hash[Symbol, untyped]
       hash[:___node] = send_node
       hash[:___source] = send_node.location.expression.source.gsub("\n", "")
 
@@ -235,7 +235,7 @@ module RBS
       hash
     end
 
-    #: (Hash[untyped, untyped]) -> untyped
+    #: (Hash[Symbol, untyped]) -> untyped
     def hash_to_data(hash)
       Data.define(*hash.keys).new(*hash.values)
     end
