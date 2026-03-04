@@ -21,7 +21,7 @@ module ActiveRecord
   end
   module ConnectionAdapters
     module ColumnMethods
-      <%- { text: "String", string: "String" }.each do |key, type| -%>
+      <%- { text: "::String", string: "::String", datetime: "::ActiveSupport::TimeWithZone", integer: "::Integer" }.each do |key, type| -%>
         %a{siggen:
           class <%%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
