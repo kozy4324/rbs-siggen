@@ -30,7 +30,7 @@ module ActiveRecord
               # ```
               #
               # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-              # passing `:<%= name %>` as the `attr_name` argument.
+              # passing `"<%= name %>"` as the `attr_name` argument.
               #
               # See the documentation comment for the delegated method below:
               # 
