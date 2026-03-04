@@ -261,7 +261,7 @@ module RBS
         if kind == :class && group.size > 1
           # 複数のClass宣言をマージ
           primary = group.find(&:super_class) || group.first
-          merged_members = group.flat_map(&:members)
+          merged_members = merge_class_declarations(group.flat_map(&:members))
           merged_annotations = group.flat_map(&:annotations).uniq
           merged_comment = group.map(&:comment).compact.first
 
@@ -277,7 +277,7 @@ module RBS
         elsif kind == :module && group.size > 1
           # 複数のModule宣言をマージ
           primary = group.first
-          merged_members = group.flat_map(&:members)
+          merged_members = merge_class_declarations(group.flat_map(&:members))
           merged_annotations = group.flat_map(&:annotations).uniq
           merged_comment = group.map(&:comment).compact.first
           merged_self_types = group.flat_map(&:self_types).uniq

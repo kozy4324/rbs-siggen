@@ -187,16 +187,18 @@ module RBS
             module ColumnMethods
               %a{siggen:
                 class <%= create_table.table_name.classify %>
-                  <% names.each do |name| %>
-                    # In schema.rb, this column is declared as:
-                    #
-                    # ```ruby
-                    # <%= ___source %>
-                    # ```
-                    #
-                    # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                    def <%= name %>: () -> String<%= "?" unless options[:null] == false %>
-                  <% end %>
+                  module GeneratedAttributeMethods
+                    <% names.each do |name| %>
+                      # In schema.rb, this column is declared as:
+                      #
+                      # ```ruby
+                      # <%= ___source %>
+                      # ```
+                      #
+                      # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+                      def <%= name %>: () -> String<%= "?" unless options[:null] == false %>
+                    <% end %>
+                  end
                 end
               }
               def text: (*Array[untyped] names, **untyped options) -> void
@@ -213,24 +215,26 @@ module RBS
         #   t.text "tag", null: false
         # end
         class Article
-          # In schema.rb, this column is declared as:
-          #
-          # ```ruby
-          # t.text "body"
-          # ```
-          #
-          # The comment for this line is inserted
-          # by the ___comment_of method.
-          def body: () -> String?
-          # In schema.rb, this column is declared as:
-          #
-          # ```ruby
-          # t.text "tag", null: false
-          # ```
-          #
-          # The comment for this line is inserted
-          # by the ___comment_of method.
-          def tag: () -> String
+          module GeneratedAttributeMethods
+            # In schema.rb, this column is declared as:
+            #
+            # ```ruby
+            # t.text "body"
+            # ```
+            #
+            # The comment for this line is inserted
+            # by the ___comment_of method.
+            def body: () -> String?
+            # In schema.rb, this column is declared as:
+            #
+            # ```ruby
+            # t.text "tag", null: false
+            # ```
+            #
+            # The comment for this line is inserted
+            # by the ___comment_of method.
+            def tag: () -> String
+          end
         end
       SIGGEN
       siggen = RBS::Siggen.new

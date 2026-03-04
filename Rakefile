@@ -17,6 +17,7 @@ end
 
 task default: %i[test rubocop steep]
 
+desc "Generate siggen/*.rbs"
 task :run_erb do
   infile = "siggen/activerecord_model.rbs.erb"
   outfile = "siggen/activerecord_model.rbs"
