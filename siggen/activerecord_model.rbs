@@ -1,0 +1,39 @@
+module ActiveRecord
+  class Schema
+    def self.[]: (untyped version) -> ActiveRecord::Migration::Current
+  end
+  class Migration
+    class Current
+      def define: (version: untyped) { () [self: instance] -> void } -> void
+      def create_table: (untyped table_name, **untyped options) { (ActiveRecord::ConnectionAdapters::ColumnMethods t) -> void } -> void
+    end
+  end
+  module ConnectionAdapters
+    module ColumnMethods
+      %a{siggen:
+        class <%= create_table.table_name.classify %>
+          module GeneratedAttributeMethods
+            <% names.each do |name| %>
+              # In schema.rb, this column is declared as:
+              #
+              # ```ruby
+              # <%= ___source %>
+              # ```
+              #
+              # This method delegates to `ActiveRecord::AttributeMethods::Read#read_attribute`,
+              # passing `"<%= name %>"` as the `attr_name` argument.
+              # 
+              # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+              def <%= name %>: () -> String<%= "?" unless options[:null] == false %>
+            <% end %>
+          end
+          include GeneratedAttributeMethods
+        end
+      }
+      def text: (*Array[untyped] names, **untyped options) -> void
+    end
+    class TableDefinition
+      include ColumnMethods
+    end
+  end
+end
