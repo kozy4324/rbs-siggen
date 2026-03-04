@@ -6,12 +6,16 @@ require "rbs/siggen"
 require "pathname"
 require "optparse"
 
-options = { sig_dirs: [] }
+options = { sig_dirs: [], rails: false }
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: rbs-siggen [options] <lib-path>"
 
   opts.on("--sig-dir DIR", "Path to RBS signature directory (can be specified multiple times)") do |dir|
     options[:sig_dirs] << dir
+  end
+
+  opts.on("--rails", "Preset to generate signatures for Rails applications") do
+    options[:rails] = true
   end
 
   opts.on("-v", "--version", "Show version") do
@@ -27,7 +31,7 @@ end
 
 parser.parse!
 
-if ARGV.empty?
+if ARGV.empty? && !options[:rails]
   puts parser
   exit 1
 end
@@ -40,11 +44,34 @@ siggen = RBS::Siggen.new do |env_loader|
   options[:sig_dirs].each do |dir|
     env_loader.add path: Pathname(dir)
   end
+
   Dir.glob("#{Dir.pwd}/**/rbs_collection.yaml").each do |path|
     content = YAML.load_file(path)
     env_loader.add path: Pathname(content["path"]) if Dir.exist?(content["path"])
   end
+
+  if options[:rails]
+    spec = Gem::Specification.find_by_name("rbs-siggen")
+    env_loader.add path: Pathname(spec.gem_dir) / "siggen"
+  end
 end
-siggen.analyze(path: Pathname(lib_path)) do |siggen, _|
-  puts siggen.generate
+
+def find_rails_root(start_dir = Dir.pwd)
+  Pathname.new(start_dir).ascend do |path|
+    return path if File.exist? "#{path}/config/application.rb"
+  end
+  nil
+end
+
+if options[:rails] && lib_path.nil?
+  rails_root = find_rails_root
+  if rails_root
+    siggen.analyze(path: "#{rails_root}/db/schema.rb") do |siggen, _|
+      puts siggen.generate
+    end
+  end
+else
+  siggen.analyze(path: Pathname(lib_path)) do |siggen, _|
+    puts siggen.generate
+  end
 end

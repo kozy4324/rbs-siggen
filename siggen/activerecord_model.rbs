@@ -20,8 +20,10 @@ module ActiveRecord
               # <%= ___source %>
               # ```
               #
-              # This method delegates to `ActiveRecord::AttributeMethods::Read#read_attribute`,
-              # passing `"<%= name %>"` as the `attr_name` argument.
+              # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
+              # passing `:<%= name %>` as the `attr
+              #
+              # See the documentation comment for the delegated method below:
               # 
               # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
               def <%= name %>: () -> String<%= "?" unless options[:null] == false %>
