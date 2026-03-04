@@ -5,6 +5,15 @@ module ActiveRecord
   class Migration
     class Current
       def define: (version: untyped) { () [self: instance] -> void } -> void
+      %a{siggen:
+        # In schema.rb, this model is declared as:
+        #
+        # ```ruby
+        # <%= ___source %>
+        # ```
+        class <%= table_name.classify %>
+        end
+      }
       def create_table: (untyped table_name, **untyped options) { (ActiveRecord::ConnectionAdapters::ColumnMethods t) -> void } -> void
     end
   end
@@ -21,7 +30,7 @@ module ActiveRecord
               # ```
               #
               # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-              # passing `:<%= name %>` as the `attr
+              # passing `:<%= name %>` as the `attr_name` argument.
               #
               # See the documentation comment for the delegated method below:
               # 

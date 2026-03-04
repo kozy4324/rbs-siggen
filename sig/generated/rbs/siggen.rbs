@@ -44,8 +44,8 @@ module RBS
     # : (String) -> String
     def comment_of: (String) -> String
 
-    # : (String) -> String
-    def commentify: (String) -> String
+    # : (String, ?Integer) -> String
+    def commentify: (String, ?Integer) -> String
 
     # : (String) -> String
     def []: (String) -> String

@@ -213,7 +213,7 @@ module RBS
       type = method_decl.method_def.type.type
       hash = {} #: Hash[Symbol, untyped]
       hash[:___node] = send_node
-      hash[:___source] = send_node.location.expression.source.gsub("\n", "")
+      hash[:___source] = commentify(node.location.expression.source, node.location.expression.column)
       hash[:___comment_of] = self
 
       type.required_positionals.map(&:name).each do |name|
@@ -330,14 +330,14 @@ module RBS
       method_definitions(type_with_name).map(&:comment).map(&:string).join("\n")
     end
 
-    #: (String) -> String
-    def commentify(string)
-      string.each_line.map { |line| "# #{line}" }.join.chomp
+    #: (String, ?Integer) -> String
+    def commentify(string, start_column = 0)
+      string.each_line.map { |line| "# #{line.sub(/\A {0,#{start_column}}/, "")}" }.join.chomp.gsub(/\A# /, "")
     end
 
     #: (String) -> String
     def [](type_with_name)
-      commentify(comment_of(type_with_name)).gsub(/\A# /, "")
+      commentify(comment_of(type_with_name))
     end
   end
 end

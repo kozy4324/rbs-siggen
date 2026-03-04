@@ -168,6 +168,11 @@ module RBS
           class Migration
             class Current
               def define: (version: untyped) { () [self: instance] -> void } -> void
+              %a{siggen:
+                # <%= ___source %>
+                class <%= table_name.classify %>
+                end
+              }
               def create_table: (untyped table_name, **untyped options) { (ActiveRecord::ConnectionAdapters::ColumnMethods t) -> void } -> void
             end
           end
@@ -203,6 +208,10 @@ module RBS
         end
       SIG
       expected = <<~SIGGEN
+        # create_table "articles", force: :cascade do |t|
+        #   t.text "body"
+        #   t.text "tag", null: false
+        # end
         class Article
           # In schema.rb, this column is declared as:
           #
