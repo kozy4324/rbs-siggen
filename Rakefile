@@ -16,3 +16,11 @@ Steep::RakeTask.new do |t|
 end
 
 task default: %i[test rubocop steep]
+
+task :run_erb do
+  infile = "siggen/activerecord_model.rbs.erb"
+  outfile = "siggen/activerecord_model.rbs"
+  sh %|ruby -rerb -e 'ERB.new(File.read("#{infile}"), trim_mode: ?-).run' > #{outfile}|
+end
+
+task install: :run_erb
