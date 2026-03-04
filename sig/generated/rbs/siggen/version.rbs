@@ -1,0 +1,7 @@
+# Generated from lib/rbs/siggen/version.rb with RBS::Inline
+
+module RBS
+  class Siggen
+    VERSION: ::String
+  end
+end

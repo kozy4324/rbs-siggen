@@ -1,5 +1,0 @@
-module RBS
-  class Siggen
-    VERSION: String
-  end
-end
