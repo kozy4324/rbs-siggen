@@ -22,6 +22,7 @@ module RBS
       expected = <<~SIGGEN
         class A
           def self.bar: () -> void
+
           def self.baz: () -> void
         end
       SIGGEN
@@ -54,6 +55,7 @@ module RBS
       expected = <<~SIGGEN
         class M::A
           def self.bar: () -> void
+
           def self.baz: () -> void
         end
       SIGGEN
@@ -89,6 +91,7 @@ module RBS
       expected = <<~SIGGEN
         class Article
           def body: () -> String
+
           def comment: () -> String
         end
       SIGGEN
@@ -225,6 +228,7 @@ module RBS
             # The comment for this line is inserted
             # by the ___comment_of method.
             def body: () -> String?
+
             # In schema.rb, this column is declared as:
             #
             # ```ruby
