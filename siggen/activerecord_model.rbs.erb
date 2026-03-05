@@ -3,9 +3,11 @@ module ActiveRecord
   class Schema
     def self.[]: (untyped version) -> ActiveRecord::Migration::Current
   end
+
   class Migration
     class Current
       def define: (version: untyped) { () [self: instance] -> void } -> void
+
       %a{siggen:
         # In schema.rb, this model is declared as:
         #
@@ -19,9 +21,14 @@ module ActiveRecord
       def create_table: (untyped table_name, **untyped options) { (ActiveRecord::ConnectionAdapters::ColumnMethods t) -> void } -> void
     end
   end
+
   module ConnectionAdapters
     module ColumnMethods
-      <%- { text: "::String", string: "::String", datetime: "::ActiveSupport::TimeWithZone", integer: "::Integer" }.each do |key, type| -%>
+      <%- {
+            integer: "::Integer", decimal: "::BigDecimal", float: "::Float", boolean: "bool",
+            binary: "::String", string: "::String", text: "::String", date: "::ActiveSupport::TimeWithZone",
+            time: "::ActiveSupport::TimeWithZone", datetime: "::ActiveSupport::TimeWithZone", json: "untyped"
+          }.each do |key, type| -%>
         %a{siggen:
           class <%%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
@@ -44,8 +51,10 @@ module ActiveRecord
           end
         }
         def <%= key %>: (*Array[untyped] names, **untyped options) -> void
+
       <%- end -%>
     end
+
     class TableDefinition
       include ColumnMethods
     end

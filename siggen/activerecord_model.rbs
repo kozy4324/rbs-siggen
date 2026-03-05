@@ -2,9 +2,11 @@ module ActiveRecord
   class Schema
     def self.[]: (untyped version) -> ActiveRecord::Migration::Current
   end
+
   class Migration
     class Current
       def define: (version: untyped) { () [self: instance] -> void } -> void
+
       %a{siggen:
         # In schema.rb, this model is declared as:
         #
@@ -18,74 +20,9 @@ module ActiveRecord
       def create_table: (untyped table_name, **untyped options) { (ActiveRecord::ConnectionAdapters::ColumnMethods t) -> void } -> void
     end
   end
+
   module ConnectionAdapters
     module ColumnMethods
-        %a{siggen:
-          class <%= create_table.table_name.classify %>
-            module GeneratedAttributeMethods
-              <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
-                # ```ruby
-                # <%= ___source %>
-                # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                #
-                # See the documentation comment for the delegated method below:
-                #
-                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                def <%= name %>: () -> ::String<%= "?" unless options[:null] == false %>
-              <% end %>
-            end
-          end
-        }
-        def text: (*Array[untyped] names, **untyped options) -> void
-        %a{siggen:
-          class <%= create_table.table_name.classify %>
-            module GeneratedAttributeMethods
-              <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
-                # ```ruby
-                # <%= ___source %>
-                # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                #
-                # See the documentation comment for the delegated method below:
-                #
-                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                def <%= name %>: () -> ::String<%= "?" unless options[:null] == false %>
-              <% end %>
-            end
-          end
-        }
-        def string: (*Array[untyped] names, **untyped options) -> void
-        %a{siggen:
-          class <%= create_table.table_name.classify %>
-            module GeneratedAttributeMethods
-              <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
-                # ```ruby
-                # <%= ___source %>
-                # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                #
-                # See the documentation comment for the delegated method below:
-                #
-                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                def <%= name %>: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
-              <% end %>
-            end
-          end
-        }
-        def datetime: (*Array[untyped] names, **untyped options) -> void
         %a{siggen:
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
@@ -108,7 +45,239 @@ module ActiveRecord
           end
         }
         def integer: (*Array[untyped] names, **untyped options) -> void
+
+        %a{siggen:
+          class <%= create_table.table_name.classify %>
+            module GeneratedAttributeMethods
+              <% names.each do |name| %>
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+                def <%= name %>: () -> ::BigDecimal<%= "?" unless options[:null] == false %>
+              <% end %>
+            end
+          end
+        }
+        def decimal: (*Array[untyped] names, **untyped options) -> void
+
+        %a{siggen:
+          class <%= create_table.table_name.classify %>
+            module GeneratedAttributeMethods
+              <% names.each do |name| %>
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+                def <%= name %>: () -> ::Float<%= "?" unless options[:null] == false %>
+              <% end %>
+            end
+          end
+        }
+        def float: (*Array[untyped] names, **untyped options) -> void
+
+        %a{siggen:
+          class <%= create_table.table_name.classify %>
+            module GeneratedAttributeMethods
+              <% names.each do |name| %>
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+                def <%= name %>: () -> bool<%= "?" unless options[:null] == false %>
+              <% end %>
+            end
+          end
+        }
+        def boolean: (*Array[untyped] names, **untyped options) -> void
+
+        %a{siggen:
+          class <%= create_table.table_name.classify %>
+            module GeneratedAttributeMethods
+              <% names.each do |name| %>
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+                def <%= name %>: () -> ::String<%= "?" unless options[:null] == false %>
+              <% end %>
+            end
+          end
+        }
+        def binary: (*Array[untyped] names, **untyped options) -> void
+
+        %a{siggen:
+          class <%= create_table.table_name.classify %>
+            module GeneratedAttributeMethods
+              <% names.each do |name| %>
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+                def <%= name %>: () -> ::String<%= "?" unless options[:null] == false %>
+              <% end %>
+            end
+          end
+        }
+        def string: (*Array[untyped] names, **untyped options) -> void
+
+        %a{siggen:
+          class <%= create_table.table_name.classify %>
+            module GeneratedAttributeMethods
+              <% names.each do |name| %>
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+                def <%= name %>: () -> ::String<%= "?" unless options[:null] == false %>
+              <% end %>
+            end
+          end
+        }
+        def text: (*Array[untyped] names, **untyped options) -> void
+
+        %a{siggen:
+          class <%= create_table.table_name.classify %>
+            module GeneratedAttributeMethods
+              <% names.each do |name| %>
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+                def <%= name %>: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+              <% end %>
+            end
+          end
+        }
+        def date: (*Array[untyped] names, **untyped options) -> void
+
+        %a{siggen:
+          class <%= create_table.table_name.classify %>
+            module GeneratedAttributeMethods
+              <% names.each do |name| %>
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+                def <%= name %>: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+              <% end %>
+            end
+          end
+        }
+        def time: (*Array[untyped] names, **untyped options) -> void
+
+        %a{siggen:
+          class <%= create_table.table_name.classify %>
+            module GeneratedAttributeMethods
+              <% names.each do |name| %>
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+                def <%= name %>: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+              <% end %>
+            end
+          end
+        }
+        def datetime: (*Array[untyped] names, **untyped options) -> void
+
+        %a{siggen:
+          class <%= create_table.table_name.classify %>
+            module GeneratedAttributeMethods
+              <% names.each do |name| %>
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+                def <%= name %>: () -> untyped<%= "?" unless options[:null] == false %>
+              <% end %>
+            end
+          end
+        }
+        def json: (*Array[untyped] names, **untyped options) -> void
+
     end
+
     class TableDefinition
       include ColumnMethods
     end
