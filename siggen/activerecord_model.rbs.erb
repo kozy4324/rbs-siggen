@@ -26,8 +26,9 @@ module ActiveRecord
     module ColumnMethods
       <%- {
             integer: "::Integer", decimal: "::BigDecimal", float: "::Float", boolean: "bool",
-            binary: "::String", string: "::String", text: "::String", date: "::ActiveSupport::TimeWithZone",
-            time: "::ActiveSupport::TimeWithZone", datetime: "::ActiveSupport::TimeWithZone", json: "untyped"
+            binary: "::String", string: "::String", text: "::String", date: "::Date",
+            time: "::ActiveSupport::TimeWithZone", datetime: "::ActiveSupport::TimeWithZone",
+            json: "untyped"
           }.each do |key, type| -%>
         %a{siggen:
           class <%%= create_table.table_name.classify %>

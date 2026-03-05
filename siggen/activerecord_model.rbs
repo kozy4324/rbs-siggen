@@ -200,7 +200,7 @@ module ActiveRecord
                 # See the documentation comment for the delegated method below:
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                def <%= name %>: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+                def <%= name %>: () -> ::Date<%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
