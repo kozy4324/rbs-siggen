@@ -44,7 +44,7 @@ module ActiveRecord
           map.each do |key, type| -%>
         %a{siggen:
           <%- if key == :virtual -%>
-          <%% map = <%= map.to_s %> %>
+          <%% map = <%= map.to_a %>.to_h %>
           <%- type = "<" + "%= map[options[:type]] %" + ">" -%>
           <%- end -%>
           class <%%= create_table.table_name.classify %>
