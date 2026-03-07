@@ -40,6 +40,20 @@ module ActiveRecord
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 def <%= name %>: () -> ::Integer<%= "?" unless options[:null] == false %>
+
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
+                def <%= name %>=: (::Integer<%= "?" unless options[:null] == false %> value) -> void
               <% end %>
             end
           end
@@ -63,6 +77,20 @@ module ActiveRecord
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 def <%= name %>: () -> ::String<%= "?" unless options[:null] == false %>
+
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
+                def <%= name %>=: (::String<%= "?" unless options[:null] == false %> value) -> void
               <% end %>
             end
           end
@@ -86,6 +114,20 @@ module ActiveRecord
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 def <%= name %>: () -> bool<%= "?" unless options[:null] == false %>
+
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
+                def <%= name %>=: (bool<%= "?" unless options[:null] == false %> value) -> void
               <% end %>
             end
           end
@@ -109,6 +151,20 @@ module ActiveRecord
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 def <%= name %>: () -> ::Date<%= "?" unless options[:null] == false %>
+
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
+                def <%= name %>=: (::Date<%= "?" unless options[:null] == false %> value) -> void
               <% end %>
             end
           end
@@ -132,6 +188,20 @@ module ActiveRecord
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 def <%= name %>: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
+                def <%= name %>=: (::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %> value) -> void
               <% end %>
             end
           end
@@ -155,6 +225,20 @@ module ActiveRecord
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 def <%= name %>: () -> ::BigDecimal<%= "?" unless options[:null] == false %>
+
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
+                def <%= name %>=: (::BigDecimal<%= "?" unless options[:null] == false %> value) -> void
               <% end %>
             end
           end
@@ -178,6 +262,20 @@ module ActiveRecord
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 def <%= name %>: () -> ::Float<%= "?" unless options[:null] == false %>
+
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
+                def <%= name %>=: (::Float<%= "?" unless options[:null] == false %> value) -> void
               <% end %>
             end
           end
@@ -201,6 +299,20 @@ module ActiveRecord
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 def <%= name %>: () -> ::Integer<%= "?" unless options[:null] == false %>
+
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
+                def <%= name %>=: (::Integer<%= "?" unless options[:null] == false %> value) -> void
               <% end %>
             end
           end
@@ -224,6 +336,20 @@ module ActiveRecord
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 def <%= name %>: () -> untyped<%= "?" unless options[:null] == false %>
+
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
+                def <%= name %>=: (untyped<%= "?" unless options[:null] == false %> value) -> void
               <% end %>
             end
           end
@@ -247,6 +373,20 @@ module ActiveRecord
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 def <%= name %>: () -> ::String<%= "?" unless options[:null] == false %>
+
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
+                def <%= name %>=: (::String<%= "?" unless options[:null] == false %> value) -> void
               <% end %>
             end
           end
@@ -270,6 +410,20 @@ module ActiveRecord
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 def <%= name %>: () -> ::String<%= "?" unless options[:null] == false %>
+
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
+                def <%= name %>=: (::String<%= "?" unless options[:null] == false %> value) -> void
               <% end %>
             end
           end
@@ -293,6 +447,20 @@ module ActiveRecord
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 def <%= name %>: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
+                def <%= name %>=: (::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %> value) -> void
               <% end %>
             end
           end
@@ -316,6 +484,20 @@ module ActiveRecord
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 def <%= name %>: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
+                def <%= name %>=: (::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %> value) -> void
               <% end %>
             end
           end
@@ -340,6 +522,20 @@ module ActiveRecord
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 def <%= name %>: () -> <%= map[options[:type]] %><%= "?" unless options[:null] == false %>
+
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
+                def <%= name %>=: (<%= map[options[:type]] %><%= "?" unless options[:null] == false %> value) -> void
               <% end %>
             end
           end

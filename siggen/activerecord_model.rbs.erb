@@ -50,6 +50,7 @@ module ActiveRecord
           class <%%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <%% names.each do |name| %>
+                <%-# https://github.com/rails/rails/blob/v8.1.2/activerecord/lib/active_record/attribute_methods/read.rb -%>
                 # In schema.rb, this column is declared as:
                 #
                 # ```ruby
@@ -63,6 +64,21 @@ module ActiveRecord
                 #
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 def <%%= name %>: () -> <%= type %><%%= "?" unless options[:null] == false %>
+
+                <%-# https://github.com/rails/rails/blob/v8.1.2/activerecord/lib/active_record/attribute_methods/write.rb -%>
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
+                # passing `"<%%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
+                def <%%= name %>=: (<%= type %><%%= "?" unless options[:null] == false %> value) -> void
               <%% end %>
             end
           end
