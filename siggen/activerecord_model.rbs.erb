@@ -24,13 +24,29 @@ module ActiveRecord
 
   module ConnectionAdapters
     module ColumnMethods
-      <%- {
-            integer: "::Integer", decimal: "::BigDecimal", float: "::Float", boolean: "bool",
-            binary: "::String", string: "::String", text: "::String", date: "::Date",
-            time: "::ActiveSupport::TimeWithZone", datetime: "::ActiveSupport::TimeWithZone",
-            json: "untyped"
-          }.each do |key, type| -%>
+      <%- map = {
+            # https://github.com/rails/rails/blob/v8.1.2/activerecord/lib/active_record/connection_adapters/abstract/schema_definitions.rb#L331-L332
+            bitint: "::Integer",
+            binary: "::String",
+            boolean: "bool",
+            date: "::Date",
+            datetime: "::ActiveSupport::TimeWithZone",
+            decimal: "::BigDecimal",
+            float: "::Float",
+            integer: "::Integer",
+            json: "untyped",
+            string: "::String",
+            text: "::String",
+            time: "::ActiveSupport::TimeWithZone",
+            timestamp: "::ActiveSupport::TimeWithZone",
+            virtual: "_",
+          }
+          map.each do |key, type| -%>
         %a{siggen:
+          <%- if key == :virtual -%>
+          <%% map = <%= map.to_s %> %>
+          <%- type = "<" + "%= map[options[:type]] %" + ">" -%>
+          <%- end -%>
           class <%%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <%% names.each do |name| %>

@@ -44,7 +44,99 @@ module ActiveRecord
             end
           end
         }
-        def integer: (*Array[untyped] names, **untyped options) -> void
+        def bitint: (*Array[untyped] names, **untyped options) -> void
+
+        %a{siggen:
+          class <%= create_table.table_name.classify %>
+            module GeneratedAttributeMethods
+              <% names.each do |name| %>
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+                def <%= name %>: () -> ::String<%= "?" unless options[:null] == false %>
+              <% end %>
+            end
+          end
+        }
+        def binary: (*Array[untyped] names, **untyped options) -> void
+
+        %a{siggen:
+          class <%= create_table.table_name.classify %>
+            module GeneratedAttributeMethods
+              <% names.each do |name| %>
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+                def <%= name %>: () -> bool<%= "?" unless options[:null] == false %>
+              <% end %>
+            end
+          end
+        }
+        def boolean: (*Array[untyped] names, **untyped options) -> void
+
+        %a{siggen:
+          class <%= create_table.table_name.classify %>
+            module GeneratedAttributeMethods
+              <% names.each do |name| %>
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+                def <%= name %>: () -> ::Date<%= "?" unless options[:null] == false %>
+              <% end %>
+            end
+          end
+        }
+        def date: (*Array[untyped] names, **untyped options) -> void
+
+        %a{siggen:
+          class <%= create_table.table_name.classify %>
+            module GeneratedAttributeMethods
+              <% names.each do |name| %>
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                #
+                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
+                # passing `"<%= name %>"` as the `attr_name` argument.
+                #
+                # See the documentation comment for the delegated method below:
+                #
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+                def <%= name %>: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+              <% end %>
+            end
+          end
+        }
+        def datetime: (*Array[untyped] names, **untyped options) -> void
 
         %a{siggen:
           class <%= create_table.table_name.classify %>
@@ -108,12 +200,12 @@ module ActiveRecord
                 # See the documentation comment for the delegated method below:
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                def <%= name %>: () -> bool<%= "?" unless options[:null] == false %>
+                def <%= name %>: () -> ::Integer<%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
         }
-        def boolean: (*Array[untyped] names, **untyped options) -> void
+        def integer: (*Array[untyped] names, **untyped options) -> void
 
         %a{siggen:
           class <%= create_table.table_name.classify %>
@@ -131,12 +223,12 @@ module ActiveRecord
                 # See the documentation comment for the delegated method below:
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                def <%= name %>: () -> ::String<%= "?" unless options[:null] == false %>
+                def <%= name %>: () -> untyped<%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
         }
-        def binary: (*Array[untyped] names, **untyped options) -> void
+        def json: (*Array[untyped] names, **untyped options) -> void
 
         %a{siggen:
           class <%= create_table.table_name.classify %>
@@ -200,29 +292,6 @@ module ActiveRecord
                 # See the documentation comment for the delegated method below:
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                def <%= name %>: () -> ::Date<%= "?" unless options[:null] == false %>
-              <% end %>
-            end
-          end
-        }
-        def date: (*Array[untyped] names, **untyped options) -> void
-
-        %a{siggen:
-          class <%= create_table.table_name.classify %>
-            module GeneratedAttributeMethods
-              <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
-                # ```ruby
-                # <%= ___source %>
-                # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                #
-                # See the documentation comment for the delegated method below:
-                #
-                # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 def <%= name %>: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
               <% end %>
             end
@@ -251,9 +320,10 @@ module ActiveRecord
             end
           end
         }
-        def datetime: (*Array[untyped] names, **untyped options) -> void
+        def timestamp: (*Array[untyped] names, **untyped options) -> void
 
         %a{siggen:
+          <% map = {bitint: "::Integer", binary: "::String", boolean: "bool", date: "::Date", datetime: "::ActiveSupport::TimeWithZone", decimal: "::BigDecimal", float: "::Float", integer: "::Integer", json: "untyped", string: "::String", text: "::String", time: "::ActiveSupport::TimeWithZone", timestamp: "::ActiveSupport::TimeWithZone", virtual: "_"} %>
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <% names.each do |name| %>
@@ -269,12 +339,12 @@ module ActiveRecord
                 # See the documentation comment for the delegated method below:
                 #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                def <%= name %>: () -> untyped<%= "?" unless options[:null] == false %>
+                def <%= name %>: () -> <%= map[options[:type]] %><%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
         }
-        def json: (*Array[untyped] names, **untyped options) -> void
+        def virtual: (*Array[untyped] names, **untyped options) -> void
 
     end
 
