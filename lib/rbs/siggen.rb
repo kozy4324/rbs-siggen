@@ -108,6 +108,10 @@ module RBS
 
       @typing = typing
       @node = source.node
+      @source = source
+      @context = context
+      @checker = checker
+      @annotations = annotations
       # steep:ignore:end
     end
 
@@ -173,7 +177,7 @@ module RBS
           end
           arg_hash.merge!(create_arg_hash(node, method_decl))
 
-          annos.each { |anno| yield(create_class_name(method_decl), anno, arg_hash) }
+          annos.each { |anno| yield(create_class_name(self_type_of(node), method_decl), anno, arg_hash) }
         end
 
         if node.type == :block
@@ -190,10 +194,24 @@ module RBS
       end
     end
 
-    #: (untyped) -> String
-    def create_class_name(method_decl)
-      receiver_type = method_decl.method_name.type_name.relative!
-      "#{receiver_type.namespace}#{receiver_type.name}"
+    #: (Parser::AST::Node) -> untyped
+    def self_type_of(node)
+      # steep:ignore:start
+      typing = Steep::Typing.new(source: @source, root_context: @context, cursor: node.loc.expression.begin_pos)
+      construction = Steep::TypeConstruction.new(checker: @checker,
+                                                 source: @source,
+                                                 annotations: @annotations,
+                                                 context: @context,
+                                                 typing: typing)
+      construction.synthesize(@source.node) unless @source.node.nil?
+      # steep:ignore:end
+      typing.cursor_context.context&.self_type
+    end
+
+    #: (untyped, untyped) -> String
+    def create_class_name(reciver_type, method_decl)
+      type = reciver_type&.name&.relative! || method_decl.method_name.type_name.relative!
+      "#{type.namespace}#{type.name}"
     end
 
     #: (Parser::AST::Node, untyped) -> Hash[Symbol, untyped]

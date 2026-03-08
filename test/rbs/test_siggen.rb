@@ -153,5 +153,41 @@ module RBS
 
       assert_equal expected, siggen.generate
     end
+
+    def test_inheritance
+      ruby_string = <<~RUBY
+        class A < S
+          A.foo :bar
+        end
+        class B < S
+          foo :baz
+        end
+      RUBY
+      sig_string = <<~SIG
+        class S
+          %a{siggen:
+            def self.<%= name %>: () -> void
+          }
+          def self.foo: (Symbol name) -> void
+        end
+        class A < S
+        end
+        class B < S
+        end
+      SIG
+      expected = <<~SIGGEN
+        class A
+          def self.bar: () -> void
+        end
+        class B
+          def self.baz: () -> void
+        end
+      SIGGEN
+      siggen = RBS::Siggen.new
+      siggen.add_signature(sig_string)
+      siggen.analyze_ruby(ruby_string)
+
+      assert_equal expected, siggen.generate
+    end
   end
 end
