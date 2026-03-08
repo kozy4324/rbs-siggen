@@ -35,6 +35,8 @@ module RBS
     def analyze(path:)
       ruby_files = Dir.glob(path) + Dir.glob("#{path}/**/*.rb")
       ruby_files.each do |file|
+        next unless File.file?(file)
+
         analyze_ruby(File.read(file), name: file)
         yield self, file
       end
