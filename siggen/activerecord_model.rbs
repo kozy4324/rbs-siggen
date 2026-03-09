@@ -27,52 +27,22 @@ module ActiveRecord
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                <%- end -%>
                 def <%= name %>: () -> ::Integer<%= "?" unless options[:null] == false %>
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
-                <%- end -%>
                 def <%= name %>=: (::Integer<%= "?" unless options[:null] == false %> value) -> void
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method is equivalent to `ActiveRecord::AttributeMethods::BeforeTypeCast` `#read_attribute_before_type_cast`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"].empty? -%>
-                #
-                # See the documentation comment for the method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
-                <%- end -%>
                 def <%= name %>_before_type_cast: () -> untyped
               <% end %>
             end
@@ -84,52 +54,22 @@ module ActiveRecord
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                <%- end -%>
                 def <%= name %>: () -> ::String<%= "?" unless options[:null] == false %>
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
-                <%- end -%>
                 def <%= name %>=: (::String<%= "?" unless options[:null] == false %> value) -> void
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method is equivalent to `ActiveRecord::AttributeMethods::BeforeTypeCast` `#read_attribute_before_type_cast`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"].empty? -%>
-                #
-                # See the documentation comment for the method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
-                <%- end -%>
                 def <%= name %>_before_type_cast: () -> untyped
               <% end %>
             end
@@ -141,52 +81,22 @@ module ActiveRecord
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                <%- end -%>
                 def <%= name %>: () -> bool<%= "?" unless options[:null] == false %>
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
-                <%- end -%>
                 def <%= name %>=: (bool<%= "?" unless options[:null] == false %> value) -> void
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method is equivalent to `ActiveRecord::AttributeMethods::BeforeTypeCast` `#read_attribute_before_type_cast`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"].empty? -%>
-                #
-                # See the documentation comment for the method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
-                <%- end -%>
                 def <%= name %>_before_type_cast: () -> untyped
               <% end %>
             end
@@ -198,52 +108,22 @@ module ActiveRecord
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                <%- end -%>
                 def <%= name %>: () -> ::Date<%= "?" unless options[:null] == false %>
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
-                <%- end -%>
                 def <%= name %>=: (::Date<%= "?" unless options[:null] == false %> value) -> void
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method is equivalent to `ActiveRecord::AttributeMethods::BeforeTypeCast` `#read_attribute_before_type_cast`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"].empty? -%>
-                #
-                # See the documentation comment for the method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
-                <%- end -%>
                 def <%= name %>_before_type_cast: () -> untyped
               <% end %>
             end
@@ -255,52 +135,22 @@ module ActiveRecord
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                <%- end -%>
                 def <%= name %>: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
-                <%- end -%>
                 def <%= name %>=: (::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %> value) -> void
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method is equivalent to `ActiveRecord::AttributeMethods::BeforeTypeCast` `#read_attribute_before_type_cast`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"].empty? -%>
-                #
-                # See the documentation comment for the method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
-                <%- end -%>
                 def <%= name %>_before_type_cast: () -> untyped
               <% end %>
             end
@@ -312,52 +162,22 @@ module ActiveRecord
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                <%- end -%>
                 def <%= name %>: () -> ::BigDecimal<%= "?" unless options[:null] == false %>
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
-                <%- end -%>
                 def <%= name %>=: (::BigDecimal<%= "?" unless options[:null] == false %> value) -> void
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method is equivalent to `ActiveRecord::AttributeMethods::BeforeTypeCast` `#read_attribute_before_type_cast`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"].empty? -%>
-                #
-                # See the documentation comment for the method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
-                <%- end -%>
                 def <%= name %>_before_type_cast: () -> untyped
               <% end %>
             end
@@ -369,52 +189,22 @@ module ActiveRecord
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                <%- end -%>
                 def <%= name %>: () -> ::Float<%= "?" unless options[:null] == false %>
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
-                <%- end -%>
                 def <%= name %>=: (::Float<%= "?" unless options[:null] == false %> value) -> void
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method is equivalent to `ActiveRecord::AttributeMethods::BeforeTypeCast` `#read_attribute_before_type_cast`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"].empty? -%>
-                #
-                # See the documentation comment for the method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
-                <%- end -%>
                 def <%= name %>_before_type_cast: () -> untyped
               <% end %>
             end
@@ -426,52 +216,22 @@ module ActiveRecord
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                <%- end -%>
                 def <%= name %>: () -> ::Integer<%= "?" unless options[:null] == false %>
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
-                <%- end -%>
                 def <%= name %>=: (::Integer<%= "?" unless options[:null] == false %> value) -> void
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method is equivalent to `ActiveRecord::AttributeMethods::BeforeTypeCast` `#read_attribute_before_type_cast`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"].empty? -%>
-                #
-                # See the documentation comment for the method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
-                <%- end -%>
                 def <%= name %>_before_type_cast: () -> untyped
               <% end %>
             end
@@ -483,52 +243,22 @@ module ActiveRecord
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                <%- end -%>
                 def <%= name %>: () -> untyped<%= "?" unless options[:null] == false %>
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
-                <%- end -%>
                 def <%= name %>=: (untyped<%= "?" unless options[:null] == false %> value) -> void
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method is equivalent to `ActiveRecord::AttributeMethods::BeforeTypeCast` `#read_attribute_before_type_cast`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"].empty? -%>
-                #
-                # See the documentation comment for the method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
-                <%- end -%>
                 def <%= name %>_before_type_cast: () -> untyped
               <% end %>
             end
@@ -540,52 +270,22 @@ module ActiveRecord
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                <%- end -%>
                 def <%= name %>: () -> ::String<%= "?" unless options[:null] == false %>
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
-                <%- end -%>
                 def <%= name %>=: (::String<%= "?" unless options[:null] == false %> value) -> void
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method is equivalent to `ActiveRecord::AttributeMethods::BeforeTypeCast` `#read_attribute_before_type_cast`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"].empty? -%>
-                #
-                # See the documentation comment for the method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
-                <%- end -%>
                 def <%= name %>_before_type_cast: () -> untyped
               <% end %>
             end
@@ -597,52 +297,22 @@ module ActiveRecord
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                <%- end -%>
                 def <%= name %>: () -> ::String<%= "?" unless options[:null] == false %>
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
-                <%- end -%>
                 def <%= name %>=: (::String<%= "?" unless options[:null] == false %> value) -> void
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method is equivalent to `ActiveRecord::AttributeMethods::BeforeTypeCast` `#read_attribute_before_type_cast`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"].empty? -%>
-                #
-                # See the documentation comment for the method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
-                <%- end -%>
                 def <%= name %>_before_type_cast: () -> untyped
               <% end %>
             end
@@ -654,52 +324,22 @@ module ActiveRecord
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                <%- end -%>
                 def <%= name %>: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
-                <%- end -%>
                 def <%= name %>=: (::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %> value) -> void
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method is equivalent to `ActiveRecord::AttributeMethods::BeforeTypeCast` `#read_attribute_before_type_cast`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"].empty? -%>
-                #
-                # See the documentation comment for the method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
-                <%- end -%>
                 def <%= name %>_before_type_cast: () -> untyped
               <% end %>
             end
@@ -711,52 +351,22 @@ module ActiveRecord
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                <%- end -%>
                 def <%= name %>: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
-                <%- end -%>
                 def <%= name %>=: (::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %> value) -> void
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method is equivalent to `ActiveRecord::AttributeMethods::BeforeTypeCast` `#read_attribute_before_type_cast`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"].empty? -%>
-                #
-                # See the documentation comment for the method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
-                <%- end -%>
                 def <%= name %>_before_type_cast: () -> untyped
               <% end %>
             end
@@ -769,52 +379,22 @@ module ActiveRecord
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <% names.each do |name| %>
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                <%- end -%>
                 def <%= name %>: () -> <%= map[options[:type]] %><%= "?" unless options[:null] == false %>
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
-                #
-                # See the documentation comment for the delegated method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
-                <%- end -%>
                 def <%= name %>=: (<%= map[options[:type]] %><%= "?" unless options[:null] == false %> value) -> void
 
-                # In schema.rb, this column is declared as:
-                #
                 # ```ruby
                 # <%= ___source %>
                 # ```
-                #
-                # This method is equivalent to `ActiveRecord::AttributeMethods::BeforeTypeCast` `#read_attribute_before_type_cast`,
-                # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- unless ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"].empty? -%>
-                #
-                # See the documentation comment for the method below:
-                #
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
-                <%- end -%>
                 def <%= name %>_before_type_cast: () -> untyped
               <% end %>
             end
