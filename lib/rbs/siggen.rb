@@ -119,7 +119,7 @@ module RBS
     def generate
       io = ::StringIO.new
       traverse(@node) do |class_name, anno, arg_hash|
-        generated = ERB.new(anno).result_with_hash(arg_hash)
+        generated = ERB.new(anno, trim_mode: "-").result_with_hash(arg_hash)
         surround_class_def = false
         begin
           ::RBS::Parser.parse_signature(generated)
