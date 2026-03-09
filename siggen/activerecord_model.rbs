@@ -35,7 +35,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -51,7 +51,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -76,7 +76,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -92,7 +92,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -117,7 +117,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -133,7 +133,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -158,7 +158,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -174,7 +174,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -199,7 +199,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -215,7 +215,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -240,7 +240,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -256,7 +256,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -281,7 +281,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -297,7 +297,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -322,7 +322,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -338,7 +338,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -363,7 +363,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -379,7 +379,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -404,7 +404,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -420,7 +420,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -445,7 +445,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -461,7 +461,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -486,7 +486,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -502,7 +502,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -527,7 +527,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -543,7 +543,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -569,7 +569,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Read` `#_read_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
@@ -585,7 +585,7 @@ module ActiveRecord
                 #
                 # This method delegates to `ActiveRecord::AttributeMethods::Write` `#_write_attribute`,
                 # passing `"<%= name %>"` as the `attr_name` argument.
-                <%- if ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] -%>
+                <%- unless ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"].empty? -%>
                 #
                 # See the documentation comment for the delegated method below:
                 #
