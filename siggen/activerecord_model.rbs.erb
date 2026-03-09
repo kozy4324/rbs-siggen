@@ -83,6 +83,23 @@ module ActiveRecord
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
                 <%%- end -%>
                 def <%%= name %>=: (<%= type %><%%= "?" unless options[:null] == false %> value) -> void
+
+                <%-# https://github.com/rails/rails/blob/v8.1.2/activerecord/lib/active_record/attribute_methods/before_type_cast.rb -%>
+                # In schema.rb, this column is declared as:
+                #
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                #
+                # This method is equivalent to `ActiveRecord::AttributeMethods::BeforeTypeCast` `#read_attribute_before_type_cast`,
+                # passing `"<%%= name %>"` as the `attr_name` argument.
+                <%%- unless ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"].empty? -%>
+                #
+                # See the documentation comment for the method below:
+                #
+                # <%%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
+                <%%- end -%>
+                def <%%= name %>_before_type_cast: () -> untyped
               <%% end %>
             end
           end
