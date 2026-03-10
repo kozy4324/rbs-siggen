@@ -70,6 +70,12 @@ module ActiveRecord
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
                 def <%%= name %>_before_type_cast: () -> untyped
+
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                # <%%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_for_database"] %>
+                def <%%= name %>_for_database: () -> untyped
               <%% end %>
             end
           end
