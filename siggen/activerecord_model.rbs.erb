@@ -76,6 +76,11 @@ module ActiveRecord
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_for_database"] %>
                 def <%%= name %>_for_database: () -> untyped
+
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                def <%%= name %>_came_from_user?: () -> bool
               <%% end %>
             end
           end
