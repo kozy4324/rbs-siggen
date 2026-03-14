@@ -55,6 +55,12 @@ module ActiveRecord
                 # <%= ___source %>
                 # ```
                 def <%= name %>_came_from_user?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
+                def <%= name %>?: () -> bool
               <% end %>
             end
           end
@@ -93,6 +99,12 @@ module ActiveRecord
                 # <%= ___source %>
                 # ```
                 def <%= name %>_came_from_user?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
+                def <%= name %>?: () -> bool
               <% end %>
             end
           end
@@ -131,6 +143,12 @@ module ActiveRecord
                 # <%= ___source %>
                 # ```
                 def <%= name %>_came_from_user?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
+                def <%= name %>?: () -> bool
               <% end %>
             end
           end
@@ -169,6 +187,12 @@ module ActiveRecord
                 # <%= ___source %>
                 # ```
                 def <%= name %>_came_from_user?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
+                def <%= name %>?: () -> bool
               <% end %>
             end
           end
@@ -207,6 +231,12 @@ module ActiveRecord
                 # <%= ___source %>
                 # ```
                 def <%= name %>_came_from_user?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
+                def <%= name %>?: () -> bool
               <% end %>
             end
           end
@@ -245,6 +275,12 @@ module ActiveRecord
                 # <%= ___source %>
                 # ```
                 def <%= name %>_came_from_user?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
+                def <%= name %>?: () -> bool
               <% end %>
             end
           end
@@ -283,6 +319,12 @@ module ActiveRecord
                 # <%= ___source %>
                 # ```
                 def <%= name %>_came_from_user?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
+                def <%= name %>?: () -> bool
               <% end %>
             end
           end
@@ -321,6 +363,12 @@ module ActiveRecord
                 # <%= ___source %>
                 # ```
                 def <%= name %>_came_from_user?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
+                def <%= name %>?: () -> bool
               <% end %>
             end
           end
@@ -359,6 +407,12 @@ module ActiveRecord
                 # <%= ___source %>
                 # ```
                 def <%= name %>_came_from_user?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
+                def <%= name %>?: () -> bool
               <% end %>
             end
           end
@@ -397,6 +451,12 @@ module ActiveRecord
                 # <%= ___source %>
                 # ```
                 def <%= name %>_came_from_user?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
+                def <%= name %>?: () -> bool
               <% end %>
             end
           end
@@ -435,6 +495,12 @@ module ActiveRecord
                 # <%= ___source %>
                 # ```
                 def <%= name %>_came_from_user?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
+                def <%= name %>?: () -> bool
               <% end %>
             end
           end
@@ -473,6 +539,12 @@ module ActiveRecord
                 # <%= ___source %>
                 # ```
                 def <%= name %>_came_from_user?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
+                def <%= name %>?: () -> bool
               <% end %>
             end
           end
@@ -511,6 +583,12 @@ module ActiveRecord
                 # <%= ___source %>
                 # ```
                 def <%= name %>_came_from_user?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
+                def <%= name %>?: () -> bool
               <% end %>
             end
           end
@@ -550,6 +628,12 @@ module ActiveRecord
                 # <%= ___source %>
                 # ```
                 def <%= name %>_came_from_user?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
+                def <%= name %>?: () -> bool
               <% end %>
             end
           end
