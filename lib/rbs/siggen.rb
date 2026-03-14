@@ -317,37 +317,47 @@ module RBS
       end.flatten
     end
 
-    #: (String) -> Array[untyped]
-    def method_definitions(type_with_name)
+    #: (String) -> String
+    def comment_of(type_with_name)
       definition_builder = RBS::DefinitionBuilder.new(env: @env)
 
       definition = if type_with_name.include?("#")
                      type, name = type_with_name.split("#")
-                     return [] if type.nil? || name.nil?
+                     return "" if type.nil? || name.nil?
 
                      type_name = TypeName.parse(type).absolute!
-                     return [] unless @env.module_name?(type_name)
+                     return "" unless @env.module_name?(type_name)
 
                      definition_builder.build_instance(type_name)
-                   else
+                   elsif type_with_name.include?(".")
                      type, name = type_with_name.split(".")
-                     return [] if type.nil? || name.nil?
+                     return "" if type.nil? || name.nil?
 
                      type_name = TypeName.parse(type).absolute!
-                     return [] unless @env.module_name?(type_name)
+                     return "" unless @env.module_name?(type_name)
+
+                     definition_builder.build_singleton(TypeName.parse(type).absolute!)
+                   else
+                     type = type_with_name
+                     name = nil
+
+                     type_name = TypeName.parse(type).absolute!
+                     return "" unless @env.module_name?(type_name)
 
                      definition_builder.build_singleton(TypeName.parse(type).absolute!)
                    end
 
-      method = definition.methods[name.to_sym]
-      return [] unless method
+      if name
+        method = definition.methods[name.to_sym]
+        return "" unless method
 
-      method.defs.map(&:member)
-    end
+        method.defs.map(&:member).map(&:comment).compact.map(&:string).join("\n")
+      else
+        entry = definition.entry
+        return "" if entry.is_a?(::RBS::Environment::InterfaceEntry)
 
-    #: (String) -> String
-    def comment_of(type_with_name)
-      method_definitions(type_with_name).map(&:comment).map(&:string).join("\n")
+        entry.decls.map { |decl| decl.decl.comment&.string }.compact.join("\n")
+      end
     end
 
     #: (String, ?Integer) -> String

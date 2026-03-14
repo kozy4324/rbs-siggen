@@ -81,6 +81,13 @@ module ActiveRecord
                 # <%%= ___source %>
                 # ```
                 def <%%= name %>_came_from_user?: () -> bool
+
+                <%-# https://github.com/rails/rails/blob/v8.1.2/activerecord/lib/active_record/attribute_methods/query.rb -%>
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                # <%%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
+                def <%%= name %>?: () -> bool
               <%% end %>
             end
           end

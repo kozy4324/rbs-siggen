@@ -30,6 +30,7 @@ module RBS
             end
           end
           module AttributeMethods
+            # ___comment_of method can pick comment for class/module
             module Read
               # The comment for this line is inserted
               # by the ___comment_of method.
@@ -43,11 +44,10 @@ module RBS
                   module GeneratedAttributeMethods
                     <% names.each do |name| %>
                       # In schema.rb, this column is declared as:
-                      #
                       # ```ruby
                       # <%= ___source %>
                       # ```
-                      #
+                      # <%= ___comment_of["ActiveRecord::AttributeMethods::Read"] %>
                       # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                       def <%= name %>: () -> String<%= "?" unless options[:null] == false %>
                     <% end %>
@@ -70,21 +70,19 @@ module RBS
         class Article
           module GeneratedAttributeMethods
             # In schema.rb, this column is declared as:
-            #
             # ```ruby
             # t.text "body"
             # ```
-            #
+            # ___comment_of method can pick comment for class/module
             # The comment for this line is inserted
             # by the ___comment_of method.
             def body: () -> String?
 
             # In schema.rb, this column is declared as:
-            #
             # ```ruby
             # t.text "tag", null: false
             # ```
-            #
+            # ___comment_of method can pick comment for class/module
             # The comment for this line is inserted
             # by the ___comment_of method.
             def tag: () -> String
