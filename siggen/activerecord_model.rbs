@@ -61,6 +61,42 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
+                def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
+                def saved_change_to_<%= name %>: () -> [::Integer<%= "?" unless options[:null] == false %>, ::Integer<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
+                def <%= name %>_before_last_save: () -> ::Integer<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
+                def will_save_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_change_to_be_saved: () -> [::Integer<%= "?" unless options[:null] == false %>, ::Integer<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_in_database: () -> ::Integer<%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
@@ -105,6 +141,42 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
+                def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
+                def saved_change_to_<%= name %>: () -> [::String<%= "?" unless options[:null] == false %>, ::String<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
+                def <%= name %>_before_last_save: () -> ::String<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
+                def will_save_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_change_to_be_saved: () -> [::String<%= "?" unless options[:null] == false %>, ::String<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_in_database: () -> ::String<%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
@@ -149,6 +221,42 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
+                def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
+                def saved_change_to_<%= name %>: () -> [bool<%= "?" unless options[:null] == false %>, bool<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
+                def <%= name %>_before_last_save: () -> bool<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
+                def will_save_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_change_to_be_saved: () -> [bool<%= "?" unless options[:null] == false %>, bool<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_in_database: () -> bool<%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
@@ -193,6 +301,42 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
+                def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
+                def saved_change_to_<%= name %>: () -> [::Date<%= "?" unless options[:null] == false %>, ::Date<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
+                def <%= name %>_before_last_save: () -> ::Date<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
+                def will_save_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_change_to_be_saved: () -> [::Date<%= "?" unless options[:null] == false %>, ::Date<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_in_database: () -> ::Date<%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
@@ -237,6 +381,42 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
+                def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
+                def saved_change_to_<%= name %>: () -> [::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>, ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
+                def <%= name %>_before_last_save: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
+                def will_save_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_change_to_be_saved: () -> [::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>, ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_in_database: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
@@ -281,6 +461,42 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
+                def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
+                def saved_change_to_<%= name %>: () -> [::BigDecimal<%= "?" unless options[:null] == false %>, ::BigDecimal<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
+                def <%= name %>_before_last_save: () -> ::BigDecimal<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
+                def will_save_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_change_to_be_saved: () -> [::BigDecimal<%= "?" unless options[:null] == false %>, ::BigDecimal<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_in_database: () -> ::BigDecimal<%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
@@ -325,6 +541,42 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
+                def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
+                def saved_change_to_<%= name %>: () -> [::Float<%= "?" unless options[:null] == false %>, ::Float<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
+                def <%= name %>_before_last_save: () -> ::Float<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
+                def will_save_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_change_to_be_saved: () -> [::Float<%= "?" unless options[:null] == false %>, ::Float<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_in_database: () -> ::Float<%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
@@ -369,6 +621,42 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
+                def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
+                def saved_change_to_<%= name %>: () -> [::Integer<%= "?" unless options[:null] == false %>, ::Integer<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
+                def <%= name %>_before_last_save: () -> ::Integer<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
+                def will_save_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_change_to_be_saved: () -> [::Integer<%= "?" unless options[:null] == false %>, ::Integer<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_in_database: () -> ::Integer<%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
@@ -413,6 +701,42 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
+                def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
+                def saved_change_to_<%= name %>: () -> [untyped<%= "?" unless options[:null] == false %>, untyped<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
+                def <%= name %>_before_last_save: () -> untyped<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
+                def will_save_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_change_to_be_saved: () -> [untyped<%= "?" unless options[:null] == false %>, untyped<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_in_database: () -> untyped<%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
@@ -457,6 +781,42 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
+                def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
+                def saved_change_to_<%= name %>: () -> [::String<%= "?" unless options[:null] == false %>, ::String<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
+                def <%= name %>_before_last_save: () -> ::String<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
+                def will_save_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_change_to_be_saved: () -> [::String<%= "?" unless options[:null] == false %>, ::String<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_in_database: () -> ::String<%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
@@ -501,6 +861,42 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
+                def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
+                def saved_change_to_<%= name %>: () -> [::String<%= "?" unless options[:null] == false %>, ::String<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
+                def <%= name %>_before_last_save: () -> ::String<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
+                def will_save_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_change_to_be_saved: () -> [::String<%= "?" unless options[:null] == false %>, ::String<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_in_database: () -> ::String<%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
@@ -545,6 +941,42 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
+                def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
+                def saved_change_to_<%= name %>: () -> [::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>, ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
+                def <%= name %>_before_last_save: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
+                def will_save_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_change_to_be_saved: () -> [::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>, ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_in_database: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
@@ -589,6 +1021,42 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
+                def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
+                def saved_change_to_<%= name %>: () -> [::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>, ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
+                def <%= name %>_before_last_save: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
+                def will_save_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_change_to_be_saved: () -> [::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>, ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_in_database: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
               <% end %>
             end
           end
@@ -634,6 +1102,42 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
+                def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
+                def saved_change_to_<%= name %>: () -> [<%= map[options[:type]] %><%= "?" unless options[:null] == false %>, <%= map[options[:type]] %><%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
+                def <%= name %>_before_last_save: () -> <%= map[options[:type]] %><%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
+                def will_save_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_change_to_be_saved: () -> [<%= map[options[:type]] %><%= "?" unless options[:null] == false %>, <%= map[options[:type]] %><%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%= name %>_in_database: () -> <%= map[options[:type]] %><%= "?" unless options[:null] == false %>
               <% end %>
             end
           end

@@ -88,6 +88,43 @@ module ActiveRecord
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%%= name %>?: () -> bool
+
+                <%-# https://github.com/rails/rails/blob/v8.1.2/activerecord/lib/active_record/attribute_methods/dirty.rb -%>
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
+                def saved_change_to_<%%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
+                def saved_change_to_<%%= name %>: () -> [<%= type %><%%= "?" unless options[:null] == false %>, <%= type %><%%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
+                def <%%= name %>_before_last_save: () -> <%= type %><%%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
+                def will_save_change_to_<%%= name %>?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%%= name %>_change_to_be_saved: () -> [<%= type %><%%= "?" unless options[:null] == false %>, <%= type %><%%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                def <%%= name %>_in_database: () -> <%= type %><%%= "?" unless options[:null] == false %>
               <%% end %>
             end
           end
