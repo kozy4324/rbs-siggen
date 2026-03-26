@@ -98,9 +98,9 @@ module RBS
             # by the ___comment_of method.
             #
             # ```ruby
-            # puts "This code block should be syntax highlighted"
+            #   puts "This code block should be syntax highlighted"
             #
-            # puts "Even if separated by spaces, this line is treated as a single unit."
+            #   puts "Even if separated by spaces, this line is treated as a single unit."
             # ```
             #
             # end of comment line
@@ -122,9 +122,9 @@ module RBS
             # by the ___comment_of method.
             #
             # ```ruby
-            # puts "This code block should be syntax highlighted"
+            #   puts "This code block should be syntax highlighted"
             #
-            # puts "Even if separated by spaces, this line is treated as a single unit."
+            #   puts "Even if separated by spaces, this line is treated as a single unit."
             # ```
             #
             # end of comment line

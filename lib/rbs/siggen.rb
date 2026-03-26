@@ -397,7 +397,7 @@ module RBS
           if valid_ruby?(code)
             buf << "```ruby\n"
             code.sub(/\n*\z/, "")&.each_line do |code_line|
-              buf << code_line.sub(/\A {0,#{current_indent_size}}/, "")
+              buf << code_line # .sub(/\A {0,#{current_indent_size}}/, "")
             end
             buf << "\n```\n\n"
           else
