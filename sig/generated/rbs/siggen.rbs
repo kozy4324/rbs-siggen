@@ -41,11 +41,14 @@ module RBS
     # : (Array[untyped]) -> Array[untyped]
     def merge_class_declarations: (Array[untyped]) -> Array[untyped]
 
-    # : (String) -> Array[untyped]
-    def method_definitions: (String) -> Array[untyped]
-
     # : (String) -> String
     def comment_of: (String) -> String
+
+    # : (String) -> String
+    def process_code_block: (String) -> String
+
+    # : (String?) -> bool
+    def valid_ruby?: (String?) -> bool
 
     # : (String, ?Integer) -> String
     def commentify: (String, ?Integer) -> String

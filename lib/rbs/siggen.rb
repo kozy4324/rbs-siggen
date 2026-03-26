@@ -360,6 +360,68 @@ module RBS
       end
     end
 
+    #: (String) -> String
+    def process_code_block(string)
+      buf = StringIO.new
+      code_buf = StringIO.new
+      current_indent_size = 0
+      in_code_block = false
+      in_backtick_code_block = false
+
+      string.each_line do |line|
+        if line.start_with?("```")
+          in_backtick_code_block = !in_backtick_code_block
+          buf << line
+          next
+        end
+
+        if line.blank?
+          if in_code_block
+            code_buf << line
+          else
+            buf << line
+          end
+          next
+        end
+
+        indent_size = line[/\A */]&.size || 0
+        if in_backtick_code_block || (current_indent_size.zero? && indent_size.zero?)
+          buf << line
+        elsif current_indent_size.zero? && indent_size.positive? # start code block
+          in_code_block = true
+          current_indent_size = indent_size
+          code_buf << line
+        elsif current_indent_size.positive? && indent_size.zero? # end code block
+          code_buf.rewind
+          code = code_buf.read || ""
+          if valid_ruby?(code)
+            buf << "```ruby\n"
+            code.sub(/\n*\z/, "")&.each_line do |code_line|
+              buf << code_line.sub(/\A {0,#{current_indent_size}}/, "")
+            end
+            buf << "\n```\n\n"
+          else
+            buf << code
+          end
+          current_indent_size = indent_size
+          in_code_block = false
+          buf << line
+        else # in code block
+          code_buf << line
+        end
+      end
+      buf.rewind
+      buf.read || ""
+    end
+
+    #: (String?) -> bool
+    def valid_ruby?(code)
+      RubyVM::InstructionSequence.compile(code) # steep:ignore
+      true
+    rescue SyntaxError
+      false
+    end
+
     #: (String, ?Integer) -> String
     def commentify(string, start_column = 0)
       string.each_line.map { |line| "# #{line.sub(/\A {0,#{start_column}}/, "")}" }.join.chomp.gsub(/\A# /, "")
@@ -367,7 +429,7 @@ module RBS
 
     #: (String) -> String
     def [](type_with_name)
-      commentify(comment_of(type_with_name))
+      commentify(process_code_block(comment_of(type_with_name)))
     end
   end
 end

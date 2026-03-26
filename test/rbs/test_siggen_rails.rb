@@ -31,9 +31,22 @@ module RBS
           end
           module AttributeMethods
             # ___comment_of method can pick comment for class/module
+            #
+            # ```ruby
+            # 3.times do
+            #   puts "This code block will be extracted properly"
+            # end
+            # ```
+            #
             module Read
               # The comment for this line is inserted
               # by the ___comment_of method.
+              #
+              #   puts "This code block should be syntax highlighted"
+              #
+              #   puts "Even if separated by spaces, this line is treated as a single unit."
+              #
+              # end of comment line
               def read_attribute: () -> void
             end
           end
@@ -74,8 +87,23 @@ module RBS
             # t.text "body"
             # ```
             # ___comment_of method can pick comment for class/module
+            #
+            # ```ruby
+            # 3.times do
+            #   puts "This code block will be extracted properly"
+            # end
+            # ```
+            #
             # The comment for this line is inserted
             # by the ___comment_of method.
+            #
+            # ```ruby
+            # puts "This code block should be syntax highlighted"
+            #
+            # puts "Even if separated by spaces, this line is treated as a single unit."
+            # ```
+            #
+            # end of comment line
             def body: () -> String?
 
             # In schema.rb, this column is declared as:
@@ -83,8 +111,23 @@ module RBS
             # t.text "tag", null: false
             # ```
             # ___comment_of method can pick comment for class/module
+            #
+            # ```ruby
+            # 3.times do
+            #   puts "This code block will be extracted properly"
+            # end
+            # ```
+            #
             # The comment for this line is inserted
             # by the ___comment_of method.
+            #
+            # ```ruby
+            # puts "This code block should be syntax highlighted"
+            #
+            # puts "Even if separated by spaces, this line is treated as a single unit."
+            # ```
+            #
+            # end of comment line
             def tag: () -> String
           end
         end
