@@ -403,6 +403,7 @@ module RBS
           else
             buf << code
           end
+          code_buf = StringIO.new
           current_indent_size = indent_size
           in_code_block = false
           buf << line
