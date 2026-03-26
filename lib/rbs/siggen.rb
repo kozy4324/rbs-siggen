@@ -410,6 +410,21 @@ module RBS
           code_buf << line
         end
       end
+
+      if current_indent_size.positive?
+        code_buf.rewind
+        code = code_buf.read || ""
+        if valid_ruby?(code)
+          buf << "```ruby\n"
+          code.sub(/\n*\z/, "")&.each_line do |code_line|
+            buf << code_line.sub(/\A {0,#{current_indent_size}}/, "")
+          end
+          buf << "\n```\n\n"
+        else
+          buf << code
+        end
+      end
+
       buf.rewind
       buf.read || ""
     end
