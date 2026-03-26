@@ -65,6 +65,12 @@ module ActiveRecord
                 # ```ruby
                 # <%= ___source %>
                 # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
                 def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
@@ -141,6 +147,12 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
 
                 # ```ruby
                 # <%= ___source %>
@@ -225,6 +237,12 @@ module ActiveRecord
                 # ```ruby
                 # <%= ___source %>
                 # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
                 def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
@@ -301,6 +319,12 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
 
                 # ```ruby
                 # <%= ___source %>
@@ -385,6 +409,12 @@ module ActiveRecord
                 # ```ruby
                 # <%= ___source %>
                 # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
                 def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
@@ -461,6 +491,12 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
 
                 # ```ruby
                 # <%= ___source %>
@@ -545,6 +581,12 @@ module ActiveRecord
                 # ```ruby
                 # <%= ___source %>
                 # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
                 def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
@@ -621,6 +663,12 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
 
                 # ```ruby
                 # <%= ___source %>
@@ -705,6 +753,12 @@ module ActiveRecord
                 # ```ruby
                 # <%= ___source %>
                 # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
                 def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
@@ -781,6 +835,12 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
 
                 # ```ruby
                 # <%= ___source %>
@@ -865,6 +925,12 @@ module ActiveRecord
                 # ```ruby
                 # <%= ___source %>
                 # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
                 def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
@@ -941,6 +1007,12 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
 
                 # ```ruby
                 # <%= ___source %>
@@ -1025,6 +1097,12 @@ module ActiveRecord
                 # ```ruby
                 # <%= ___source %>
                 # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
                 def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
@@ -1102,6 +1180,12 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
                 def <%= name %>?: () -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
 
                 # ```ruby
                 # <%= ___source %>
