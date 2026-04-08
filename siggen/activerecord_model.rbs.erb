@@ -96,6 +96,54 @@ module ActiveRecord
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
                 def <%%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
 
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%%= name %>_change: () -> [<%= type %><%%= "?" unless options[:null] == false %>, <%= type %><%%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%%= name %>_will_change!: () -> void
+
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%%= name %>_was: () -> <%= type %><%%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%%= name %>_previous_change: () -> [<%= type %><%%= "?" unless options[:null] == false %>, <%= type %><%%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%%= name %>_previously_was: () -> <%= type %><%%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                def restore_<%%= name %>!: () -> void
+
+                # ```ruby
+                # <%%= ___source %>
+                # ```
+                # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                def clear_<%%= name %>_change: () -> void
+
                 <%-# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/dirty.rb -%>
                 # ```ruby
                 # <%%= ___source %>

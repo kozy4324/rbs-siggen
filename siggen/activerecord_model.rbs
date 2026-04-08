@@ -71,6 +71,54 @@ module ActiveRecord
                 # ```ruby
                 # <%= ___source %>
                 # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_change: () -> [::Integer<%= "?" unless options[:null] == false %>, ::Integer<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_will_change!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_was: () -> ::Integer<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previous_change: () -> [::Integer<%= "?" unless options[:null] == false %>, ::Integer<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_was: () -> ::Integer<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def restore_<%= name %>!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def clear_<%= name %>_change: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
                 def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
@@ -153,6 +201,54 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveModel::Dirty"] %>
                 def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_change: () -> [::String<%= "?" unless options[:null] == false %>, ::String<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_will_change!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_was: () -> ::String<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previous_change: () -> [::String<%= "?" unless options[:null] == false %>, ::String<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_was: () -> ::String<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def restore_<%= name %>!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def clear_<%= name %>_change: () -> void
 
                 # ```ruby
                 # <%= ___source %>
@@ -243,6 +339,54 @@ module ActiveRecord
                 # ```ruby
                 # <%= ___source %>
                 # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_change: () -> [bool<%= "?" unless options[:null] == false %>, bool<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_will_change!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_was: () -> bool<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previous_change: () -> [bool<%= "?" unless options[:null] == false %>, bool<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_was: () -> bool<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def restore_<%= name %>!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def clear_<%= name %>_change: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
                 def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
@@ -325,6 +469,54 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveModel::Dirty"] %>
                 def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_change: () -> [::Date<%= "?" unless options[:null] == false %>, ::Date<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_will_change!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_was: () -> ::Date<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previous_change: () -> [::Date<%= "?" unless options[:null] == false %>, ::Date<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_was: () -> ::Date<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def restore_<%= name %>!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def clear_<%= name %>_change: () -> void
 
                 # ```ruby
                 # <%= ___source %>
@@ -415,6 +607,54 @@ module ActiveRecord
                 # ```ruby
                 # <%= ___source %>
                 # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_change: () -> [::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>, ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_will_change!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_was: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previous_change: () -> [::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>, ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_was: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def restore_<%= name %>!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def clear_<%= name %>_change: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
                 def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
@@ -497,6 +737,54 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveModel::Dirty"] %>
                 def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_change: () -> [::BigDecimal<%= "?" unless options[:null] == false %>, ::BigDecimal<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_will_change!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_was: () -> ::BigDecimal<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previous_change: () -> [::BigDecimal<%= "?" unless options[:null] == false %>, ::BigDecimal<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_was: () -> ::BigDecimal<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def restore_<%= name %>!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def clear_<%= name %>_change: () -> void
 
                 # ```ruby
                 # <%= ___source %>
@@ -587,6 +875,54 @@ module ActiveRecord
                 # ```ruby
                 # <%= ___source %>
                 # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_change: () -> [::Float<%= "?" unless options[:null] == false %>, ::Float<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_will_change!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_was: () -> ::Float<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previous_change: () -> [::Float<%= "?" unless options[:null] == false %>, ::Float<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_was: () -> ::Float<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def restore_<%= name %>!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def clear_<%= name %>_change: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
                 def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
@@ -669,6 +1005,54 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveModel::Dirty"] %>
                 def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_change: () -> [::Integer<%= "?" unless options[:null] == false %>, ::Integer<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_will_change!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_was: () -> ::Integer<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previous_change: () -> [::Integer<%= "?" unless options[:null] == false %>, ::Integer<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_was: () -> ::Integer<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def restore_<%= name %>!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def clear_<%= name %>_change: () -> void
 
                 # ```ruby
                 # <%= ___source %>
@@ -759,6 +1143,54 @@ module ActiveRecord
                 # ```ruby
                 # <%= ___source %>
                 # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_change: () -> [untyped<%= "?" unless options[:null] == false %>, untyped<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_will_change!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_was: () -> untyped<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previous_change: () -> [untyped<%= "?" unless options[:null] == false %>, untyped<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_was: () -> untyped<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def restore_<%= name %>!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def clear_<%= name %>_change: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
                 def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
@@ -841,6 +1273,54 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveModel::Dirty"] %>
                 def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_change: () -> [::String<%= "?" unless options[:null] == false %>, ::String<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_will_change!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_was: () -> ::String<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previous_change: () -> [::String<%= "?" unless options[:null] == false %>, ::String<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_was: () -> ::String<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def restore_<%= name %>!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def clear_<%= name %>_change: () -> void
 
                 # ```ruby
                 # <%= ___source %>
@@ -931,6 +1411,54 @@ module ActiveRecord
                 # ```ruby
                 # <%= ___source %>
                 # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_change: () -> [::String<%= "?" unless options[:null] == false %>, ::String<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_will_change!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_was: () -> ::String<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previous_change: () -> [::String<%= "?" unless options[:null] == false %>, ::String<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_was: () -> ::String<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def restore_<%= name %>!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def clear_<%= name %>_change: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
                 def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
@@ -1013,6 +1541,54 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveModel::Dirty"] %>
                 def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_change: () -> [::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>, ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_will_change!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_was: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previous_change: () -> [::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>, ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_was: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def restore_<%= name %>!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def clear_<%= name %>_change: () -> void
 
                 # ```ruby
                 # <%= ___source %>
@@ -1103,6 +1679,54 @@ module ActiveRecord
                 # ```ruby
                 # <%= ___source %>
                 # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_change: () -> [::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>, ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_will_change!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_was: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previous_change: () -> [::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>, ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_was: () -> ::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def restore_<%= name %>!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def clear_<%= name %>_change: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
                 def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
@@ -1186,6 +1810,54 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveModel::Dirty"] %>
                 def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_change: () -> [<%= map[options[:type]] %><%= "?" unless options[:null] == false %>, <%= map[options[:type]] %><%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_will_change!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_was: () -> <%= map[options[:type]] %><%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previous_change: () -> [<%= map[options[:type]] %><%= "?" unless options[:null] == false %>, <%= map[options[:type]] %><%= "?" unless options[:null] == false %>]?
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def <%= name %>_previously_was: () -> <%= map[options[:type]] %><%= "?" unless options[:null] == false %>
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def restore_<%= name %>!: () -> void
+
+                # ```ruby
+                # <%= ___source %>
+                # ```
+                # <%= ___comment_of["ActiveModel::Dirty"] %>
+                def clear_<%= name %>_change: () -> void
 
                 # ```ruby
                 # <%= ___source %>
