@@ -15,6 +15,31 @@ module ActiveRecord
         # <%%= ___source %>
         # ```
         class <%%= table_name.classify %>
+          module GeneratedAttributeMethods
+            <%%- name = "id" -%>
+            <%- type = "Integer?" -%>
+            def <%%= name %>: () -> <%= type %>
+            def <%%= name %>=: (<%= type %> value) -> void
+            def <%%= name %>_before_type_cast: () -> untyped
+            def <%%= name %>_for_database: () -> untyped
+            def <%%= name %>_came_from_user?: () -> bool
+            def <%%= name %>?: () -> bool
+            def <%%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+            def <%%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+            def <%%= name %>_change: () -> [<%= type %>, <%= type %>]?
+            def <%%= name %>_will_change!: () -> void
+            def <%%= name %>_was: () -> <%= type %>
+            def <%%= name %>_previous_change: () -> [<%= type %>, <%= type %>]?
+            def <%%= name %>_previously_was: () -> <%= type %>
+            def restore_<%%= name %>!: () -> void
+            def clear_<%%= name %>_change: () -> void
+            def saved_change_to_<%%= name %>?: (?from: untyped, ?to: untyped) -> bool
+            def saved_change_to_<%%= name %>: () -> [<%= type %>, <%= type %>]?
+            def <%%= name %>_before_last_save: () -> <%= type %>
+            def will_save_change_to_<%%= name %>?: (?from: untyped, ?to: untyped) -> bool
+            def <%%= name %>_change_to_be_saved: () -> [<%= type %>, <%= type %>]?
+            def <%%= name %>_in_database: () -> <%= type %>
+          end
           include GeneratedAttributeMethods
         end
       }

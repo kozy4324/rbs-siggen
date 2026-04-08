@@ -14,6 +14,30 @@ module ActiveRecord
         # <%= ___source %>
         # ```
         class <%= table_name.classify %>
+          module GeneratedAttributeMethods
+            <%- name = "id" -%>
+            def <%= name %>: () -> Integer?
+            def <%= name %>=: (Integer? value) -> void
+            def <%= name %>_before_type_cast: () -> untyped
+            def <%= name %>_for_database: () -> untyped
+            def <%= name %>_came_from_user?: () -> bool
+            def <%= name %>?: () -> bool
+            def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+            def <%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+            def <%= name %>_change: () -> [Integer?, Integer?]?
+            def <%= name %>_will_change!: () -> void
+            def <%= name %>_was: () -> Integer?
+            def <%= name %>_previous_change: () -> [Integer?, Integer?]?
+            def <%= name %>_previously_was: () -> Integer?
+            def restore_<%= name %>!: () -> void
+            def clear_<%= name %>_change: () -> void
+            def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+            def saved_change_to_<%= name %>: () -> [Integer?, Integer?]?
+            def <%= name %>_before_last_save: () -> Integer?
+            def will_save_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
+            def <%= name %>_change_to_be_saved: () -> [Integer?, Integer?]?
+            def <%= name %>_in_database: () -> Integer?
+          end
           include GeneratedAttributeMethods
         end
       }
