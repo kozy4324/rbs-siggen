@@ -47,6 +47,7 @@ module ActiveRecord
           <%% map = <%= map.to_a %>.to_h %>
           <%- type = "<" + "%= map[options[:type]] %" + ">" -%>
           <%- end -%>
+          <%- type = type + '<' + '%= "?" unless options[:null] == false %' + '>' -%>
           class <%%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <%% names.each do |name| %>
@@ -55,14 +56,14 @@ module ActiveRecord
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-                def <%%= name %>: () -> <%= type %><%%= "?" unless options[:null] == false %>
+                def <%%= name %>: () -> <%= type %>
 
                 <%-# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/write.rb -%>
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
-                def <%%= name %>=: (<%= type %><%%= "?" unless options[:null] == false %> value) -> void
+                def <%%= name %>=: (<%= type %> value) -> void
 
                 <%-# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/before_type_cast.rb -%>
                 # ```ruby
@@ -106,7 +107,7 @@ module ActiveRecord
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
-                def <%%= name %>_change: () -> [<%= type %><%%= "?" unless options[:null] == false %>, <%= type %><%%= "?" unless options[:null] == false %>]?
+                def <%%= name %>_change: () -> [<%= type %>, <%= type %>]?
 
                 # ```ruby
                 # <%%= ___source %>
@@ -118,19 +119,19 @@ module ActiveRecord
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
-                def <%%= name %>_was: () -> <%= type %><%%= "?" unless options[:null] == false %>
+                def <%%= name %>_was: () -> <%= type %>
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
-                def <%%= name %>_previous_change: () -> [<%= type %><%%= "?" unless options[:null] == false %>, <%= type %><%%= "?" unless options[:null] == false %>]?
+                def <%%= name %>_previous_change: () -> [<%= type %>, <%= type %>]?
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
-                def <%%= name %>_previously_was: () -> <%= type %><%%= "?" unless options[:null] == false %>
+                def <%%= name %>_previously_was: () -> <%= type %>
 
                 # ```ruby
                 # <%%= ___source %>
@@ -155,13 +156,13 @@ module ActiveRecord
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
-                def saved_change_to_<%%= name %>: () -> [<%= type %><%%= "?" unless options[:null] == false %>, <%= type %><%%= "?" unless options[:null] == false %>]?
+                def saved_change_to_<%%= name %>: () -> [<%= type %>, <%= type %>]?
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
-                def <%%= name %>_before_last_save: () -> <%= type %><%%= "?" unless options[:null] == false %>
+                def <%%= name %>_before_last_save: () -> <%= type %>
 
                 # ```ruby
                 # <%%= ___source %>
@@ -173,13 +174,13 @@ module ActiveRecord
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
-                def <%%= name %>_change_to_be_saved: () -> [<%= type %><%%= "?" unless options[:null] == false %>, <%= type %><%%= "?" unless options[:null] == false %>]?
+                def <%%= name %>_change_to_be_saved: () -> [<%= type %>, <%= type %>]?
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
-                def <%%= name %>_in_database: () -> <%= type %><%%= "?" unless options[:null] == false %>
+                def <%%= name %>_in_database: () -> <%= type %>
               <%% end %>
             end
           end
