@@ -1,0 +1,556 @@
+# In schema.rb, this model is declared as:
+#
+# ```ruby
+# create_table "posts", force: :cascade do |t|
+#   t.text "body"
+#   t.datetime "created_at", null: false
+#   t.string "title"
+#   t.datetime "updated_at", null: false
+# end
+# ```
+class Post
+  module GeneratedAttributeMethods
+    def id: () -> Integer?
+
+    def id=: (Integer? value) -> void
+
+    def id_before_type_cast: () -> untyped
+
+    def id_for_database: () -> untyped
+
+    def id_came_from_user?: () -> bool
+
+    def id?: () -> bool
+
+    def id_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    def id_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    def id_change: () -> [ Integer?, Integer? ]?
+
+    def id_will_change!: () -> void
+
+    def id_was: () -> Integer?
+
+    def id_previous_change: () -> [ Integer?, Integer? ]?
+
+    def id_previously_was: () -> Integer?
+
+    def restore_id!: () -> void
+
+    def clear_id_change: () -> void
+
+    def saved_change_to_id?: (?from: untyped, ?to: untyped) -> bool
+
+    def saved_change_to_id: () -> [ Integer?, Integer? ]?
+
+    def id_before_last_save: () -> Integer?
+
+    def will_save_change_to_id?: (?from: untyped, ?to: untyped) -> bool
+
+    def id_change_to_be_saved: () -> [ Integer?, Integer? ]?
+
+    def id_in_database: () -> Integer?
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def body: () -> ::String?
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def body=: (::String? value) -> void
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def body_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def body_for_database: () -> untyped
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    def body_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def body?: () -> bool
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def body_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def body_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def body_change: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def body_will_change!: () -> void
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def body_was: () -> ::String?
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def body_previous_change: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def body_previously_was: () -> ::String?
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def restore_body!: () -> void
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def clear_body_change: () -> void
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def saved_change_to_body?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def saved_change_to_body: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def body_before_last_save: () -> ::String?
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def will_save_change_to_body?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def body_change_to_be_saved: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.text "body"
+    # ```
+    #
+    def body_in_database: () -> ::String?
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def created_at: () -> ::ActiveSupport::TimeWithZone
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def created_at=: (::ActiveSupport::TimeWithZone value) -> void
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def created_at_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def created_at_for_database: () -> untyped
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    def created_at_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def created_at?: () -> bool
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def created_at_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def created_at_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def created_at_change: () -> [ ::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone ]?
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def created_at_will_change!: () -> void
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def created_at_was: () -> ::ActiveSupport::TimeWithZone
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def created_at_previous_change: () -> [ ::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone ]?
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def created_at_previously_was: () -> ::ActiveSupport::TimeWithZone
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def restore_created_at!: () -> void
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def clear_created_at_change: () -> void
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def saved_change_to_created_at?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def saved_change_to_created_at: () -> [ ::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone ]?
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def created_at_before_last_save: () -> ::ActiveSupport::TimeWithZone
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def will_save_change_to_created_at?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def created_at_change_to_be_saved: () -> [ ::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone ]?
+
+    # ```ruby
+    # t.datetime "created_at", null: false
+    # ```
+    #
+    def created_at_in_database: () -> ::ActiveSupport::TimeWithZone
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def title: () -> ::String?
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def title=: (::String? value) -> void
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def title_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def title_for_database: () -> untyped
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    def title_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def title?: () -> bool
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def title_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def title_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def title_change: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def title_will_change!: () -> void
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def title_was: () -> ::String?
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def title_previous_change: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def title_previously_was: () -> ::String?
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def restore_title!: () -> void
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def clear_title_change: () -> void
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def saved_change_to_title?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def saved_change_to_title: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def title_before_last_save: () -> ::String?
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def will_save_change_to_title?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def title_change_to_be_saved: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.string "title"
+    # ```
+    #
+    def title_in_database: () -> ::String?
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def updated_at: () -> ::ActiveSupport::TimeWithZone
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def updated_at=: (::ActiveSupport::TimeWithZone value) -> void
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def updated_at_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def updated_at_for_database: () -> untyped
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    def updated_at_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def updated_at?: () -> bool
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def updated_at_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def updated_at_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def updated_at_change: () -> [ ::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone ]?
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def updated_at_will_change!: () -> void
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def updated_at_was: () -> ::ActiveSupport::TimeWithZone
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def updated_at_previous_change: () -> [ ::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone ]?
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def updated_at_previously_was: () -> ::ActiveSupport::TimeWithZone
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def restore_updated_at!: () -> void
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def clear_updated_at_change: () -> void
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def saved_change_to_updated_at?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def saved_change_to_updated_at: () -> [ ::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone ]?
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def updated_at_before_last_save: () -> ::ActiveSupport::TimeWithZone
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def will_save_change_to_updated_at?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def updated_at_change_to_be_saved: () -> [ ::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone ]?
+
+    # ```ruby
+    # t.datetime "updated_at", null: false
+    # ```
+    #
+    def updated_at_in_database: () -> ::ActiveSupport::TimeWithZone
+  end
+  include GeneratedAttributeMethods
+end

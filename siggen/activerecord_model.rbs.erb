@@ -16,6 +16,11 @@ module ActiveRecord
         # ```
         class <%%= table_name.classify %>
           module GeneratedAttributeMethods
+            <%# https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-create_table %>
+            <%# id が false 以外で primary_key の値で ID カラムが自動生成される %>
+            <%# primary_key を指定しない場合は :id がdefault %>
+            <%# id の値 Symbol が type になる、省略すると Integer %>
+            <%# ただし primary_key の値が Array = composite primary key の場合は自動生成されない %>
             <%%- name = "id" -%>
             <%- type = "Integer?" -%>
             def <%%= name %>: () -> <%= type %>

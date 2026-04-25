@@ -15,3 +15,10 @@ target :test do
   ignore "test/lib"
   configure_code_diagnostics(D::Ruby.lenient)
 end
+
+target :siggen_test_activerecord_model_sqlite3 do
+  unreferenced!
+  signature "siggen/test/activerecord_model_sqlite3/sig"
+  check "siggen/test/activerecord_model_sqlite3/test"
+  configure_code_diagnostics(D::Ruby.lenient)
+end
