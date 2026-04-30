@@ -12,7 +12,6 @@ gem "minitest"
 
 gem "rubocop", "~> 1.21"
 gem "rubocop-minitest", require: false
-gem "rubocop-rubycw", require: false
 gem "steep"
 
 gem "typeprof", "~> 0.31.1"
