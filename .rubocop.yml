@@ -4,6 +4,7 @@ AllCops:
   SuggestExtensions: false
   Exclude:
     - "siggen/test/**/*"
+    - "vendor/**/*"
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
