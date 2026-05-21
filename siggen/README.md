@@ -74,6 +74,33 @@ cd siggen/test/activerecord_model_sqlite3
 bundle exec rails test
 ```
 
+### Steep による型チェック
+
+生成した `sig/siggen.rbs` が正しく型付けされているかを Steep で検証できます。
+
+```bash
+cd siggen/test/activerecord_model_sqlite3
+bundle install
+bundle exec rbs collection install   # gem の RBS を収集（初回のみ）
+bundle exec steep check               # 型チェック実行
+```
+
+#### 設定ファイルの役割
+
+| ファイル | 役割 |
+|---|---|
+| `Steepfile` | 型チェック対象（`test/models/post_test.rb`）と使用ライブラリ（`minitest`）を指定 |
+| `rbs_collection.yaml` | `minitest` の RBS 収集設定 |
+| `sig/app.rbs` | Rails フレームワーク（`ActiveRecord::Base`, `ApplicationRecord`, `ActiveSupport::TestCase`）の最小限スタブ |
+| `sig/siggen.rbs` | rbs-siggen が生成した `Post` モデルの RBS（`class Post < ::ApplicationRecord` を宣言） |
+
+#### `sig/siggen.rbs` の親クラス宣言について
+
+`sig/siggen.rbs` は `class Post < ::ApplicationRecord` と親クラスを明示しています。
+これにより `Post.first!` の戻り値型が `Post`（non-nil）として推論され、`post.title` の型検査が正しく機能します。
+
+テストコード（`post_test.rb`）では `Post.first`（戻り値 `Post?`）ではなく `Post.first!`（戻り値 `Post`）を使用することで、nil チェックなしに `post.title` を呼び出せます。
+
 ### RBS の再生成
 
 プロジェクトルートから rbs-siggen CLI の `--rails` フラグを使って生成できます（実装が進んだ段階）:
@@ -88,8 +115,8 @@ rbs-siggen --rails
 
 > **このセクションは会話の中で明らかになった内容を随時追記してください。**
 
-- [ ] 生成された `sig/siggen.rbs` に対して Steep などの型チェッカーによる検証を組み込む
-- [ ] テスト用 Rails アプリに型チェック設定（`Steepfile` 等）を追加する
+- [x] 生成された `sig/siggen.rbs` に対して Steep などの型チェッカーによる検証を組み込む
+- [x] テスト用 Rails アプリに型チェック設定（`Steepfile` 等）を追加する
 - [ ] `virtual` カラム型の型マッピングを確認・テストする
 - [ ] composite primary key のケース（`id: false` + `primary_key: [...]`）の扱いを整理する
 

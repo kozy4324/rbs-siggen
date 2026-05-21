@@ -1,0 +1,7 @@
+target :app do
+  signature "sig"
+
+  check "test/models/post_test.rb"
+
+  library "minitest"
+end

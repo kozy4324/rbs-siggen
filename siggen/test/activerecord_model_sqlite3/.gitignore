@@ -1,4 +1,6 @@
 log/*.log
 tmp/*.txt
 storage/*.sqlite3
+.gem_rbs_collection/
+rbs_collection.lock.yaml
 

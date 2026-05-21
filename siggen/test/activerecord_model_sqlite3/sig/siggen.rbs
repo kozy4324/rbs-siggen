@@ -8,7 +8,7 @@
 #   t.datetime "updated_at", null: false
 # end
 # ```
-class Post
+class Post < ::ApplicationRecord
   module GeneratedAttributeMethods
     def id: () -> Integer?
 

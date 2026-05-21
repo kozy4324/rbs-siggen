@@ -1,0 +1,21 @@
+module ActiveSupport
+  class TimeWithZone
+  end
+
+  class TestCase < ::Minitest::Test
+    def self.test: (::String name) { () [self: ::Minitest::Test] -> void } -> void
+  end
+end
+
+module ActiveRecord
+  class Base
+    def self.first: () -> instance?
+    def self.first!: () -> instance
+  end
+end
+
+class ApplicationRecord < ::ActiveRecord::Base
+end
+
+class PostTest < ::ActiveSupport::TestCase
+end
