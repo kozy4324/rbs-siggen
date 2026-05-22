@@ -15,11 +15,7 @@ module ActiveRecord
         # ```
         class <%= table_name.classify %> < ::ApplicationRecord
           module GeneratedAttributeMethods
-            
-            
-            
-            
-            
+
             <%- name = "id" -%>
             def <%= name %>: () -> Integer?
             def <%= name %>=: (Integer? value) -> void
