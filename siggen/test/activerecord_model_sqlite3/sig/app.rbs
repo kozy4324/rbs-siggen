@@ -11,6 +11,7 @@ module ActiveRecord
   class Base
     def self.first: () -> instance?
     def self.first!: () -> instance
+    def save!: (**untyped options) -> bool
   end
 end
 
