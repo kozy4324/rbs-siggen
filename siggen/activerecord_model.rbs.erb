@@ -14,7 +14,7 @@ module ActiveRecord
         # ```ruby
         # <%%= ___source %>
         # ```
-        class <%%= table_name.classify %>
+        class <%%= table_name.classify %> < ::ApplicationRecord
           module GeneratedAttributeMethods
             <%# https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-create_table %>
             <%# id が false 以外で primary_key の値で ID カラムが自動生成される %>
@@ -56,7 +56,7 @@ module ActiveRecord
     module ColumnMethods
       <%- map = {
             # https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/connection_adapters/abstract/schema_definitions.rb#L331-L332
-            bitint: "::Integer",
+            bigint: "::Integer",
             binary: "::String",
             boolean: "bool",
             date: "::Date",

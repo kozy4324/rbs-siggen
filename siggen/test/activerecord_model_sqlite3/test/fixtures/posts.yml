@@ -3,7 +3,9 @@
 one:
   title: MyString
   body: MyText
+  views_count: 1000000
 
 two:
   title: MyString
   body: MyText
+  views_count: 1000000

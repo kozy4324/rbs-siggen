@@ -13,8 +13,13 @@ module ActiveRecord
         # ```ruby
         # <%= ___source %>
         # ```
-        class <%= table_name.classify %>
+        class <%= table_name.classify %> < ::ApplicationRecord
           module GeneratedAttributeMethods
+            
+            
+            
+            
+            
             <%- name = "id" -%>
             def <%= name %>: () -> Integer?
             def <%= name %>=: (Integer? value) -> void
@@ -179,7 +184,7 @@ module ActiveRecord
             end
           end
         }
-        def bitint: (*Array[untyped] names, **untyped options) -> void
+        def bigint: (*Array[untyped] names, **untyped options) -> void
 
         %a{siggen:
           class <%= create_table.table_name.classify %>
@@ -1790,7 +1795,7 @@ module ActiveRecord
         def timestamp: (*Array[untyped] names, **untyped options) -> void
 
         %a{siggen:
-          <% map = [[:bitint, "::Integer"], [:binary, "::String"], [:boolean, "bool"], [:date, "::Date"], [:datetime, "::ActiveSupport::TimeWithZone"], [:decimal, "::BigDecimal"], [:float, "::Float"], [:integer, "::Integer"], [:json, "untyped"], [:string, "::String"], [:text, "::String"], [:time, "::ActiveSupport::TimeWithZone"], [:timestamp, "::ActiveSupport::TimeWithZone"], [:virtual, "_"]].to_h %>
+          <% map = [[:bigint, "::Integer"], [:binary, "::String"], [:boolean, "bool"], [:date, "::Date"], [:datetime, "::ActiveSupport::TimeWithZone"], [:decimal, "::BigDecimal"], [:float, "::Float"], [:integer, "::Integer"], [:json, "untyped"], [:string, "::String"], [:text, "::String"], [:time, "::ActiveSupport::TimeWithZone"], [:timestamp, "::ActiveSupport::TimeWithZone"], [:virtual, "_"]].to_h %>
           class <%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <% names.each do |name| %>
