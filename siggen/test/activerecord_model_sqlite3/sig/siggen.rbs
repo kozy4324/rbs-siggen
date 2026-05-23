@@ -4,6 +4,7 @@
 # create_table "posts", force: :cascade do |t|
 #   t.text "body"
 #   t.datetime "created_at", null: false
+#   t.binary "thumbnail"
 #   t.string "title"
 #   t.datetime "updated_at", null: false
 #   t.bigint "views_count"
@@ -302,6 +303,131 @@ class Post < ::ApplicationRecord
     # ```
     #
     def created_at_in_database: () -> ::ActiveSupport::TimeWithZone
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def thumbnail: () -> ::String?
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def thumbnail=: (::String? value) -> void
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def thumbnail_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def thumbnail_for_database: () -> untyped
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    def thumbnail_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def thumbnail?: () -> bool
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def thumbnail_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def thumbnail_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def thumbnail_change: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def thumbnail_will_change!: () -> void
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def thumbnail_was: () -> ::String?
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def thumbnail_previous_change: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def thumbnail_previously_was: () -> ::String?
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def restore_thumbnail!: () -> void
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def clear_thumbnail_change: () -> void
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def saved_change_to_thumbnail?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def saved_change_to_thumbnail: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def thumbnail_before_last_save: () -> ::String?
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def will_save_change_to_thumbnail?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def thumbnail_change_to_be_saved: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.binary "thumbnail"
+    # ```
+    #
+    def thumbnail_in_database: () -> ::String?
 
     # ```ruby
     # t.string "title"

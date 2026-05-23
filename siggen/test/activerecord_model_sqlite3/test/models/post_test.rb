@@ -499,6 +499,182 @@ class PostTitleTest < ActiveSupport::TestCase
   end
 end
 
+class PostThumbnailTest < ActiveSupport::TestCase
+  # --- getter / setter ---
+
+  test "binary column thumbnail is typed as String" do
+    post = Post.first!
+    assert_equal "hello", post.thumbnail
+  end
+
+  test "binary column thumbnail= sets a new String value" do
+    post = Post.first!
+    post.thumbnail = "world"
+    assert_equal "world", post.thumbnail
+  end
+
+  # --- BeforeTypeCast / ForDatabase ---
+
+  test "binary column thumbnail_before_type_cast returns untyped" do
+    post = Post.first!
+    assert_equal "hello", post.thumbnail_before_type_cast
+  end
+
+  test "binary column thumbnail_for_database returns untyped" do
+    post = Post.first!
+    assert_equal "hello", post.thumbnail_for_database
+  end
+
+  # --- came_from_user? / query method ---
+
+  test "binary column thumbnail_came_from_user? returns false for DB-loaded record" do
+    post = Post.first!
+    assert_equal false, post.thumbnail_came_from_user?
+  end
+
+  test "binary column thumbnail? returns bool" do
+    post = Post.first!
+    assert post.thumbnail?
+  end
+
+  # --- Dirty tracking: in-memory change ---
+
+  test "binary column thumbnail_changed? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.thumbnail_changed?
+  end
+
+  test "binary column thumbnail_changed? returns true after assignment" do
+    post = Post.first!
+    post.thumbnail = "world"
+    assert post.thumbnail_changed?
+  end
+
+  test "binary column thumbnail_change returns nil before change" do
+    post = Post.first!
+    assert_nil post.thumbnail_change
+  end
+
+  test "binary column thumbnail_change returns [old, new] after assignment" do
+    post = Post.first!
+    post.thumbnail = "world"
+    assert_equal ["hello", "world"], post.thumbnail_change
+  end
+
+  test "binary column thumbnail_will_change! marks attribute as changed" do
+    post = Post.first!
+    post.thumbnail_will_change!
+    assert post.thumbnail_changed?
+  end
+
+  test "binary column thumbnail_was returns original value before change" do
+    post = Post.first!
+    assert_equal "hello", post.thumbnail_was
+  end
+
+  test "binary column thumbnail_was returns old value after assignment" do
+    post = Post.first!
+    post.thumbnail = "world"
+    assert_equal "hello", post.thumbnail_was
+  end
+
+  test "binary column restore_thumbnail! restores the original value" do
+    post = Post.first!
+    post.thumbnail = "world"
+    post.restore_thumbnail!
+    assert_equal "hello", post.thumbnail
+    assert_equal false, post.thumbnail_changed?
+  end
+
+  test "binary column clear_thumbnail_change clears dirty state" do
+    post = Post.first!
+    post.thumbnail = "world"
+    post.clear_thumbnail_change
+    assert_equal false, post.thumbnail_changed?
+  end
+
+  test "binary column will_save_change_to_thumbnail? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.will_save_change_to_thumbnail?
+  end
+
+  test "binary column will_save_change_to_thumbnail? returns true after assignment" do
+    post = Post.first!
+    post.thumbnail = "world"
+    assert post.will_save_change_to_thumbnail?
+  end
+
+  test "binary column thumbnail_change_to_be_saved returns nil before change" do
+    post = Post.first!
+    assert_nil post.thumbnail_change_to_be_saved
+  end
+
+  test "binary column thumbnail_change_to_be_saved returns pending change after assignment" do
+    post = Post.first!
+    post.thumbnail = "world"
+    assert_equal ["hello", "world"], post.thumbnail_change_to_be_saved
+  end
+
+  test "binary column thumbnail_in_database returns the DB value" do
+    post = Post.first!
+    assert_equal "hello", post.thumbnail_in_database
+  end
+
+  # --- Dirty tracking: after save ---
+
+  test "binary column thumbnail_previously_changed? returns true after save with change" do
+    post = Post.first!
+    post.thumbnail = "world"
+    post.save!
+    assert post.thumbnail_previously_changed?
+  end
+
+  test "binary column thumbnail_previous_change returns [old, new] after save" do
+    post = Post.first!
+    post.thumbnail = "world"
+    post.save!
+    assert_equal ["hello", "world"], post.thumbnail_previous_change
+  end
+
+  test "binary column thumbnail_previously_was returns old value after save" do
+    post = Post.first!
+    post.thumbnail = "world"
+    post.save!
+    assert_equal "hello", post.thumbnail_previously_was
+  end
+
+  test "binary column saved_change_to_thumbnail? returns false without save" do
+    post = Post.first!
+    assert_equal false, post.saved_change_to_thumbnail?
+  end
+
+  test "binary column saved_change_to_thumbnail? returns true after save with change" do
+    post = Post.first!
+    post.thumbnail = "world"
+    post.save!
+    assert post.saved_change_to_thumbnail?
+  end
+
+  test "binary column saved_change_to_thumbnail returns nil without save" do
+    post = Post.first!
+    assert_nil post.saved_change_to_thumbnail
+  end
+
+  test "binary column saved_change_to_thumbnail returns [old, new] after save" do
+    post = Post.first!
+    post.thumbnail = "world"
+    post.save!
+    assert_equal ["hello", "world"], post.saved_change_to_thumbnail
+  end
+
+  test "binary column thumbnail_before_last_save returns old value after save" do
+    post = Post.first!
+    post.thumbnail = "world"
+    post.save!
+    assert_equal "hello", post.thumbnail_before_last_save
+  end
+end
+
 class PostCreatedAtTest < ActiveSupport::TestCase
   ORIGINAL_CREATED_AT = Time.utc(2024, 1, 1)
   NEW_CREATED_AT = Time.utc(2099, 1, 1)
