@@ -1940,3 +1940,19 @@ class Post < ::ApplicationRecord
   end
   include GeneratedAttributeMethods
 end
+
+# Pattern 2: id: :string
+class Article < ::ApplicationRecord
+end
+
+# Pattern 3: id: :string, primary_key: "account_code"
+class Account < ::ApplicationRecord
+end
+
+# Pattern 4: primary_key: [:post_id, :tag_id] (composite primary key)
+class Tagging < ::ApplicationRecord
+end
+
+# Pattern 5: id: false
+class PostTag < ::ApplicationRecord
+end

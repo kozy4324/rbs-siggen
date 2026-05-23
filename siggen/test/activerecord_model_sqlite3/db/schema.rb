@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_23_153528) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_23_160003) do
+  create_table "accounts", primary_key: "account_code", id: :string, force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "articles", id: :string, force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "post_tags", id: false, force: :cascade do |t|
+    t.integer "post_id", null: false
+    t.string "tag_name", null: false
+  end
+
   create_table "posts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -27,5 +40,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_23_153528) do
     t.string "title"
     t.datetime "updated_at", null: false
     t.bigint "views_count"
+  end
+
+  create_table "taggings", primary_key: ["post_id", "tag_id"], force: :cascade do |t|
+    t.string "context"
+    t.integer "post_id", null: false
+    t.integer "tag_id", null: false
   end
 end

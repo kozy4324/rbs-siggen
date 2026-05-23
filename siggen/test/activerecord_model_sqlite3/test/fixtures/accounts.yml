@@ -1,0 +1,7 @@
+one:
+  account_code: ACC-001
+  name: First Account
+
+two:
+  account_code: ACC-002
+  name: Second Account
