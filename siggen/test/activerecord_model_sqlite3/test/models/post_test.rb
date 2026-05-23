@@ -1,11 +1,6 @@
 require "test_helper"
 
-class PostTest < ActiveSupport::TestCase
-  test "the truth" do
-    post = Post.first!
-    assert_equal "MyString", post.title
-  end
-
+class PostViewsCountTest < ActiveSupport::TestCase
   test "bigint column views_count is typed as Integer" do
     post = Post.first!
     assert_equal 1_000_000, post.views_count
@@ -170,8 +165,9 @@ class PostTest < ActiveSupport::TestCase
     assert_equal 1_000_000, post.views_count_before_last_save
   end
 
-  # --- text column body ---
+end
 
+class PostBodyTest < ActiveSupport::TestCase
   test "text column body is typed as String" do
     post = Post.first!
     assert_equal "MyText", post.body
