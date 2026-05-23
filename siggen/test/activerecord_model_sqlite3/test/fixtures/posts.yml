@@ -3,6 +3,7 @@
 one:
   title: MyString
   body: MyText
+  price: "9.99"
   published: true
   published_on: "2024-01-01"
   thumbnail: hello
@@ -13,6 +14,7 @@ one:
 two:
   title: MyString
   body: MyText
+  price: "9.99"
   published: true
   published_on: "2024-01-01"
   thumbnail: hello

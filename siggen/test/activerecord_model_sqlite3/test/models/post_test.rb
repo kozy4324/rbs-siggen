@@ -851,6 +851,185 @@ class PostPublishedTest < ActiveSupport::TestCase
   end
 end
 
+class PostPriceTest < ActiveSupport::TestCase
+  ORIGINAL_PRICE = BigDecimal("9.99")
+  NEW_PRICE = BigDecimal("19.99")
+
+  # --- getter / setter ---
+
+  test "decimal column price is typed as BigDecimal" do
+    post = Post.first!
+    assert_equal ORIGINAL_PRICE, post.price
+  end
+
+  test "decimal column price= sets a new BigDecimal value" do
+    post = Post.first!
+    post.price = NEW_PRICE
+    assert_equal NEW_PRICE, post.price
+  end
+
+  # --- BeforeTypeCast / ForDatabase ---
+
+  test "decimal column price_before_type_cast returns untyped" do
+    post = Post.first!
+    assert_equal ORIGINAL_PRICE, post.price_before_type_cast
+  end
+
+  test "decimal column price_for_database returns untyped" do
+    post = Post.first!
+    assert_equal ORIGINAL_PRICE, post.price_for_database
+  end
+
+  # --- came_from_user? / query method ---
+
+  test "decimal column price_came_from_user? returns false for DB-loaded record" do
+    post = Post.first!
+    assert_equal false, post.price_came_from_user?
+  end
+
+  test "decimal column price? returns bool" do
+    post = Post.first!
+    assert post.price?
+  end
+
+  # --- Dirty tracking: in-memory change ---
+
+  test "decimal column price_changed? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.price_changed?
+  end
+
+  test "decimal column price_changed? returns true after assignment" do
+    post = Post.first!
+    post.price = NEW_PRICE
+    assert post.price_changed?
+  end
+
+  test "decimal column price_change returns nil before change" do
+    post = Post.first!
+    assert_nil post.price_change
+  end
+
+  test "decimal column price_change returns [old, new] after assignment" do
+    post = Post.first!
+    post.price = NEW_PRICE
+    assert_equal [ORIGINAL_PRICE, NEW_PRICE], post.price_change
+  end
+
+  test "decimal column price_will_change! marks attribute as changed" do
+    post = Post.first!
+    post.price_will_change!
+    assert post.price_changed?
+  end
+
+  test "decimal column price_was returns original value before change" do
+    post = Post.first!
+    assert_equal ORIGINAL_PRICE, post.price_was
+  end
+
+  test "decimal column price_was returns old value after assignment" do
+    post = Post.first!
+    post.price = NEW_PRICE
+    assert_equal ORIGINAL_PRICE, post.price_was
+  end
+
+  test "decimal column restore_price! restores the original value" do
+    post = Post.first!
+    post.price = NEW_PRICE
+    post.restore_price!
+    assert_equal ORIGINAL_PRICE, post.price
+    assert_equal false, post.price_changed?
+  end
+
+  test "decimal column clear_price_change clears dirty state" do
+    post = Post.first!
+    post.price = NEW_PRICE
+    post.clear_price_change
+    assert_equal false, post.price_changed?
+  end
+
+  test "decimal column will_save_change_to_price? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.will_save_change_to_price?
+  end
+
+  test "decimal column will_save_change_to_price? returns true after assignment" do
+    post = Post.first!
+    post.price = NEW_PRICE
+    assert post.will_save_change_to_price?
+  end
+
+  test "decimal column price_change_to_be_saved returns nil before change" do
+    post = Post.first!
+    assert_nil post.price_change_to_be_saved
+  end
+
+  test "decimal column price_change_to_be_saved returns pending change after assignment" do
+    post = Post.first!
+    post.price = NEW_PRICE
+    assert_equal [ORIGINAL_PRICE, NEW_PRICE], post.price_change_to_be_saved
+  end
+
+  test "decimal column price_in_database returns the DB value" do
+    post = Post.first!
+    assert_equal ORIGINAL_PRICE, post.price_in_database
+  end
+
+  # --- Dirty tracking: after save ---
+
+  test "decimal column price_previously_changed? returns true after save with change" do
+    post = Post.first!
+    post.price = NEW_PRICE
+    post.save!
+    assert post.price_previously_changed?
+  end
+
+  test "decimal column price_previous_change returns [old, new] after save" do
+    post = Post.first!
+    post.price = NEW_PRICE
+    post.save!
+    assert_equal [ORIGINAL_PRICE, NEW_PRICE], post.price_previous_change
+  end
+
+  test "decimal column price_previously_was returns old value after save" do
+    post = Post.first!
+    post.price = NEW_PRICE
+    post.save!
+    assert_equal ORIGINAL_PRICE, post.price_previously_was
+  end
+
+  test "decimal column saved_change_to_price? returns false without save" do
+    post = Post.first!
+    assert_equal false, post.saved_change_to_price?
+  end
+
+  test "decimal column saved_change_to_price? returns true after save with change" do
+    post = Post.first!
+    post.price = NEW_PRICE
+    post.save!
+    assert post.saved_change_to_price?
+  end
+
+  test "decimal column saved_change_to_price returns nil without save" do
+    post = Post.first!
+    assert_nil post.saved_change_to_price
+  end
+
+  test "decimal column saved_change_to_price returns [old, new] after save" do
+    post = Post.first!
+    post.price = NEW_PRICE
+    post.save!
+    assert_equal [ORIGINAL_PRICE, NEW_PRICE], post.saved_change_to_price
+  end
+
+  test "decimal column price_before_last_save returns old value after save" do
+    post = Post.first!
+    post.price = NEW_PRICE
+    post.save!
+    assert_equal ORIGINAL_PRICE, post.price_before_last_save
+  end
+end
+
 class PostPublishedOnTest < ActiveSupport::TestCase
   ORIGINAL_PUBLISHED_ON = Date.new(2024, 1, 1)
   NEW_PUBLISHED_ON = Date.new(2099, 1, 1)

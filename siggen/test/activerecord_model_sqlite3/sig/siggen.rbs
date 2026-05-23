@@ -4,6 +4,7 @@
 # create_table "posts", force: :cascade do |t|
 #   t.text "body"
 #   t.datetime "created_at", null: false
+#   t.decimal "price"
 #   t.boolean "published"
 #   t.date "published_on"
 #   t.binary "thumbnail"
@@ -305,6 +306,131 @@ class Post < ::ApplicationRecord
     # ```
     #
     def created_at_in_database: () -> ::ActiveSupport::TimeWithZone
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def price: () -> ::BigDecimal?
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def price=: (::BigDecimal? value) -> void
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def price_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def price_for_database: () -> untyped
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    def price_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def price?: () -> bool
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def price_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def price_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def price_change: () -> [ ::BigDecimal?, ::BigDecimal? ]?
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def price_will_change!: () -> void
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def price_was: () -> ::BigDecimal?
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def price_previous_change: () -> [ ::BigDecimal?, ::BigDecimal? ]?
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def price_previously_was: () -> ::BigDecimal?
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def restore_price!: () -> void
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def clear_price_change: () -> void
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def saved_change_to_price?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def saved_change_to_price: () -> [ ::BigDecimal?, ::BigDecimal? ]?
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def price_before_last_save: () -> ::BigDecimal?
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def will_save_change_to_price?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def price_change_to_be_saved: () -> [ ::BigDecimal?, ::BigDecimal? ]?
+
+    # ```ruby
+    # t.decimal "price"
+    # ```
+    #
+    def price_in_database: () -> ::BigDecimal?
 
     # ```ruby
     # t.boolean "published"
