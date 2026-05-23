@@ -4,6 +4,7 @@
 # create_table "posts", force: :cascade do |t|
 #   t.text "body"
 #   t.datetime "created_at", null: false
+#   t.integer "likes_count"
 #   t.decimal "price"
 #   t.boolean "published"
 #   t.date "published_on"
@@ -307,6 +308,131 @@ class Post < ::ApplicationRecord
     # ```
     #
     def created_at_in_database: () -> ::ActiveSupport::TimeWithZone
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def likes_count: () -> ::Integer?
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def likes_count=: (::Integer? value) -> void
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def likes_count_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def likes_count_for_database: () -> untyped
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    def likes_count_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def likes_count?: () -> bool
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def likes_count_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def likes_count_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def likes_count_change: () -> [ ::Integer?, ::Integer? ]?
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def likes_count_will_change!: () -> void
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def likes_count_was: () -> ::Integer?
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def likes_count_previous_change: () -> [ ::Integer?, ::Integer? ]?
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def likes_count_previously_was: () -> ::Integer?
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def restore_likes_count!: () -> void
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def clear_likes_count_change: () -> void
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def saved_change_to_likes_count?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def saved_change_to_likes_count: () -> [ ::Integer?, ::Integer? ]?
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def likes_count_before_last_save: () -> ::Integer?
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def will_save_change_to_likes_count?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def likes_count_change_to_be_saved: () -> [ ::Integer?, ::Integer? ]?
+
+    # ```ruby
+    # t.integer "likes_count"
+    # ```
+    #
+    def likes_count_in_database: () -> ::Integer?
 
     # ```ruby
     # t.decimal "price"

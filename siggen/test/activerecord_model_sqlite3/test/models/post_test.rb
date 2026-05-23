@@ -851,6 +851,182 @@ class PostPublishedTest < ActiveSupport::TestCase
   end
 end
 
+class PostLikesCountTest < ActiveSupport::TestCase
+  # --- getter / setter ---
+
+  test "integer column likes_count is typed as Integer" do
+    post = Post.first!
+    assert_equal 500, post.likes_count
+  end
+
+  test "integer column likes_count= sets a new Integer value" do
+    post = Post.first!
+    post.likes_count = 1_000
+    assert_equal 1_000, post.likes_count
+  end
+
+  # --- BeforeTypeCast / ForDatabase ---
+
+  test "integer column likes_count_before_type_cast returns untyped" do
+    post = Post.first!
+    assert_equal 500, post.likes_count_before_type_cast
+  end
+
+  test "integer column likes_count_for_database returns untyped" do
+    post = Post.first!
+    assert_equal 500, post.likes_count_for_database
+  end
+
+  # --- came_from_user? / query method ---
+
+  test "integer column likes_count_came_from_user? returns false for DB-loaded record" do
+    post = Post.first!
+    assert_equal false, post.likes_count_came_from_user?
+  end
+
+  test "integer column likes_count? returns bool" do
+    post = Post.first!
+    assert post.likes_count?
+  end
+
+  # --- Dirty tracking: in-memory change ---
+
+  test "integer column likes_count_changed? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.likes_count_changed?
+  end
+
+  test "integer column likes_count_changed? returns true after assignment" do
+    post = Post.first!
+    post.likes_count = 1_000
+    assert post.likes_count_changed?
+  end
+
+  test "integer column likes_count_change returns nil before change" do
+    post = Post.first!
+    assert_nil post.likes_count_change
+  end
+
+  test "integer column likes_count_change returns [old, new] after assignment" do
+    post = Post.first!
+    post.likes_count = 1_000
+    assert_equal [500, 1_000], post.likes_count_change
+  end
+
+  test "integer column likes_count_will_change! marks attribute as changed" do
+    post = Post.first!
+    post.likes_count_will_change!
+    assert post.likes_count_changed?
+  end
+
+  test "integer column likes_count_was returns original value before change" do
+    post = Post.first!
+    assert_equal 500, post.likes_count_was
+  end
+
+  test "integer column likes_count_was returns old value after assignment" do
+    post = Post.first!
+    post.likes_count = 1_000
+    assert_equal 500, post.likes_count_was
+  end
+
+  test "integer column restore_likes_count! restores the original value" do
+    post = Post.first!
+    post.likes_count = 1_000
+    post.restore_likes_count!
+    assert_equal 500, post.likes_count
+    assert_equal false, post.likes_count_changed?
+  end
+
+  test "integer column clear_likes_count_change clears dirty state" do
+    post = Post.first!
+    post.likes_count = 1_000
+    post.clear_likes_count_change
+    assert_equal false, post.likes_count_changed?
+  end
+
+  test "integer column will_save_change_to_likes_count? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.will_save_change_to_likes_count?
+  end
+
+  test "integer column will_save_change_to_likes_count? returns true after assignment" do
+    post = Post.first!
+    post.likes_count = 1_000
+    assert post.will_save_change_to_likes_count?
+  end
+
+  test "integer column likes_count_change_to_be_saved returns nil before change" do
+    post = Post.first!
+    assert_nil post.likes_count_change_to_be_saved
+  end
+
+  test "integer column likes_count_change_to_be_saved returns pending change after assignment" do
+    post = Post.first!
+    post.likes_count = 1_000
+    assert_equal [500, 1_000], post.likes_count_change_to_be_saved
+  end
+
+  test "integer column likes_count_in_database returns the DB value" do
+    post = Post.first!
+    assert_equal 500, post.likes_count_in_database
+  end
+
+  # --- Dirty tracking: after save ---
+
+  test "integer column likes_count_previously_changed? returns true after save with change" do
+    post = Post.first!
+    post.likes_count = 1_000
+    post.save!
+    assert post.likes_count_previously_changed?
+  end
+
+  test "integer column likes_count_previous_change returns [old, new] after save" do
+    post = Post.first!
+    post.likes_count = 1_000
+    post.save!
+    assert_equal [500, 1_000], post.likes_count_previous_change
+  end
+
+  test "integer column likes_count_previously_was returns old value after save" do
+    post = Post.first!
+    post.likes_count = 1_000
+    post.save!
+    assert_equal 500, post.likes_count_previously_was
+  end
+
+  test "integer column saved_change_to_likes_count? returns false without save" do
+    post = Post.first!
+    assert_equal false, post.saved_change_to_likes_count?
+  end
+
+  test "integer column saved_change_to_likes_count? returns true after save with change" do
+    post = Post.first!
+    post.likes_count = 1_000
+    post.save!
+    assert post.saved_change_to_likes_count?
+  end
+
+  test "integer column saved_change_to_likes_count returns nil without save" do
+    post = Post.first!
+    assert_nil post.saved_change_to_likes_count
+  end
+
+  test "integer column saved_change_to_likes_count returns [old, new] after save" do
+    post = Post.first!
+    post.likes_count = 1_000
+    post.save!
+    assert_equal [500, 1_000], post.saved_change_to_likes_count
+  end
+
+  test "integer column likes_count_before_last_save returns old value after save" do
+    post = Post.first!
+    post.likes_count = 1_000
+    post.save!
+    assert_equal 500, post.likes_count_before_last_save
+  end
+end
+
 class PostRatingTest < ActiveSupport::TestCase
   ORIGINAL_RATING = 4.5
   NEW_RATING = 3.0
