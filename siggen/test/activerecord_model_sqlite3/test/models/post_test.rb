@@ -332,3 +332,169 @@ class PostBodyTest < ActiveSupport::TestCase
     assert_equal "MyText", post.body_before_last_save
   end
 end
+
+class PostTitleTest < ActiveSupport::TestCase
+  test "string column title is typed as String" do
+    post = Post.first!
+    assert_equal "MyString", post.title
+  end
+
+  test "string column title= sets a new String value" do
+    post = Post.first!
+    post.title = "NewString"
+    assert_equal "NewString", post.title
+  end
+
+  test "string column title_before_type_cast returns untyped" do
+    post = Post.first!
+    assert_equal "MyString", post.title_before_type_cast
+  end
+
+  test "string column title_for_database returns untyped" do
+    post = Post.first!
+    assert_equal "MyString", post.title_for_database
+  end
+
+  test "string column title_came_from_user? returns false for DB-loaded record" do
+    post = Post.first!
+    assert_equal false, post.title_came_from_user?
+  end
+
+  test "string column title? returns bool" do
+    post = Post.first!
+    assert post.title?
+  end
+
+  test "string column title_changed? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.title_changed?
+  end
+
+  test "string column title_changed? returns true after assignment" do
+    post = Post.first!
+    post.title = "NewString"
+    assert post.title_changed?
+  end
+
+  test "string column title_change returns nil before change" do
+    post = Post.first!
+    assert_nil post.title_change
+  end
+
+  test "string column title_change returns [old, new] after assignment" do
+    post = Post.first!
+    post.title = "NewString"
+    assert_equal ["MyString", "NewString"], post.title_change
+  end
+
+  test "string column title_will_change! marks attribute as changed" do
+    post = Post.first!
+    post.title_will_change!
+    assert post.title_changed?
+  end
+
+  test "string column title_was returns original value before change" do
+    post = Post.first!
+    assert_equal "MyString", post.title_was
+  end
+
+  test "string column title_was returns old value after assignment" do
+    post = Post.first!
+    post.title = "NewString"
+    assert_equal "MyString", post.title_was
+  end
+
+  test "string column restore_title! restores the original value" do
+    post = Post.first!
+    post.title = "NewString"
+    post.restore_title!
+    assert_equal "MyString", post.title
+    assert_equal false, post.title_changed?
+  end
+
+  test "string column clear_title_change clears dirty state" do
+    post = Post.first!
+    post.title = "NewString"
+    post.clear_title_change
+    assert_equal false, post.title_changed?
+  end
+
+  test "string column will_save_change_to_title? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.will_save_change_to_title?
+  end
+
+  test "string column will_save_change_to_title? returns true after assignment" do
+    post = Post.first!
+    post.title = "NewString"
+    assert post.will_save_change_to_title?
+  end
+
+  test "string column title_change_to_be_saved returns nil before change" do
+    post = Post.first!
+    assert_nil post.title_change_to_be_saved
+  end
+
+  test "string column title_change_to_be_saved returns pending change after assignment" do
+    post = Post.first!
+    post.title = "NewString"
+    assert_equal ["MyString", "NewString"], post.title_change_to_be_saved
+  end
+
+  test "string column title_in_database returns the DB value" do
+    post = Post.first!
+    assert_equal "MyString", post.title_in_database
+  end
+
+  test "string column title_previously_changed? returns true after save with change" do
+    post = Post.first!
+    post.title = "NewString"
+    post.save!
+    assert post.title_previously_changed?
+  end
+
+  test "string column title_previous_change returns [old, new] after save" do
+    post = Post.first!
+    post.title = "NewString"
+    post.save!
+    assert_equal ["MyString", "NewString"], post.title_previous_change
+  end
+
+  test "string column title_previously_was returns old value after save" do
+    post = Post.first!
+    post.title = "NewString"
+    post.save!
+    assert_equal "MyString", post.title_previously_was
+  end
+
+  test "string column saved_change_to_title? returns false without save" do
+    post = Post.first!
+    assert_equal false, post.saved_change_to_title?
+  end
+
+  test "string column saved_change_to_title? returns true after save with change" do
+    post = Post.first!
+    post.title = "NewString"
+    post.save!
+    assert post.saved_change_to_title?
+  end
+
+  test "string column saved_change_to_title returns nil without save" do
+    post = Post.first!
+    assert_nil post.saved_change_to_title
+  end
+
+  test "string column saved_change_to_title returns [old, new] after save" do
+    post = Post.first!
+    post.title = "NewString"
+    post.save!
+    assert_equal ["MyString", "NewString"], post.saved_change_to_title
+  end
+
+  test "string column title_before_last_save returns old value after save" do
+    post = Post.first!
+    post.title = "NewString"
+    post.save!
+    assert_equal "MyString", post.title_before_last_save
+  end
+end
