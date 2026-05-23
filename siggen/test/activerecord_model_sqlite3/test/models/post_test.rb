@@ -2090,3 +2090,361 @@ class PostStartTimeTest < ActiveSupport::TestCase
     assert_equal ORIGINAL_START_TIME, post.start_time_before_last_save
   end
 end
+
+class PostSlugTest < ActiveSupport::TestCase
+  ORIGINAL_SLUG = "mystring"
+  NEW_SLUG = "newstring"
+
+  # --- getter / setter ---
+
+  test "virtual(string) column slug is typed as String" do
+    post = Post.first!
+    assert_equal ORIGINAL_SLUG, post.slug
+  end
+
+  test "virtual(string) column slug= sets a new String value" do
+    post = Post.first!
+    post.slug = NEW_SLUG
+    assert_equal NEW_SLUG, post.slug
+  end
+
+  # --- BeforeTypeCast / ForDatabase ---
+
+  test "virtual(string) column slug_before_type_cast returns untyped" do
+    post = Post.first!
+    assert_equal ORIGINAL_SLUG, post.slug_before_type_cast
+  end
+
+  test "virtual(string) column slug_for_database returns untyped" do
+    post = Post.first!
+    assert_equal ORIGINAL_SLUG, post.slug_for_database
+  end
+
+  # --- came_from_user? / query method ---
+
+  test "virtual(string) column slug_came_from_user? returns false for DB-loaded record" do
+    post = Post.first!
+    assert_equal false, post.slug_came_from_user?
+  end
+
+  test "virtual(string) column slug? returns bool" do
+    post = Post.first!
+    assert post.slug?
+  end
+
+  # --- Dirty tracking: in-memory change ---
+
+  test "virtual(string) column slug_changed? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.slug_changed?
+  end
+
+  test "virtual(string) column slug_changed? returns true after assignment" do
+    post = Post.first!
+    post.slug = NEW_SLUG
+    assert post.slug_changed?
+  end
+
+  test "virtual(string) column slug_change returns nil before change" do
+    post = Post.first!
+    assert_nil post.slug_change
+  end
+
+  test "virtual(string) column slug_change returns [old, new] after assignment" do
+    post = Post.first!
+    post.slug = NEW_SLUG
+    assert_equal [ORIGINAL_SLUG, NEW_SLUG], post.slug_change
+  end
+
+  test "virtual(string) column slug_will_change! marks attribute as changed" do
+    post = Post.first!
+    post.slug_will_change!
+    assert post.slug_changed?
+  end
+
+  test "virtual(string) column slug_was returns original value before change" do
+    post = Post.first!
+    assert_equal ORIGINAL_SLUG, post.slug_was
+  end
+
+  test "virtual(string) column slug_was returns old value after assignment" do
+    post = Post.first!
+    post.slug = NEW_SLUG
+    assert_equal ORIGINAL_SLUG, post.slug_was
+  end
+
+  test "virtual(string) column restore_slug! restores the original value" do
+    post = Post.first!
+    post.slug = NEW_SLUG
+    post.restore_slug!
+    assert_equal ORIGINAL_SLUG, post.slug
+    assert_equal false, post.slug_changed?
+  end
+
+  test "virtual(string) column clear_slug_change clears dirty state" do
+    post = Post.first!
+    post.slug = NEW_SLUG
+    post.clear_slug_change
+    assert_equal false, post.slug_changed?
+  end
+
+  test "virtual(string) column will_save_change_to_slug? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.will_save_change_to_slug?
+  end
+
+  test "virtual(string) column will_save_change_to_slug? returns true after assignment" do
+    post = Post.first!
+    post.slug = NEW_SLUG
+    assert post.will_save_change_to_slug?
+  end
+
+  test "virtual(string) column slug_change_to_be_saved returns nil before change" do
+    post = Post.first!
+    assert_nil post.slug_change_to_be_saved
+  end
+
+  test "virtual(string) column slug_change_to_be_saved returns pending change after assignment" do
+    post = Post.first!
+    post.slug = NEW_SLUG
+    assert_equal [ORIGINAL_SLUG, NEW_SLUG], post.slug_change_to_be_saved
+  end
+
+  test "virtual(string) column slug_in_database returns the DB value" do
+    post = Post.first!
+    assert_equal ORIGINAL_SLUG, post.slug_in_database
+  end
+
+  # --- Dirty tracking: after save ---
+
+  test "virtual(string) column slug_previously_changed? returns true after save with change" do
+    post = Post.first!
+    post.slug = NEW_SLUG
+    post.save!
+    assert post.slug_previously_changed?
+  end
+
+  test "virtual(string) column slug_previous_change returns [old, new] after save" do
+    post = Post.first!
+    post.slug = NEW_SLUG
+    post.save!
+    assert_equal [ORIGINAL_SLUG, NEW_SLUG], post.slug_previous_change
+  end
+
+  test "virtual(string) column slug_previously_was returns old value after save" do
+    post = Post.first!
+    post.slug = NEW_SLUG
+    post.save!
+    assert_equal ORIGINAL_SLUG, post.slug_previously_was
+  end
+
+  test "virtual(string) column saved_change_to_slug? returns false without save" do
+    post = Post.first!
+    assert_equal false, post.saved_change_to_slug?
+  end
+
+  test "virtual(string) column saved_change_to_slug? returns true after save with change" do
+    post = Post.first!
+    post.slug = NEW_SLUG
+    post.save!
+    assert post.saved_change_to_slug?
+  end
+
+  test "virtual(string) column saved_change_to_slug returns nil without save" do
+    post = Post.first!
+    assert_nil post.saved_change_to_slug
+  end
+
+  test "virtual(string) column saved_change_to_slug returns [old, new] after save" do
+    post = Post.first!
+    post.slug = NEW_SLUG
+    post.save!
+    assert_equal [ORIGINAL_SLUG, NEW_SLUG], post.saved_change_to_slug
+  end
+
+  test "virtual(string) column slug_before_last_save returns old value after save" do
+    post = Post.first!
+    post.slug = NEW_SLUG
+    post.save!
+    assert_equal ORIGINAL_SLUG, post.slug_before_last_save
+  end
+end
+
+class PostEngagementCountTest < ActiveSupport::TestCase
+  ORIGINAL_ENGAGEMENT_COUNT = 1_000_500
+  NEW_ENGAGEMENT_COUNT = 2_000_000
+
+  # --- getter / setter ---
+
+  test "virtual(integer) column engagement_count is typed as Integer" do
+    post = Post.first!
+    assert_equal ORIGINAL_ENGAGEMENT_COUNT, post.engagement_count
+  end
+
+  test "virtual(integer) column engagement_count= sets a new Integer value" do
+    post = Post.first!
+    post.engagement_count = NEW_ENGAGEMENT_COUNT
+    assert_equal NEW_ENGAGEMENT_COUNT, post.engagement_count
+  end
+
+  # --- BeforeTypeCast / ForDatabase ---
+
+  test "virtual(integer) column engagement_count_before_type_cast returns untyped" do
+    post = Post.first!
+    assert_equal ORIGINAL_ENGAGEMENT_COUNT, post.engagement_count_before_type_cast
+  end
+
+  test "virtual(integer) column engagement_count_for_database returns untyped" do
+    post = Post.first!
+    assert_equal ORIGINAL_ENGAGEMENT_COUNT, post.engagement_count_for_database
+  end
+
+  # --- came_from_user? / query method ---
+
+  test "virtual(integer) column engagement_count_came_from_user? returns false for DB-loaded record" do
+    post = Post.first!
+    assert_equal false, post.engagement_count_came_from_user?
+  end
+
+  test "virtual(integer) column engagement_count? returns bool" do
+    post = Post.first!
+    assert post.engagement_count?
+  end
+
+  # --- Dirty tracking: in-memory change ---
+
+  test "virtual(integer) column engagement_count_changed? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.engagement_count_changed?
+  end
+
+  test "virtual(integer) column engagement_count_changed? returns true after assignment" do
+    post = Post.first!
+    post.engagement_count = NEW_ENGAGEMENT_COUNT
+    assert post.engagement_count_changed?
+  end
+
+  test "virtual(integer) column engagement_count_change returns nil before change" do
+    post = Post.first!
+    assert_nil post.engagement_count_change
+  end
+
+  test "virtual(integer) column engagement_count_change returns [old, new] after assignment" do
+    post = Post.first!
+    post.engagement_count = NEW_ENGAGEMENT_COUNT
+    assert_equal [ORIGINAL_ENGAGEMENT_COUNT, NEW_ENGAGEMENT_COUNT], post.engagement_count_change
+  end
+
+  test "virtual(integer) column engagement_count_will_change! marks attribute as changed" do
+    post = Post.first!
+    post.engagement_count_will_change!
+    assert post.engagement_count_changed?
+  end
+
+  test "virtual(integer) column engagement_count_was returns original value before change" do
+    post = Post.first!
+    assert_equal ORIGINAL_ENGAGEMENT_COUNT, post.engagement_count_was
+  end
+
+  test "virtual(integer) column engagement_count_was returns old value after assignment" do
+    post = Post.first!
+    post.engagement_count = NEW_ENGAGEMENT_COUNT
+    assert_equal ORIGINAL_ENGAGEMENT_COUNT, post.engagement_count_was
+  end
+
+  test "virtual(integer) column restore_engagement_count! restores the original value" do
+    post = Post.first!
+    post.engagement_count = NEW_ENGAGEMENT_COUNT
+    post.restore_engagement_count!
+    assert_equal ORIGINAL_ENGAGEMENT_COUNT, post.engagement_count
+    assert_equal false, post.engagement_count_changed?
+  end
+
+  test "virtual(integer) column clear_engagement_count_change clears dirty state" do
+    post = Post.first!
+    post.engagement_count = NEW_ENGAGEMENT_COUNT
+    post.clear_engagement_count_change
+    assert_equal false, post.engagement_count_changed?
+  end
+
+  test "virtual(integer) column will_save_change_to_engagement_count? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.will_save_change_to_engagement_count?
+  end
+
+  test "virtual(integer) column will_save_change_to_engagement_count? returns true after assignment" do
+    post = Post.first!
+    post.engagement_count = NEW_ENGAGEMENT_COUNT
+    assert post.will_save_change_to_engagement_count?
+  end
+
+  test "virtual(integer) column engagement_count_change_to_be_saved returns nil before change" do
+    post = Post.first!
+    assert_nil post.engagement_count_change_to_be_saved
+  end
+
+  test "virtual(integer) column engagement_count_change_to_be_saved returns pending change after assignment" do
+    post = Post.first!
+    post.engagement_count = NEW_ENGAGEMENT_COUNT
+    assert_equal [ORIGINAL_ENGAGEMENT_COUNT, NEW_ENGAGEMENT_COUNT], post.engagement_count_change_to_be_saved
+  end
+
+  test "virtual(integer) column engagement_count_in_database returns the DB value" do
+    post = Post.first!
+    assert_equal ORIGINAL_ENGAGEMENT_COUNT, post.engagement_count_in_database
+  end
+
+  # --- Dirty tracking: after save ---
+
+  test "virtual(integer) column engagement_count_previously_changed? returns true after save with change" do
+    post = Post.first!
+    post.engagement_count = NEW_ENGAGEMENT_COUNT
+    post.save!
+    assert post.engagement_count_previously_changed?
+  end
+
+  test "virtual(integer) column engagement_count_previous_change returns [old, new] after save" do
+    post = Post.first!
+    post.engagement_count = NEW_ENGAGEMENT_COUNT
+    post.save!
+    assert_equal [ORIGINAL_ENGAGEMENT_COUNT, NEW_ENGAGEMENT_COUNT], post.engagement_count_previous_change
+  end
+
+  test "virtual(integer) column engagement_count_previously_was returns old value after save" do
+    post = Post.first!
+    post.engagement_count = NEW_ENGAGEMENT_COUNT
+    post.save!
+    assert_equal ORIGINAL_ENGAGEMENT_COUNT, post.engagement_count_previously_was
+  end
+
+  test "virtual(integer) column saved_change_to_engagement_count? returns false without save" do
+    post = Post.first!
+    assert_equal false, post.saved_change_to_engagement_count?
+  end
+
+  test "virtual(integer) column saved_change_to_engagement_count? returns true after save with change" do
+    post = Post.first!
+    post.engagement_count = NEW_ENGAGEMENT_COUNT
+    post.save!
+    assert post.saved_change_to_engagement_count?
+  end
+
+  test "virtual(integer) column saved_change_to_engagement_count returns nil without save" do
+    post = Post.first!
+    assert_nil post.saved_change_to_engagement_count
+  end
+
+  test "virtual(integer) column saved_change_to_engagement_count returns [old, new] after save" do
+    post = Post.first!
+    post.engagement_count = NEW_ENGAGEMENT_COUNT
+    post.save!
+    assert_equal [ORIGINAL_ENGAGEMENT_COUNT, NEW_ENGAGEMENT_COUNT], post.saved_change_to_engagement_count
+  end
+
+  test "virtual(integer) column engagement_count_before_last_save returns old value after save" do
+    post = Post.first!
+    post.engagement_count = NEW_ENGAGEMENT_COUNT
+    post.save!
+    assert_equal ORIGINAL_ENGAGEMENT_COUNT, post.engagement_count_before_last_save
+  end
+end

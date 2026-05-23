@@ -10,16 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_23_152915) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_23_153528) do
   create_table "posts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
+    t.virtual "engagement_count", type: :integer, as: "likes_count + views_count", stored: true
     t.integer "likes_count"
     t.json "metadata"
     t.decimal "price"
     t.boolean "published"
     t.date "published_on"
     t.float "rating"
+    t.virtual "slug", type: :string, as: "lower(title)", stored: true
     t.time "start_time"
     t.binary "thumbnail"
     t.string "title"
