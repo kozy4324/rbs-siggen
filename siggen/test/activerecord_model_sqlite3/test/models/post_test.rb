@@ -851,6 +851,185 @@ class PostPublishedTest < ActiveSupport::TestCase
   end
 end
 
+class PostRatingTest < ActiveSupport::TestCase
+  ORIGINAL_RATING = 4.5
+  NEW_RATING = 3.0
+
+  # --- getter / setter ---
+
+  test "float column rating is typed as Float" do
+    post = Post.first!
+    assert_equal ORIGINAL_RATING, post.rating
+  end
+
+  test "float column rating= sets a new Float value" do
+    post = Post.first!
+    post.rating = NEW_RATING
+    assert_equal NEW_RATING, post.rating
+  end
+
+  # --- BeforeTypeCast / ForDatabase ---
+
+  test "float column rating_before_type_cast returns untyped" do
+    post = Post.first!
+    assert_equal ORIGINAL_RATING, post.rating_before_type_cast
+  end
+
+  test "float column rating_for_database returns untyped" do
+    post = Post.first!
+    assert_equal ORIGINAL_RATING, post.rating_for_database
+  end
+
+  # --- came_from_user? / query method ---
+
+  test "float column rating_came_from_user? returns false for DB-loaded record" do
+    post = Post.first!
+    assert_equal false, post.rating_came_from_user?
+  end
+
+  test "float column rating? returns bool" do
+    post = Post.first!
+    assert post.rating?
+  end
+
+  # --- Dirty tracking: in-memory change ---
+
+  test "float column rating_changed? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.rating_changed?
+  end
+
+  test "float column rating_changed? returns true after assignment" do
+    post = Post.first!
+    post.rating = NEW_RATING
+    assert post.rating_changed?
+  end
+
+  test "float column rating_change returns nil before change" do
+    post = Post.first!
+    assert_nil post.rating_change
+  end
+
+  test "float column rating_change returns [old, new] after assignment" do
+    post = Post.first!
+    post.rating = NEW_RATING
+    assert_equal [ORIGINAL_RATING, NEW_RATING], post.rating_change
+  end
+
+  test "float column rating_will_change! marks attribute as changed" do
+    post = Post.first!
+    post.rating_will_change!
+    assert post.rating_changed?
+  end
+
+  test "float column rating_was returns original value before change" do
+    post = Post.first!
+    assert_equal ORIGINAL_RATING, post.rating_was
+  end
+
+  test "float column rating_was returns old value after assignment" do
+    post = Post.first!
+    post.rating = NEW_RATING
+    assert_equal ORIGINAL_RATING, post.rating_was
+  end
+
+  test "float column restore_rating! restores the original value" do
+    post = Post.first!
+    post.rating = NEW_RATING
+    post.restore_rating!
+    assert_equal ORIGINAL_RATING, post.rating
+    assert_equal false, post.rating_changed?
+  end
+
+  test "float column clear_rating_change clears dirty state" do
+    post = Post.first!
+    post.rating = NEW_RATING
+    post.clear_rating_change
+    assert_equal false, post.rating_changed?
+  end
+
+  test "float column will_save_change_to_rating? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.will_save_change_to_rating?
+  end
+
+  test "float column will_save_change_to_rating? returns true after assignment" do
+    post = Post.first!
+    post.rating = NEW_RATING
+    assert post.will_save_change_to_rating?
+  end
+
+  test "float column rating_change_to_be_saved returns nil before change" do
+    post = Post.first!
+    assert_nil post.rating_change_to_be_saved
+  end
+
+  test "float column rating_change_to_be_saved returns pending change after assignment" do
+    post = Post.first!
+    post.rating = NEW_RATING
+    assert_equal [ORIGINAL_RATING, NEW_RATING], post.rating_change_to_be_saved
+  end
+
+  test "float column rating_in_database returns the DB value" do
+    post = Post.first!
+    assert_equal ORIGINAL_RATING, post.rating_in_database
+  end
+
+  # --- Dirty tracking: after save ---
+
+  test "float column rating_previously_changed? returns true after save with change" do
+    post = Post.first!
+    post.rating = NEW_RATING
+    post.save!
+    assert post.rating_previously_changed?
+  end
+
+  test "float column rating_previous_change returns [old, new] after save" do
+    post = Post.first!
+    post.rating = NEW_RATING
+    post.save!
+    assert_equal [ORIGINAL_RATING, NEW_RATING], post.rating_previous_change
+  end
+
+  test "float column rating_previously_was returns old value after save" do
+    post = Post.first!
+    post.rating = NEW_RATING
+    post.save!
+    assert_equal ORIGINAL_RATING, post.rating_previously_was
+  end
+
+  test "float column saved_change_to_rating? returns false without save" do
+    post = Post.first!
+    assert_equal false, post.saved_change_to_rating?
+  end
+
+  test "float column saved_change_to_rating? returns true after save with change" do
+    post = Post.first!
+    post.rating = NEW_RATING
+    post.save!
+    assert post.saved_change_to_rating?
+  end
+
+  test "float column saved_change_to_rating returns nil without save" do
+    post = Post.first!
+    assert_nil post.saved_change_to_rating
+  end
+
+  test "float column saved_change_to_rating returns [old, new] after save" do
+    post = Post.first!
+    post.rating = NEW_RATING
+    post.save!
+    assert_equal [ORIGINAL_RATING, NEW_RATING], post.saved_change_to_rating
+  end
+
+  test "float column rating_before_last_save returns old value after save" do
+    post = Post.first!
+    post.rating = NEW_RATING
+    post.save!
+    assert_equal ORIGINAL_RATING, post.rating_before_last_save
+  end
+end
+
 class PostPriceTest < ActiveSupport::TestCase
   ORIGINAL_PRICE = BigDecimal("9.99")
   NEW_PRICE = BigDecimal("19.99")
