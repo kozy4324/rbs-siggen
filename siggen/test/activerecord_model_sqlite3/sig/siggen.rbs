@@ -5,6 +5,7 @@
 #   t.text "body"
 #   t.datetime "created_at", null: false
 #   t.boolean "published"
+#   t.date "published_on"
 #   t.binary "thumbnail"
 #   t.string "title"
 #   t.datetime "updated_at", null: false
@@ -429,6 +430,131 @@ class Post < ::ApplicationRecord
     # ```
     #
     def published_in_database: () -> bool?
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def published_on: () -> ::Date?
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def published_on=: (::Date? value) -> void
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def published_on_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def published_on_for_database: () -> untyped
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    def published_on_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def published_on?: () -> bool
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def published_on_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def published_on_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def published_on_change: () -> [ ::Date?, ::Date? ]?
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def published_on_will_change!: () -> void
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def published_on_was: () -> ::Date?
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def published_on_previous_change: () -> [ ::Date?, ::Date? ]?
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def published_on_previously_was: () -> ::Date?
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def restore_published_on!: () -> void
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def clear_published_on_change: () -> void
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def saved_change_to_published_on?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def saved_change_to_published_on: () -> [ ::Date?, ::Date? ]?
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def published_on_before_last_save: () -> ::Date?
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def will_save_change_to_published_on?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def published_on_change_to_be_saved: () -> [ ::Date?, ::Date? ]?
+
+    # ```ruby
+    # t.date "published_on"
+    # ```
+    #
+    def published_on_in_database: () -> ::Date?
 
     # ```ruby
     # t.binary "thumbnail"

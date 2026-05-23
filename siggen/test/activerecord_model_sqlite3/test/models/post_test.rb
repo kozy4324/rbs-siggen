@@ -851,6 +851,185 @@ class PostPublishedTest < ActiveSupport::TestCase
   end
 end
 
+class PostPublishedOnTest < ActiveSupport::TestCase
+  ORIGINAL_PUBLISHED_ON = Date.new(2024, 1, 1)
+  NEW_PUBLISHED_ON = Date.new(2099, 1, 1)
+
+  # --- getter / setter ---
+
+  test "date column published_on is typed as Date" do
+    post = Post.first!
+    assert_equal ORIGINAL_PUBLISHED_ON, post.published_on
+  end
+
+  test "date column published_on= sets a new Date value" do
+    post = Post.first!
+    post.published_on = NEW_PUBLISHED_ON
+    assert_equal NEW_PUBLISHED_ON, post.published_on
+  end
+
+  # --- BeforeTypeCast / ForDatabase ---
+
+  test "date column published_on_before_type_cast returns untyped" do
+    post = Post.first!
+    assert_equal "2024-01-01", post.published_on_before_type_cast
+  end
+
+  test "date column published_on_for_database returns untyped" do
+    post = Post.first!
+    assert_equal ORIGINAL_PUBLISHED_ON, post.published_on_for_database
+  end
+
+  # --- came_from_user? / query method ---
+
+  test "date column published_on_came_from_user? returns false for DB-loaded record" do
+    post = Post.first!
+    assert_equal false, post.published_on_came_from_user?
+  end
+
+  test "date column published_on? returns bool" do
+    post = Post.first!
+    assert post.published_on?
+  end
+
+  # --- Dirty tracking: in-memory change ---
+
+  test "date column published_on_changed? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.published_on_changed?
+  end
+
+  test "date column published_on_changed? returns true after assignment" do
+    post = Post.first!
+    post.published_on = NEW_PUBLISHED_ON
+    assert post.published_on_changed?
+  end
+
+  test "date column published_on_change returns nil before change" do
+    post = Post.first!
+    assert_nil post.published_on_change
+  end
+
+  test "date column published_on_change returns [old, new] after assignment" do
+    post = Post.first!
+    post.published_on = NEW_PUBLISHED_ON
+    assert_equal [ORIGINAL_PUBLISHED_ON, NEW_PUBLISHED_ON], post.published_on_change
+  end
+
+  test "date column published_on_will_change! marks attribute as changed" do
+    post = Post.first!
+    post.published_on_will_change!
+    assert post.published_on_changed?
+  end
+
+  test "date column published_on_was returns original value before change" do
+    post = Post.first!
+    assert_equal ORIGINAL_PUBLISHED_ON, post.published_on_was
+  end
+
+  test "date column published_on_was returns old value after assignment" do
+    post = Post.first!
+    post.published_on = NEW_PUBLISHED_ON
+    assert_equal ORIGINAL_PUBLISHED_ON, post.published_on_was
+  end
+
+  test "date column restore_published_on! restores the original value" do
+    post = Post.first!
+    post.published_on = NEW_PUBLISHED_ON
+    post.restore_published_on!
+    assert_equal ORIGINAL_PUBLISHED_ON, post.published_on
+    assert_equal false, post.published_on_changed?
+  end
+
+  test "date column clear_published_on_change clears dirty state" do
+    post = Post.first!
+    post.published_on = NEW_PUBLISHED_ON
+    post.clear_published_on_change
+    assert_equal false, post.published_on_changed?
+  end
+
+  test "date column will_save_change_to_published_on? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.will_save_change_to_published_on?
+  end
+
+  test "date column will_save_change_to_published_on? returns true after assignment" do
+    post = Post.first!
+    post.published_on = NEW_PUBLISHED_ON
+    assert post.will_save_change_to_published_on?
+  end
+
+  test "date column published_on_change_to_be_saved returns nil before change" do
+    post = Post.first!
+    assert_nil post.published_on_change_to_be_saved
+  end
+
+  test "date column published_on_change_to_be_saved returns pending change after assignment" do
+    post = Post.first!
+    post.published_on = NEW_PUBLISHED_ON
+    assert_equal [ORIGINAL_PUBLISHED_ON, NEW_PUBLISHED_ON], post.published_on_change_to_be_saved
+  end
+
+  test "date column published_on_in_database returns the DB value" do
+    post = Post.first!
+    assert_equal ORIGINAL_PUBLISHED_ON, post.published_on_in_database
+  end
+
+  # --- Dirty tracking: after save ---
+
+  test "date column published_on_previously_changed? returns true after save with change" do
+    post = Post.first!
+    post.published_on = NEW_PUBLISHED_ON
+    post.save!
+    assert post.published_on_previously_changed?
+  end
+
+  test "date column published_on_previous_change returns [old, new] after save" do
+    post = Post.first!
+    post.published_on = NEW_PUBLISHED_ON
+    post.save!
+    assert_equal [ORIGINAL_PUBLISHED_ON, NEW_PUBLISHED_ON], post.published_on_previous_change
+  end
+
+  test "date column published_on_previously_was returns old value after save" do
+    post = Post.first!
+    post.published_on = NEW_PUBLISHED_ON
+    post.save!
+    assert_equal ORIGINAL_PUBLISHED_ON, post.published_on_previously_was
+  end
+
+  test "date column saved_change_to_published_on? returns false without save" do
+    post = Post.first!
+    assert_equal false, post.saved_change_to_published_on?
+  end
+
+  test "date column saved_change_to_published_on? returns true after save with change" do
+    post = Post.first!
+    post.published_on = NEW_PUBLISHED_ON
+    post.save!
+    assert post.saved_change_to_published_on?
+  end
+
+  test "date column saved_change_to_published_on returns nil without save" do
+    post = Post.first!
+    assert_nil post.saved_change_to_published_on
+  end
+
+  test "date column saved_change_to_published_on returns [old, new] after save" do
+    post = Post.first!
+    post.published_on = NEW_PUBLISHED_ON
+    post.save!
+    assert_equal [ORIGINAL_PUBLISHED_ON, NEW_PUBLISHED_ON], post.saved_change_to_published_on
+  end
+
+  test "date column published_on_before_last_save returns old value after save" do
+    post = Post.first!
+    post.published_on = NEW_PUBLISHED_ON
+    post.save!
+    assert_equal ORIGINAL_PUBLISHED_ON, post.published_on_before_last_save
+  end
+end
+
 class PostCreatedAtTest < ActiveSupport::TestCase
   ORIGINAL_CREATED_AT = Time.utc(2024, 1, 1)
   NEW_CREATED_AT = Time.utc(2099, 1, 1)
