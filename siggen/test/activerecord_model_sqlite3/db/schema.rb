@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_23_151634) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_23_152249) do
   create_table "posts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -19,6 +19,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_23_151634) do
     t.boolean "published"
     t.date "published_on"
     t.float "rating"
+    t.time "start_time"
     t.binary "thumbnail"
     t.string "title"
     t.datetime "updated_at", null: false

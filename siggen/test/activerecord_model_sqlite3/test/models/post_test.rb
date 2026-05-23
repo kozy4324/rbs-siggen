@@ -1732,3 +1732,182 @@ class PostCreatedAtTest < ActiveSupport::TestCase
     assert_equal ORIGINAL_CREATED_AT, post.created_at_before_last_save
   end
 end
+
+class PostStartTimeTest < ActiveSupport::TestCase
+  ORIGINAL_START_TIME = Time.utc(2000, 1, 1, 10, 0, 0)
+  NEW_START_TIME = Time.utc(2000, 1, 1, 20, 0, 0)
+
+  # --- getter / setter ---
+
+  test "time column start_time is typed as ActiveSupport::TimeWithZone" do
+    post = Post.first!
+    assert_instance_of ActiveSupport::TimeWithZone, post.start_time
+  end
+
+  test "time column start_time= sets a new Time value" do
+    post = Post.first!
+    post.start_time = NEW_START_TIME
+    assert_equal NEW_START_TIME, post.start_time
+  end
+
+  # --- BeforeTypeCast / ForDatabase ---
+
+  test "time column start_time_before_type_cast returns untyped" do
+    post = Post.first!
+    assert_equal "2000-01-01 10:00:00", post.start_time_before_type_cast
+  end
+
+  test "time column start_time_for_database returns untyped" do
+    post = Post.first!
+    assert_equal ORIGINAL_START_TIME, post.start_time_for_database
+  end
+
+  # --- came_from_user? / query method ---
+
+  test "time column start_time_came_from_user? returns false for DB-loaded record" do
+    post = Post.first!
+    assert_equal false, post.start_time_came_from_user?
+  end
+
+  test "time column start_time? returns bool" do
+    post = Post.first!
+    assert post.start_time?
+  end
+
+  # --- Dirty tracking: in-memory change ---
+
+  test "time column start_time_changed? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.start_time_changed?
+  end
+
+  test "time column start_time_changed? returns true after assignment" do
+    post = Post.first!
+    post.start_time = NEW_START_TIME
+    assert post.start_time_changed?
+  end
+
+  test "time column start_time_change returns nil before change" do
+    post = Post.first!
+    assert_nil post.start_time_change
+  end
+
+  test "time column start_time_change returns [old, new] after assignment" do
+    post = Post.first!
+    post.start_time = NEW_START_TIME
+    assert_equal [ORIGINAL_START_TIME, NEW_START_TIME], post.start_time_change
+  end
+
+  test "time column start_time_will_change! marks attribute as changed" do
+    post = Post.first!
+    post.start_time_will_change!
+    assert post.start_time_changed?
+  end
+
+  test "time column start_time_was returns original value before change" do
+    post = Post.first!
+    assert_equal ORIGINAL_START_TIME, post.start_time_was
+  end
+
+  test "time column start_time_was returns old value after assignment" do
+    post = Post.first!
+    post.start_time = NEW_START_TIME
+    assert_equal ORIGINAL_START_TIME, post.start_time_was
+  end
+
+  test "time column restore_start_time! restores the original value" do
+    post = Post.first!
+    post.start_time = NEW_START_TIME
+    post.restore_start_time!
+    assert_equal ORIGINAL_START_TIME, post.start_time
+    assert_equal false, post.start_time_changed?
+  end
+
+  test "time column clear_start_time_change clears dirty state" do
+    post = Post.first!
+    post.start_time = NEW_START_TIME
+    post.clear_start_time_change
+    assert_equal false, post.start_time_changed?
+  end
+
+  test "time column will_save_change_to_start_time? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.will_save_change_to_start_time?
+  end
+
+  test "time column will_save_change_to_start_time? returns true after assignment" do
+    post = Post.first!
+    post.start_time = NEW_START_TIME
+    assert post.will_save_change_to_start_time?
+  end
+
+  test "time column start_time_change_to_be_saved returns nil before change" do
+    post = Post.first!
+    assert_nil post.start_time_change_to_be_saved
+  end
+
+  test "time column start_time_change_to_be_saved returns pending change after assignment" do
+    post = Post.first!
+    post.start_time = NEW_START_TIME
+    assert_equal [ORIGINAL_START_TIME, NEW_START_TIME], post.start_time_change_to_be_saved
+  end
+
+  test "time column start_time_in_database returns the DB value" do
+    post = Post.first!
+    assert_equal ORIGINAL_START_TIME, post.start_time_in_database
+  end
+
+  # --- Dirty tracking: after save ---
+
+  test "time column start_time_previously_changed? returns true after save with change" do
+    post = Post.first!
+    post.start_time = NEW_START_TIME
+    post.save!
+    assert post.start_time_previously_changed?
+  end
+
+  test "time column start_time_previous_change returns [old, new] after save" do
+    post = Post.first!
+    post.start_time = NEW_START_TIME
+    post.save!
+    assert_equal [ORIGINAL_START_TIME, NEW_START_TIME], post.start_time_previous_change
+  end
+
+  test "time column start_time_previously_was returns old value after save" do
+    post = Post.first!
+    post.start_time = NEW_START_TIME
+    post.save!
+    assert_equal ORIGINAL_START_TIME, post.start_time_previously_was
+  end
+
+  test "time column saved_change_to_start_time? returns false without save" do
+    post = Post.first!
+    assert_equal false, post.saved_change_to_start_time?
+  end
+
+  test "time column saved_change_to_start_time? returns true after save with change" do
+    post = Post.first!
+    post.start_time = NEW_START_TIME
+    post.save!
+    assert post.saved_change_to_start_time?
+  end
+
+  test "time column saved_change_to_start_time returns nil without save" do
+    post = Post.first!
+    assert_nil post.saved_change_to_start_time
+  end
+
+  test "time column saved_change_to_start_time returns [old, new] after save" do
+    post = Post.first!
+    post.start_time = NEW_START_TIME
+    post.save!
+    assert_equal [ORIGINAL_START_TIME, NEW_START_TIME], post.saved_change_to_start_time
+  end
+
+  test "time column start_time_before_last_save returns old value after save" do
+    post = Post.first!
+    post.start_time = NEW_START_TIME
+    post.save!
+    assert_equal ORIGINAL_START_TIME, post.start_time_before_last_save
+  end
+end

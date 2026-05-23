@@ -8,6 +8,7 @@ one:
   published: true
   published_on: "2024-01-01"
   rating: 4.5
+  start_time: "10:00:00"
   thumbnail: hello
   views_count: 1000000
   created_at: "2024-01-01 00:00:00"
@@ -21,6 +22,7 @@ two:
   published: true
   published_on: "2024-01-01"
   rating: 4.5
+  start_time: "10:00:00"
   thumbnail: hello
   views_count: 1000000
   created_at: "2024-01-01 00:00:00"
