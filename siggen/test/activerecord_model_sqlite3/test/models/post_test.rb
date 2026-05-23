@@ -498,3 +498,172 @@ class PostTitleTest < ActiveSupport::TestCase
     assert_equal "MyString", post.title_before_last_save
   end
 end
+
+class PostCreatedAtTest < ActiveSupport::TestCase
+  ORIGINAL_CREATED_AT = Time.utc(2024, 1, 1)
+  NEW_CREATED_AT = Time.utc(2099, 1, 1)
+
+  test "datetime column created_at is typed as ActiveSupport::TimeWithZone" do
+    post = Post.first!
+    assert_instance_of ActiveSupport::TimeWithZone, post.created_at
+  end
+
+  test "datetime column created_at= sets a new Time value" do
+    post = Post.first!
+    post.created_at = NEW_CREATED_AT
+    assert_equal NEW_CREATED_AT, post.created_at
+  end
+
+  test "datetime column created_at_before_type_cast returns untyped" do
+    post = Post.first!
+    assert_equal "2024-01-01 00:00:00", post.created_at_before_type_cast
+  end
+
+  test "datetime column created_at_for_database returns ActiveSupport::TimeWithZone" do
+    post = Post.first!
+    assert_equal ORIGINAL_CREATED_AT, post.created_at_for_database
+  end
+
+  test "datetime column created_at_came_from_user? returns false for DB-loaded record" do
+    post = Post.first!
+    assert_equal false, post.created_at_came_from_user?
+  end
+
+  test "datetime column created_at? returns true for non-nil value" do
+    post = Post.first!
+    assert post.created_at?
+  end
+
+  test "datetime column created_at_changed? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.created_at_changed?
+  end
+
+  test "datetime column created_at_changed? returns true after assignment" do
+    post = Post.first!
+    post.created_at = NEW_CREATED_AT
+    assert post.created_at_changed?
+  end
+
+  test "datetime column created_at_change returns nil before change" do
+    post = Post.first!
+    assert_nil post.created_at_change
+  end
+
+  test "datetime column created_at_change returns [old, new] after assignment" do
+    post = Post.first!
+    post.created_at = NEW_CREATED_AT
+    assert_equal [ORIGINAL_CREATED_AT, NEW_CREATED_AT], post.created_at_change
+  end
+
+  test "datetime column created_at_will_change! marks attribute as changed" do
+    post = Post.first!
+    post.created_at_will_change!
+    assert post.created_at_changed?
+  end
+
+  test "datetime column created_at_was returns original value before change" do
+    post = Post.first!
+    assert_equal ORIGINAL_CREATED_AT, post.created_at_was
+  end
+
+  test "datetime column created_at_was returns old value after assignment" do
+    post = Post.first!
+    post.created_at = NEW_CREATED_AT
+    assert_equal ORIGINAL_CREATED_AT, post.created_at_was
+  end
+
+  test "datetime column restore_created_at! restores the original value" do
+    post = Post.first!
+    post.created_at = NEW_CREATED_AT
+    post.restore_created_at!
+    assert_equal ORIGINAL_CREATED_AT, post.created_at
+    assert_equal false, post.created_at_changed?
+  end
+
+  test "datetime column clear_created_at_change clears dirty state" do
+    post = Post.first!
+    post.created_at = NEW_CREATED_AT
+    post.clear_created_at_change
+    assert_equal false, post.created_at_changed?
+  end
+
+  test "datetime column will_save_change_to_created_at? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.will_save_change_to_created_at?
+  end
+
+  test "datetime column will_save_change_to_created_at? returns true after assignment" do
+    post = Post.first!
+    post.created_at = NEW_CREATED_AT
+    assert post.will_save_change_to_created_at?
+  end
+
+  test "datetime column created_at_change_to_be_saved returns nil before change" do
+    post = Post.first!
+    assert_nil post.created_at_change_to_be_saved
+  end
+
+  test "datetime column created_at_change_to_be_saved returns pending change after assignment" do
+    post = Post.first!
+    post.created_at = NEW_CREATED_AT
+    assert_equal [ORIGINAL_CREATED_AT, NEW_CREATED_AT], post.created_at_change_to_be_saved
+  end
+
+  test "datetime column created_at_in_database returns the DB value" do
+    post = Post.first!
+    assert_equal ORIGINAL_CREATED_AT, post.created_at_in_database
+  end
+
+  test "datetime column created_at_previously_changed? returns true after save with change" do
+    post = Post.first!
+    post.created_at = NEW_CREATED_AT
+    post.save!
+    assert post.created_at_previously_changed?
+  end
+
+  test "datetime column created_at_previous_change returns [old, new] after save" do
+    post = Post.first!
+    post.created_at = NEW_CREATED_AT
+    post.save!
+    assert_equal [ORIGINAL_CREATED_AT, NEW_CREATED_AT], post.created_at_previous_change
+  end
+
+  test "datetime column created_at_previously_was returns old value after save" do
+    post = Post.first!
+    post.created_at = NEW_CREATED_AT
+    post.save!
+    assert_equal ORIGINAL_CREATED_AT, post.created_at_previously_was
+  end
+
+  test "datetime column saved_change_to_created_at? returns false without save" do
+    post = Post.first!
+    assert_equal false, post.saved_change_to_created_at?
+  end
+
+  test "datetime column saved_change_to_created_at? returns true after save with change" do
+    post = Post.first!
+    post.created_at = NEW_CREATED_AT
+    post.save!
+    assert post.saved_change_to_created_at?
+  end
+
+  test "datetime column saved_change_to_created_at returns nil without save" do
+    post = Post.first!
+    assert_nil post.saved_change_to_created_at
+  end
+
+  test "datetime column saved_change_to_created_at returns [old, new] after save" do
+    post = Post.first!
+    post.created_at = NEW_CREATED_AT
+    post.save!
+    assert_equal [ORIGINAL_CREATED_AT, NEW_CREATED_AT], post.saved_change_to_created_at
+  end
+
+  test "datetime column created_at_before_last_save returns old value after save" do
+    post = Post.first!
+    post.created_at = NEW_CREATED_AT
+    post.save!
+    assert_equal ORIGINAL_CREATED_AT, post.created_at_before_last_save
+  end
+end
