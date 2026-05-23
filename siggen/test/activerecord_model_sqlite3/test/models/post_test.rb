@@ -675,6 +675,182 @@ class PostThumbnailTest < ActiveSupport::TestCase
   end
 end
 
+class PostPublishedTest < ActiveSupport::TestCase
+  # --- getter / setter ---
+
+  test "boolean column published is typed as bool" do
+    post = Post.first!
+    assert_equal true, post.published
+  end
+
+  test "boolean column published= sets a new bool value" do
+    post = Post.first!
+    post.published = false
+    assert_equal false, post.published
+  end
+
+  # --- BeforeTypeCast / ForDatabase ---
+
+  test "boolean column published_before_type_cast returns untyped" do
+    post = Post.first!
+    assert_equal 1, post.published_before_type_cast
+  end
+
+  test "boolean column published_for_database returns untyped" do
+    post = Post.first!
+    assert_equal true, post.published_for_database
+  end
+
+  # --- came_from_user? / query method ---
+
+  test "boolean column published_came_from_user? returns false for DB-loaded record" do
+    post = Post.first!
+    assert_equal false, post.published_came_from_user?
+  end
+
+  test "boolean column published? returns bool" do
+    post = Post.first!
+    assert post.published?
+  end
+
+  # --- Dirty tracking: in-memory change ---
+
+  test "boolean column published_changed? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.published_changed?
+  end
+
+  test "boolean column published_changed? returns true after assignment" do
+    post = Post.first!
+    post.published = false
+    assert post.published_changed?
+  end
+
+  test "boolean column published_change returns nil before change" do
+    post = Post.first!
+    assert_nil post.published_change
+  end
+
+  test "boolean column published_change returns [old, new] after assignment" do
+    post = Post.first!
+    post.published = false
+    assert_equal [true, false], post.published_change
+  end
+
+  test "boolean column published_will_change! marks attribute as changed" do
+    post = Post.first!
+    post.published_will_change!
+    assert post.published_changed?
+  end
+
+  test "boolean column published_was returns original value before change" do
+    post = Post.first!
+    assert_equal true, post.published_was
+  end
+
+  test "boolean column published_was returns old value after assignment" do
+    post = Post.first!
+    post.published = false
+    assert_equal true, post.published_was
+  end
+
+  test "boolean column restore_published! restores the original value" do
+    post = Post.first!
+    post.published = false
+    post.restore_published!
+    assert_equal true, post.published
+    assert_equal false, post.published_changed?
+  end
+
+  test "boolean column clear_published_change clears dirty state" do
+    post = Post.first!
+    post.published = false
+    post.clear_published_change
+    assert_equal false, post.published_changed?
+  end
+
+  test "boolean column will_save_change_to_published? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.will_save_change_to_published?
+  end
+
+  test "boolean column will_save_change_to_published? returns true after assignment" do
+    post = Post.first!
+    post.published = false
+    assert post.will_save_change_to_published?
+  end
+
+  test "boolean column published_change_to_be_saved returns nil before change" do
+    post = Post.first!
+    assert_nil post.published_change_to_be_saved
+  end
+
+  test "boolean column published_change_to_be_saved returns pending change after assignment" do
+    post = Post.first!
+    post.published = false
+    assert_equal [true, false], post.published_change_to_be_saved
+  end
+
+  test "boolean column published_in_database returns the DB value" do
+    post = Post.first!
+    assert_equal true, post.published_in_database
+  end
+
+  # --- Dirty tracking: after save ---
+
+  test "boolean column published_previously_changed? returns true after save with change" do
+    post = Post.first!
+    post.published = false
+    post.save!
+    assert post.published_previously_changed?
+  end
+
+  test "boolean column published_previous_change returns [old, new] after save" do
+    post = Post.first!
+    post.published = false
+    post.save!
+    assert_equal [true, false], post.published_previous_change
+  end
+
+  test "boolean column published_previously_was returns old value after save" do
+    post = Post.first!
+    post.published = false
+    post.save!
+    assert_equal true, post.published_previously_was
+  end
+
+  test "boolean column saved_change_to_published? returns false without save" do
+    post = Post.first!
+    assert_equal false, post.saved_change_to_published?
+  end
+
+  test "boolean column saved_change_to_published? returns true after save with change" do
+    post = Post.first!
+    post.published = false
+    post.save!
+    assert post.saved_change_to_published?
+  end
+
+  test "boolean column saved_change_to_published returns nil without save" do
+    post = Post.first!
+    assert_nil post.saved_change_to_published
+  end
+
+  test "boolean column saved_change_to_published returns [old, new] after save" do
+    post = Post.first!
+    post.published = false
+    post.save!
+    assert_equal [true, false], post.saved_change_to_published
+  end
+
+  test "boolean column published_before_last_save returns old value after save" do
+    post = Post.first!
+    post.published = false
+    post.save!
+    assert_equal true, post.published_before_last_save
+  end
+end
+
 class PostCreatedAtTest < ActiveSupport::TestCase
   ORIGINAL_CREATED_AT = Time.utc(2024, 1, 1)
   NEW_CREATED_AT = Time.utc(2099, 1, 1)

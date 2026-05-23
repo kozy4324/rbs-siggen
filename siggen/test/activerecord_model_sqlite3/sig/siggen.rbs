@@ -4,6 +4,7 @@
 # create_table "posts", force: :cascade do |t|
 #   t.text "body"
 #   t.datetime "created_at", null: false
+#   t.boolean "published"
 #   t.binary "thumbnail"
 #   t.string "title"
 #   t.datetime "updated_at", null: false
@@ -303,6 +304,131 @@ class Post < ::ApplicationRecord
     # ```
     #
     def created_at_in_database: () -> ::ActiveSupport::TimeWithZone
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def published: () -> bool?
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def published=: (bool? value) -> void
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def published_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def published_for_database: () -> untyped
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    def published_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def published?: () -> bool
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def published_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def published_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def published_change: () -> [ bool?, bool? ]?
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def published_will_change!: () -> void
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def published_was: () -> bool?
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def published_previous_change: () -> [ bool?, bool? ]?
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def published_previously_was: () -> bool?
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def restore_published!: () -> void
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def clear_published_change: () -> void
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def saved_change_to_published?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def saved_change_to_published: () -> [ bool?, bool? ]?
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def published_before_last_save: () -> bool?
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def will_save_change_to_published?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def published_change_to_be_saved: () -> [ bool?, bool? ]?
+
+    # ```ruby
+    # t.boolean "published"
+    # ```
+    #
+    def published_in_database: () -> bool?
 
     # ```ruby
     # t.binary "thumbnail"
