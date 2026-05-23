@@ -5,6 +5,7 @@
 #   t.text "body"
 #   t.datetime "created_at", null: false
 #   t.integer "likes_count"
+#   t.json "metadata"
 #   t.decimal "price"
 #   t.boolean "published"
 #   t.date "published_on"
@@ -434,6 +435,131 @@ class Post < ::ApplicationRecord
     # ```
     #
     def likes_count_in_database: () -> ::Integer?
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def metadata: () -> untyped?
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def metadata=: (untyped? value) -> void
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def metadata_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def metadata_for_database: () -> untyped
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    def metadata_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def metadata?: () -> bool
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def metadata_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def metadata_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def metadata_change: () -> [ untyped?, untyped? ]?
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def metadata_will_change!: () -> void
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def metadata_was: () -> untyped?
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def metadata_previous_change: () -> [ untyped?, untyped? ]?
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def metadata_previously_was: () -> untyped?
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def restore_metadata!: () -> void
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def clear_metadata_change: () -> void
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def saved_change_to_metadata?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def saved_change_to_metadata: () -> [ untyped?, untyped? ]?
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def metadata_before_last_save: () -> untyped?
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def will_save_change_to_metadata?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def metadata_change_to_be_saved: () -> [ untyped?, untyped? ]?
+
+    # ```ruby
+    # t.json "metadata"
+    # ```
+    #
+    def metadata_in_database: () -> untyped?
 
     # ```ruby
     # t.decimal "price"

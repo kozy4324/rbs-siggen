@@ -4,6 +4,8 @@ one:
   title: MyString
   body: MyText
   likes_count: 500
+  metadata:
+    key: value
   price: "9.99"
   published: true
   published_on: "2024-01-01"
@@ -18,6 +20,8 @@ two:
   title: MyString
   body: MyText
   likes_count: 500
+  metadata:
+    key: value
   price: "9.99"
   published: true
   published_on: "2024-01-01"

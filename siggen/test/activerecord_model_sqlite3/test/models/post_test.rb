@@ -851,6 +851,185 @@ class PostPublishedTest < ActiveSupport::TestCase
   end
 end
 
+class PostMetadataTest < ActiveSupport::TestCase
+  ORIGINAL_METADATA = { "key" => "value" }.freeze
+  NEW_METADATA = { "key" => "other" }.freeze
+
+  # --- getter / setter ---
+
+  test "json column metadata is typed as untyped" do
+    post = Post.first!
+    assert_equal(ORIGINAL_METADATA, post.metadata)
+  end
+
+  test "json column metadata= sets a new value" do
+    post = Post.first!
+    post.metadata = NEW_METADATA
+    assert_equal(NEW_METADATA, post.metadata)
+  end
+
+  # --- BeforeTypeCast / ForDatabase ---
+
+  test "json column metadata_before_type_cast returns untyped" do
+    post = Post.first!
+    assert_equal '{"key":"value"}', post.metadata_before_type_cast
+  end
+
+  test "json column metadata_for_database returns untyped" do
+    post = Post.first!
+    assert_equal '{"key":"value"}', post.metadata_for_database
+  end
+
+  # --- came_from_user? / query method ---
+
+  test "json column metadata_came_from_user? returns false for DB-loaded record" do
+    post = Post.first!
+    assert_equal false, post.metadata_came_from_user?
+  end
+
+  test "json column metadata? returns bool" do
+    post = Post.first!
+    assert post.metadata?
+  end
+
+  # --- Dirty tracking: in-memory change ---
+
+  test "json column metadata_changed? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.metadata_changed?
+  end
+
+  test "json column metadata_changed? returns true after assignment" do
+    post = Post.first!
+    post.metadata = NEW_METADATA
+    assert post.metadata_changed?
+  end
+
+  test "json column metadata_change returns nil before change" do
+    post = Post.first!
+    assert_nil post.metadata_change
+  end
+
+  test "json column metadata_change returns [old, new] after assignment" do
+    post = Post.first!
+    post.metadata = NEW_METADATA
+    assert_equal [ORIGINAL_METADATA, NEW_METADATA], post.metadata_change
+  end
+
+  test "json column metadata_will_change! marks attribute as changed" do
+    post = Post.first!
+    post.metadata_will_change!
+    assert post.metadata_changed?
+  end
+
+  test "json column metadata_was returns original value before change" do
+    post = Post.first!
+    assert_equal(ORIGINAL_METADATA, post.metadata_was)
+  end
+
+  test "json column metadata_was returns old value after assignment" do
+    post = Post.first!
+    post.metadata = NEW_METADATA
+    assert_equal(ORIGINAL_METADATA, post.metadata_was)
+  end
+
+  test "json column restore_metadata! restores the original value" do
+    post = Post.first!
+    post.metadata = NEW_METADATA
+    post.restore_metadata!
+    assert_equal(ORIGINAL_METADATA, post.metadata)
+    assert_equal false, post.metadata_changed?
+  end
+
+  test "json column clear_metadata_change clears dirty state" do
+    post = Post.first!
+    post.metadata = NEW_METADATA
+    post.clear_metadata_change
+    assert_equal false, post.metadata_changed?
+  end
+
+  test "json column will_save_change_to_metadata? returns false before change" do
+    post = Post.first!
+    assert_equal false, post.will_save_change_to_metadata?
+  end
+
+  test "json column will_save_change_to_metadata? returns true after assignment" do
+    post = Post.first!
+    post.metadata = NEW_METADATA
+    assert post.will_save_change_to_metadata?
+  end
+
+  test "json column metadata_change_to_be_saved returns nil before change" do
+    post = Post.first!
+    assert_nil post.metadata_change_to_be_saved
+  end
+
+  test "json column metadata_change_to_be_saved returns pending change after assignment" do
+    post = Post.first!
+    post.metadata = NEW_METADATA
+    assert_equal [ORIGINAL_METADATA, NEW_METADATA], post.metadata_change_to_be_saved
+  end
+
+  test "json column metadata_in_database returns the DB value" do
+    post = Post.first!
+    assert_equal(ORIGINAL_METADATA, post.metadata_in_database)
+  end
+
+  # --- Dirty tracking: after save ---
+
+  test "json column metadata_previously_changed? returns true after save with change" do
+    post = Post.first!
+    post.metadata = NEW_METADATA
+    post.save!
+    assert post.metadata_previously_changed?
+  end
+
+  test "json column metadata_previous_change returns [old, new] after save" do
+    post = Post.first!
+    post.metadata = NEW_METADATA
+    post.save!
+    assert_equal [ORIGINAL_METADATA, NEW_METADATA], post.metadata_previous_change
+  end
+
+  test "json column metadata_previously_was returns old value after save" do
+    post = Post.first!
+    post.metadata = NEW_METADATA
+    post.save!
+    assert_equal(ORIGINAL_METADATA, post.metadata_previously_was)
+  end
+
+  test "json column saved_change_to_metadata? returns false without save" do
+    post = Post.first!
+    assert_equal false, post.saved_change_to_metadata?
+  end
+
+  test "json column saved_change_to_metadata? returns true after save with change" do
+    post = Post.first!
+    post.metadata = NEW_METADATA
+    post.save!
+    assert post.saved_change_to_metadata?
+  end
+
+  test "json column saved_change_to_metadata returns nil without save" do
+    post = Post.first!
+    assert_nil post.saved_change_to_metadata
+  end
+
+  test "json column saved_change_to_metadata returns [old, new] after save" do
+    post = Post.first!
+    post.metadata = NEW_METADATA
+    post.save!
+    assert_equal [ORIGINAL_METADATA, NEW_METADATA], post.saved_change_to_metadata
+  end
+
+  test "json column metadata_before_last_save returns old value after save" do
+    post = Post.first!
+    post.metadata = NEW_METADATA
+    post.save!
+    assert_equal(ORIGINAL_METADATA, post.metadata_before_last_save)
+  end
+end
+
 class PostLikesCountTest < ActiveSupport::TestCase
   # --- getter / setter ---
 
