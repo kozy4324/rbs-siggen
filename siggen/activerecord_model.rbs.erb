@@ -16,35 +16,60 @@ module ActiveRecord
         # ```
         class <%%= table_name.classify %> < ::ApplicationRecord
           module GeneratedAttributeMethods
-            <%-# https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-create_table %>
-            <%-# id が false 以外で primary_key の値で ID カラムが自動生成される %>
-            <%-# primary_key を指定しない場合は :id がdefault %>
-            <%-# id の値 Symbol が type になる、省略すると Integer %>
-            <%-# ただし primary_key の値が Array = composite primary key の場合は自動生成されない %>
-            <%# 上記コメントは一時的なメモ %>
-            <%%- name = "id" -%>
-            <%- type = "Integer?" -%>
-            def <%%= name %>: () -> <%= type %>
-            def <%%= name %>=: (<%= type %> value) -> void
-            def <%%= name %>_before_type_cast: () -> untyped
-            def <%%= name %>_for_database: () -> untyped
-            def <%%= name %>_came_from_user?: () -> bool
-            def <%%= name %>?: () -> bool
-            def <%%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
-            def <%%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
-            def <%%= name %>_change: () -> [<%= type %>, <%= type %>]?
-            def <%%= name %>_will_change!: () -> void
-            def <%%= name %>_was: () -> <%= type %>
-            def <%%= name %>_previous_change: () -> [<%= type %>, <%= type %>]?
-            def <%%= name %>_previously_was: () -> <%= type %>
-            def restore_<%%= name %>!: () -> void
-            def clear_<%%= name %>_change: () -> void
-            def saved_change_to_<%%= name %>?: (?from: untyped, ?to: untyped) -> bool
-            def saved_change_to_<%%= name %>: () -> [<%= type %>, <%= type %>]?
-            def <%%= name %>_before_last_save: () -> <%= type %>
-            def will_save_change_to_<%%= name %>?: (?from: untyped, ?to: untyped) -> bool
-            def <%%= name %>_change_to_be_saved: () -> [<%= type %>, <%= type %>]?
-            def <%%= name %>_in_database: () -> <%= type %>
+            <%- map = {
+                  # https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/connection_adapters/abstract/schema_definitions.rb#L331-L332
+                  bigint: "::Integer",
+                  binary: "::String",
+                  boolean: "bool",
+                  date: "::Date",
+                  datetime: "::ActiveSupport::TimeWithZone",
+                  decimal: "::BigDecimal",
+                  float: "::Float",
+                  integer: "::Integer",
+                  json: "untyped",
+                  string: "::String",
+                  text: "::String",
+                  time: "::ActiveSupport::TimeWithZone",
+                  timestamp: "::ActiveSupport::TimeWithZone",
+                  virtual: "_",
+                } -%>
+            <%%- map = <%= map.to_a %>.to_h -%>
+            <%%- opt_id = options[:id] -%>
+            <%%- opt_primary_key = options[:primary_key] -%>
+            <%%- unless opt_id == false -%>
+              <%%- if opt_primary_key.is_a?(Array) -%>
+                <%%- name = "id" -%>
+                <%%- type = "Array[untyped]?" -%>
+              <%%- else -%>
+                <%%- name = opt_primary_key || "id" -%>
+                <%%- name = "id" -%>
+                <%%- type = map[opt_id] || "Integer?" -%>
+              <%%- end -%>
+              def <%%= name %>: () -> <%%= type %>
+              def <%%= name %>=: (<%%= type %> value) -> void
+              def <%%= name %>_before_type_cast: () -> untyped
+              def <%%= name %>_for_database: () -> untyped
+              def <%%= name %>_came_from_user?: () -> bool
+              def <%%= name %>?: () -> bool
+              def <%%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+              def <%%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
+              def <%%= name %>_change: () -> [<%%= type %>, <%%= type %>]?
+              def <%%= name %>_will_change!: () -> void
+              def <%%= name %>_was: () -> <%%= type %>
+              def <%%= name %>_previous_change: () -> [<%%= type %>, <%%= type %>]?
+              def <%%= name %>_previously_was: () -> <%%= type %>
+              def restore_<%%= name %>!: () -> void
+              def clear_<%%= name %>_change: () -> void
+              def saved_change_to_<%%= name %>?: (?from: untyped, ?to: untyped) -> bool
+              def saved_change_to_<%%= name %>: () -> [<%%= type %>, <%%= type %>]?
+              def <%%= name %>_before_last_save: () -> <%%= type %>
+              def will_save_change_to_<%%= name %>?: (?from: untyped, ?to: untyped) -> bool
+              def <%%= name %>_change_to_be_saved: () -> [<%%= type %>, <%%= type %>]?
+              def <%%= name %>_in_database: () -> <%%= type %>
+              <%%- if name == "id" -%>
+                alias id_value id
+              <%%- end -%>
+            <%%- end -%>
           end
           include GeneratedAttributeMethods
         end
@@ -55,27 +80,10 @@ module ActiveRecord
 
   module ConnectionAdapters
     module ColumnMethods
-      <%- map = {
-            # https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/connection_adapters/abstract/schema_definitions.rb#L331-L332
-            bigint: "::Integer",
-            binary: "::String",
-            boolean: "bool",
-            date: "::Date",
-            datetime: "::ActiveSupport::TimeWithZone",
-            decimal: "::BigDecimal",
-            float: "::Float",
-            integer: "::Integer",
-            json: "untyped",
-            string: "::String",
-            text: "::String",
-            time: "::ActiveSupport::TimeWithZone",
-            timestamp: "::ActiveSupport::TimeWithZone",
-            virtual: "_",
-          }
-          map.each do |key, type| -%>
+      <%- map.each do |key, type| -%>
         %a{siggen:
           <%- if key == :virtual -%>
-          <%% map = <%= map.to_a %>.to_h %>
+          <%%- map = <%= map.to_a %>.to_h -%>
           <%- type = "<" + "%= map[options[:type]] %" + ">" -%>
           <%- end -%>
           <%- type = type + '<' + '%= "?" unless options[:null] == false %' + '>' -%>

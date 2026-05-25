@@ -1,6 +1,631 @@
 # In schema.rb, this model is declared as:
 #
 # ```ruby
+# create_table "accounts", primary_key: "account_code", id: :string, force: :cascade do |t|
+#   t.string "name"
+# end
+# ```
+class Account < ::ApplicationRecord
+  module GeneratedAttributeMethods
+    def id: () -> ::String
+
+    def id=: (::String value) -> void
+
+    def id_before_type_cast: () -> untyped
+
+    def id_for_database: () -> untyped
+
+    def id_came_from_user?: () -> bool
+
+    def id?: () -> bool
+
+    def id_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    def id_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    def id_change: () -> [ ::String, ::String ]?
+
+    def id_will_change!: () -> void
+
+    def id_was: () -> ::String
+
+    def id_previous_change: () -> [ ::String, ::String ]?
+
+    def id_previously_was: () -> ::String
+
+    def restore_id!: () -> void
+
+    def clear_id_change: () -> void
+
+    def saved_change_to_id?: (?from: untyped, ?to: untyped) -> bool
+
+    def saved_change_to_id: () -> [ ::String, ::String ]?
+
+    def id_before_last_save: () -> ::String
+
+    def will_save_change_to_id?: (?from: untyped, ?to: untyped) -> bool
+
+    def id_change_to_be_saved: () -> [ ::String, ::String ]?
+
+    def id_in_database: () -> ::String
+
+    alias id_value id
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name: () -> ::String?
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name=: (::String? value) -> void
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_for_database: () -> untyped
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    def name_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name?: () -> bool
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_change: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_will_change!: () -> void
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_was: () -> ::String?
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_previous_change: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_previously_was: () -> ::String?
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def restore_name!: () -> void
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def clear_name_change: () -> void
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def saved_change_to_name?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def saved_change_to_name: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_before_last_save: () -> ::String?
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def will_save_change_to_name?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_change_to_be_saved: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_in_database: () -> ::String?
+  end
+  include GeneratedAttributeMethods
+end
+
+# In schema.rb, this model is declared as:
+#
+# ```ruby
+# create_table "articles", id: :string, force: :cascade do |t|
+#   t.string "name"
+# end
+# ```
+class Article < ::ApplicationRecord
+  module GeneratedAttributeMethods
+    def id: () -> ::String
+
+    def id=: (::String value) -> void
+
+    def id_before_type_cast: () -> untyped
+
+    def id_for_database: () -> untyped
+
+    def id_came_from_user?: () -> bool
+
+    def id?: () -> bool
+
+    def id_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    def id_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    def id_change: () -> [ ::String, ::String ]?
+
+    def id_will_change!: () -> void
+
+    def id_was: () -> ::String
+
+    def id_previous_change: () -> [ ::String, ::String ]?
+
+    def id_previously_was: () -> ::String
+
+    def restore_id!: () -> void
+
+    def clear_id_change: () -> void
+
+    def saved_change_to_id?: (?from: untyped, ?to: untyped) -> bool
+
+    def saved_change_to_id: () -> [ ::String, ::String ]?
+
+    def id_before_last_save: () -> ::String
+
+    def will_save_change_to_id?: (?from: untyped, ?to: untyped) -> bool
+
+    def id_change_to_be_saved: () -> [ ::String, ::String ]?
+
+    def id_in_database: () -> ::String
+
+    alias id_value id
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name: () -> ::String?
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name=: (::String? value) -> void
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_for_database: () -> untyped
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    def name_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name?: () -> bool
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_change: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_will_change!: () -> void
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_was: () -> ::String?
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_previous_change: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_previously_was: () -> ::String?
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def restore_name!: () -> void
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def clear_name_change: () -> void
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def saved_change_to_name?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def saved_change_to_name: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_before_last_save: () -> ::String?
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def will_save_change_to_name?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_change_to_be_saved: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.string "name"
+    # ```
+    #
+    def name_in_database: () -> ::String?
+  end
+  include GeneratedAttributeMethods
+end
+
+# In schema.rb, this model is declared as:
+#
+# ```ruby
+# create_table "post_tags", id: false, force: :cascade do |t|
+#   t.integer "post_id", null: false
+#   t.string "tag_name", null: false
+# end
+# ```
+class PostTag < ::ApplicationRecord
+  module GeneratedAttributeMethods
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id: () -> ::Integer
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id=: (::Integer value) -> void
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_for_database: () -> untyped
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    def post_id_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id?: () -> bool
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_change: () -> [ ::Integer, ::Integer ]?
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_will_change!: () -> void
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_was: () -> ::Integer
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_previous_change: () -> [ ::Integer, ::Integer ]?
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_previously_was: () -> ::Integer
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def restore_post_id!: () -> void
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def clear_post_id_change: () -> void
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def saved_change_to_post_id?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def saved_change_to_post_id: () -> [ ::Integer, ::Integer ]?
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_before_last_save: () -> ::Integer
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def will_save_change_to_post_id?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_change_to_be_saved: () -> [ ::Integer, ::Integer ]?
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_in_database: () -> ::Integer
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def tag_name: () -> ::String
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def tag_name=: (::String value) -> void
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def tag_name_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def tag_name_for_database: () -> untyped
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    def tag_name_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def tag_name?: () -> bool
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def tag_name_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def tag_name_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def tag_name_change: () -> [ ::String, ::String ]?
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def tag_name_will_change!: () -> void
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def tag_name_was: () -> ::String
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def tag_name_previous_change: () -> [ ::String, ::String ]?
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def tag_name_previously_was: () -> ::String
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def restore_tag_name!: () -> void
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def clear_tag_name_change: () -> void
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def saved_change_to_tag_name?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def saved_change_to_tag_name: () -> [ ::String, ::String ]?
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def tag_name_before_last_save: () -> ::String
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def will_save_change_to_tag_name?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def tag_name_change_to_be_saved: () -> [ ::String, ::String ]?
+
+    # ```ruby
+    # t.string "tag_name", null: false
+    # ```
+    #
+    def tag_name_in_database: () -> ::String
+  end
+  include GeneratedAttributeMethods
+end
+
+# In schema.rb, this model is declared as:
+#
+# ```ruby
 # create_table "posts", force: :cascade do |t|
 #   t.text "body"
 #   t.datetime "created_at", null: false
@@ -62,6 +687,8 @@ class Post < ::ApplicationRecord
     def id_change_to_be_saved: () -> [ Integer?, Integer? ]?
 
     def id_in_database: () -> Integer?
+
+    alias id_value id
 
     # ```ruby
     # t.text "body"
@@ -1941,18 +2568,435 @@ class Post < ::ApplicationRecord
   include GeneratedAttributeMethods
 end
 
-# Pattern 2: id: :string
-class Article < ::ApplicationRecord
-end
-
-# Pattern 3: id: :string, primary_key: "account_code"
-class Account < ::ApplicationRecord
-end
-
-# Pattern 4: primary_key: [:post_id, :tag_id] (composite primary key)
+# In schema.rb, this model is declared as:
+#
+# ```ruby
+# create_table "taggings", primary_key: ["post_id", "tag_id"], force: :cascade do |t|
+#   t.string "context"
+#   t.integer "post_id", null: false
+#   t.integer "tag_id", null: false
+# end
+# ```
 class Tagging < ::ApplicationRecord
-end
+  module GeneratedAttributeMethods
+    def id: () -> Array[untyped]?
 
-# Pattern 5: id: false
-class PostTag < ::ApplicationRecord
+    def id=: (Array[untyped]? value) -> void
+
+    def id_before_type_cast: () -> untyped
+
+    def id_for_database: () -> untyped
+
+    def id_came_from_user?: () -> bool
+
+    def id?: () -> bool
+
+    def id_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    def id_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    def id_change: () -> [ Array[untyped]?, Array[untyped]? ]?
+
+    def id_will_change!: () -> void
+
+    def id_was: () -> Array[untyped]?
+
+    def id_previous_change: () -> [ Array[untyped]?, Array[untyped]? ]?
+
+    def id_previously_was: () -> Array[untyped]?
+
+    def restore_id!: () -> void
+
+    def clear_id_change: () -> void
+
+    def saved_change_to_id?: (?from: untyped, ?to: untyped) -> bool
+
+    def saved_change_to_id: () -> [ Array[untyped]?, Array[untyped]? ]?
+
+    def id_before_last_save: () -> Array[untyped]?
+
+    def will_save_change_to_id?: (?from: untyped, ?to: untyped) -> bool
+
+    def id_change_to_be_saved: () -> [ Array[untyped]?, Array[untyped]? ]?
+
+    def id_in_database: () -> Array[untyped]?
+
+    alias id_value id
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def context: () -> ::String?
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def context=: (::String? value) -> void
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def context_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def context_for_database: () -> untyped
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    def context_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def context?: () -> bool
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def context_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def context_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def context_change: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def context_will_change!: () -> void
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def context_was: () -> ::String?
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def context_previous_change: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def context_previously_was: () -> ::String?
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def restore_context!: () -> void
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def clear_context_change: () -> void
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def saved_change_to_context?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def saved_change_to_context: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def context_before_last_save: () -> ::String?
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def will_save_change_to_context?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def context_change_to_be_saved: () -> [ ::String?, ::String? ]?
+
+    # ```ruby
+    # t.string "context"
+    # ```
+    #
+    def context_in_database: () -> ::String?
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id: () -> ::Integer
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id=: (::Integer value) -> void
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_for_database: () -> untyped
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    def post_id_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id?: () -> bool
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_change: () -> [ ::Integer, ::Integer ]?
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_will_change!: () -> void
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_was: () -> ::Integer
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_previous_change: () -> [ ::Integer, ::Integer ]?
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_previously_was: () -> ::Integer
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def restore_post_id!: () -> void
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def clear_post_id_change: () -> void
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def saved_change_to_post_id?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def saved_change_to_post_id: () -> [ ::Integer, ::Integer ]?
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_before_last_save: () -> ::Integer
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def will_save_change_to_post_id?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_change_to_be_saved: () -> [ ::Integer, ::Integer ]?
+
+    # ```ruby
+    # t.integer "post_id", null: false
+    # ```
+    #
+    def post_id_in_database: () -> ::Integer
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def tag_id: () -> ::Integer
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def tag_id=: (::Integer value) -> void
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def tag_id_before_type_cast: () -> untyped
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def tag_id_for_database: () -> untyped
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    def tag_id_came_from_user?: () -> bool
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def tag_id?: () -> bool
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def tag_id_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def tag_id_changed?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def tag_id_change: () -> [ ::Integer, ::Integer ]?
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def tag_id_will_change!: () -> void
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def tag_id_was: () -> ::Integer
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def tag_id_previous_change: () -> [ ::Integer, ::Integer ]?
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def tag_id_previously_was: () -> ::Integer
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def restore_tag_id!: () -> void
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def clear_tag_id_change: () -> void
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def saved_change_to_tag_id?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def saved_change_to_tag_id: () -> [ ::Integer, ::Integer ]?
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def tag_id_before_last_save: () -> ::Integer
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def will_save_change_to_tag_id?: (?from: untyped, ?to: untyped) -> bool
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def tag_id_change_to_be_saved: () -> [ ::Integer, ::Integer ]?
+
+    # ```ruby
+    # t.integer "tag_id", null: false
+    # ```
+    #
+    def tag_id_in_database: () -> ::Integer
+  end
+  include GeneratedAttributeMethods
 end
