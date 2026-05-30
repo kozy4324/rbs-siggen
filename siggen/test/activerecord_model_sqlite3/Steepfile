@@ -1,7 +1,7 @@
 target :app do
   signature "sig"
 
-  check "test/models/post_test.rb"
+  check "test/models"
 
   library "minitest"
 end
