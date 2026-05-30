@@ -217,18 +217,14 @@ module RBS
     #: (Parser::AST::Node, untyped) -> Hash[Symbol, untyped]
     def create_arg_hash(node, method_decl)
       send_node = node.type == :block ? node.children.first : node
-      _, _, *args = send_node.children
-      args = args.map { |arg_node| arg_node.type == :kwargs ? arg_node.children : arg_node.children[0] }.flatten
-      positional_args = args.reject { |arg_node| arg_node.respond_to?(:type) && arg_node.type == :pair }
-      keyword_args = args.filter do |arg_node|
-                       arg_node.respond_to?(:type) && arg_node.type == :pair
-                     end.to_h do |pair_node| # rubocop:disable Style/MultilineBlockChain
-                       key = pair_node.children[0].children[0]
-                       val_node = pair_node.children[1]
-                       val = val_node.children[0] || val_node
-                       val = val.type == :true if val.respond_to?(:type) # rubocop:disable Lint/BooleanSymbol
-                       [key, val]
-                     end
+      _, _, *args_raw = send_node.children
+      positional_args = args_raw.reject { |n| n.type == :kwargs }.map { |n| ast_node_to_value(n) }
+      keyword_args = args_raw.filter { |n| n.type == :kwargs }
+                             .flat_map(&:children)
+                             .to_h do |pair_node|
+                               key = pair_node.children[0].children[0]
+                               [key, ast_node_to_value(pair_node.children[1])]
+                             end
 
       type = method_decl.method_def.type.type
       hash = {} #: Hash[Symbol, untyped]
@@ -254,6 +250,21 @@ module RBS
       end
       hash[type.rest_keywords.name] = keyword_args.dup unless type.rest_keywords.nil?
       hash
+    end
+
+    #: (Parser::AST::Node) -> untyped
+    def ast_node_to_value(node)
+      case node.type
+      when :true  then true # rubocop:disable Lint/BooleanSymbol
+      when :false then false # rubocop:disable Lint/BooleanSymbol
+      when :nil   then nil
+      when :int, :float, :str, :sym
+        node.children[0]
+      when :array
+        node.children.map { |child| ast_node_to_value(child) }
+      when :hash
+        node.children.to_h { |pair| [ast_node_to_value(pair.children[0]), ast_node_to_value(pair.children[1])] }
+      end
     end
 
     #: (Hash[Symbol, untyped]) -> untyped

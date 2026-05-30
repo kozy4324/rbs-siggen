@@ -189,5 +189,39 @@ module RBS
 
       assert_equal expected, siggen.generate
     end
+
+    def test_capturing_arguments
+      ruby_string = <<~RUBY
+        class A#{" "}
+          def self.m(a, b)
+            1
+          end
+
+          m(:sym1, [true, 1, "2", :three], key: :val, complicated_val: [:foo, [:bar, :baz], {foo: "fuga"}])
+        end
+      RUBY
+      sig_string = <<~SIG
+        class A
+          %a{siggen:
+            # <%= a.to_json %>
+            # <%= h.to_json %>
+            def generated_<%= a[0] %>: () -> void
+          }
+          def self.m: (*untyped a, **untyped h) -> void
+        end
+      SIG
+      expected = <<~SIGGEN
+        class A
+          # ["sym1",[true,1,"2","three"]]
+          # {"key":"val","complicated_val":["foo",["bar","baz"],{"foo":"fuga"}]}
+          def generated_sym1: () -> void
+        end
+      SIGGEN
+      siggen = RBS::Siggen.new
+      siggen.add_signature(sig_string)
+      siggen.analyze_ruby(ruby_string)
+
+      assert_equal expected, siggen.generate
+    end
   end
 end
