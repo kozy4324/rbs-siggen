@@ -11,6 +11,7 @@ module ActiveRecord
   class Base
     def self.first: () -> instance?
     def self.first!: () -> instance
+    def self.find_by!: (**untyped) -> instance
     def save!: (**untyped options) -> bool
   end
 end
@@ -19,4 +20,31 @@ class ApplicationRecord < ::ActiveRecord::Base
 end
 
 class PostTest < ::ActiveSupport::TestCase
+end
+
+class AccountAccountCodeTest < ::ActiveSupport::TestCase
+end
+
+class AccountIdAliasTest < ::ActiveSupport::TestCase
+end
+
+class ArticleIdTest < ::ActiveSupport::TestCase
+end
+
+class PostTagIdFalseTest < ::ActiveSupport::TestCase
+end
+
+class PostTagPostIdTest < ::ActiveSupport::TestCase
+end
+
+class PostTagTagNameTest < ::ActiveSupport::TestCase
+end
+
+class TaggingIdTest < ::ActiveSupport::TestCase
+end
+
+class TaggingPostIdTest < ::ActiveSupport::TestCase
+end
+
+class TaggingTagIdTest < ::ActiveSupport::TestCase
 end

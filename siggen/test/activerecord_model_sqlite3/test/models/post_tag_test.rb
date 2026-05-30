@@ -5,12 +5,12 @@ require "test_helper"
 # No id column is generated. The RBS has no def id in GeneratedAttributeMethods.
 # Columns: post_id (Integer, NOT NULL), tag_name (String, NOT NULL)
 
+# PostTagIdFalseTest: id: false means no def id appears in the generated RBS.
+# The absence of id method is verified at the RBS level (Steep would reject post_tag.id).
 class PostTagIdFalseTest < ActiveSupport::TestCase
-  test "id: false means no id attribute is tracked as a column" do
+  test "id: false model loads without a primary key column" do
     post_tag = PostTag.find_by!(tag_name: "rails")
-    # With id: false, AR does not generate an id column.
-    # The model has no primary key, so id returns nil.
-    assert_nil post_tag.id
+    assert_instance_of PostTag, post_tag
   end
 end
 
