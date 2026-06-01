@@ -18,6 +18,10 @@ parser = OptionParser.new do |opts|
     options[:rails] = true
   end
 
+  opts.on("--siggen_dir DIR", "For debug") do |dir|
+    options[:siggen_dir] = dir
+  end
+
   opts.on("-v", "--version", "Show version") do
     puts "rbs-siggen #{RBS::Siggen::VERSION}"
     exit
@@ -51,8 +55,12 @@ siggen = RBS::Siggen.new do |env_loader|
   end
 
   if options[:rails]
-    spec = Gem::Specification.find_by_name("rbs-siggen")
-    env_loader.add path: Pathname(spec.gem_dir) / "siggen"
+    if options[:siggen_dir]
+      env_loader.add path: Pathname(options[:siggen_dir])
+    else
+      spec = Gem::Specification.find_by_name("rbs-siggen")
+      env_loader.add path: Pathname(spec.gem_dir) / "siggen"
+    end
   end
 end
 
