@@ -1,8 +1,0 @@
-sources:
-  - type: stdlib
-  - type: rubygems
-
-path: .gem_rbs_collection
-
-gems:
-  - name: minitest

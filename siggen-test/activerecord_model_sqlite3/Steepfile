@@ -1,7 +1,0 @@
-target :app do
-  signature "sig"
-
-  check "test/models"
-
-  library "minitest"
-end

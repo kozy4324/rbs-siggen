@@ -4,6 +4,7 @@ module ActiveSupport
 
   class TestCase < ::Minitest::Test
     def self.test: (::String name) { () [self: ::Minitest::Test] -> void } -> void
+    def self.fixtures: (*untyped) -> void
   end
 end
 
