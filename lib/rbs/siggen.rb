@@ -28,7 +28,7 @@ module RBS
 
     #: (String sig_string, ?name: String) -> void
     def add_signature(sig_string, name: "a.rbs")
-      buffer = RBS::Buffer.new(name:, content: sig_string)
+      buffer = RBS::Buffer.new(name: Pathname(name), content: sig_string)
       _, dirs, decls = RBS::Parser.parse_signature(buffer)
       @env.add_source(RBS::Source::RBS.new(buffer, dirs, decls))
     end
@@ -369,7 +369,12 @@ module RBS
         entry = definition.entry
         return "" if entry.is_a?(::RBS::Environment::InterfaceEntry)
 
-        entry.each_decl.map { |decl| decl.comment&.string }.compact.join("\n")
+        entry.each_decl.filter_map do |decl|
+          case decl
+          when ::RBS::AST::Declarations::Class, ::RBS::AST::Declarations::Module
+            decl.comment&.string
+          end
+        end.join("\n")
       end
     end
 
