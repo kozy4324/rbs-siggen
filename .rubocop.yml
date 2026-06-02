@@ -3,7 +3,7 @@ AllCops:
   NewCops: enable
   SuggestExtensions: false
   Exclude:
-    - "siggen/test/**/*"
+    - "siggen-test/**/*"
     - "vendor/**/*"
 
 Style/StringLiterals:
