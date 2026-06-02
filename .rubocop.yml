@@ -5,6 +5,7 @@ AllCops:
   Exclude:
     - "siggen-test/**/*"
     - "vendor/**/*"
+    - "tmp/**/*"
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
