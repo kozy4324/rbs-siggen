@@ -2,6 +2,8 @@
 
 require "rbs"
 require "steep"
+require "active_support/core_ext/string/inflections"
+require "active_support/core_ext/object/blank"
 require "parser"
 require "erb"
 require "stringio"
@@ -28,7 +30,7 @@ module RBS
     def add_signature(sig_string, name: "a.rbs")
       buffer = RBS::Buffer.new(name:, content: sig_string)
       _, dirs, decls = RBS::Parser.parse_signature(buffer)
-      @env.add_signature(buffer: buffer, directives: dirs, decls: decls)
+      @env.add_source(RBS::Source::RBS.new(buffer, dirs, decls))
     end
 
     #: (path: String) { (Siggen, String) -> void } -> void
@@ -367,7 +369,7 @@ module RBS
         entry = definition.entry
         return "" if entry.is_a?(::RBS::Environment::InterfaceEntry)
 
-        entry.decls.map { |decl| decl.decl.comment&.string }.compact.join("\n")
+        entry.each_decl.map { |decl| decl.comment&.string }.compact.join("\n")
       end
     end
 

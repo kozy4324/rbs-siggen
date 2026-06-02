@@ -34,6 +34,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "activesupport"
-  spec.add_dependency "rbs", "~> 3.0"
-  spec.add_dependency "steep", "~> 1.10"
+  spec.add_dependency "rbs", "~> 4.0"
+  spec.add_dependency "steep", "~> 2.0"
 end
