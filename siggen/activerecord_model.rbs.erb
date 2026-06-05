@@ -41,50 +41,92 @@ module ActiveRecord
                 <%%- type = "Array[untyped]?" -%>
               <%%- elsif opt_primary_key.is_a?(String) || opt_primary_key.is_a?(Symbol) -%>
                 <%%- type = map[opt_id] || "Integer?" -%>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= opt_primary_key %>: () -> <%%= type %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= opt_primary_key %>=: (<%%= type %> value) -> void
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= opt_primary_key %>_before_type_cast: () -> untyped
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= opt_primary_key %>_for_database: () -> untyped
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= opt_primary_key %>_came_from_user?: () -> bool
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= opt_primary_key %>?: () -> bool
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= opt_primary_key %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= opt_primary_key %>_changed?: (?from: untyped, ?to: untyped) -> bool
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= opt_primary_key %>_change: () -> [<%%= type %>, <%%= type %>]?
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= opt_primary_key %>_will_change!: () -> void
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= opt_primary_key %>_was: () -> <%%= type %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= opt_primary_key %>_previous_change: () -> [<%%= type %>, <%%= type %>]?
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= opt_primary_key %>_previously_was: () -> <%%= type %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def restore_<%%= opt_primary_key %>!: () -> void
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def clear_<%%= opt_primary_key %>_change: () -> void
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def saved_change_to_<%%= opt_primary_key %>?: (?from: untyped, ?to: untyped) -> bool
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def saved_change_to_<%%= opt_primary_key %>: () -> [<%%= type %>, <%%= type %>]?
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= opt_primary_key %>_before_last_save: () -> <%%= type %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def will_save_change_to_<%%= opt_primary_key %>?: (?from: untyped, ?to: untyped) -> bool
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= opt_primary_key %>_change_to_be_saved: () -> [<%%= type %>, <%%= type %>]?
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= opt_primary_key %>_in_database: () -> <%%= type %>
               <%%- else -%>
                 <%%- type = map[opt_id] || "Integer?" -%>
               <%%- end -%>
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def id: () -> <%%= type %>
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def id=: (<%%= type %> value) -> void
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def id_before_type_cast: () -> untyped
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def id_for_database: () -> untyped
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def id_came_from_user?: () -> bool
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def id?: () -> bool
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def id_previously_changed?: (?from: untyped, ?to: untyped) -> bool
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def id_changed?: (?from: untyped, ?to: untyped) -> bool
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def id_change: () -> [<%%= type %>, <%%= type %>]?
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def id_will_change!: () -> void
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def id_was: () -> <%%= type %>
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def id_previous_change: () -> [<%%= type %>, <%%= type %>]?
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def id_previously_was: () -> <%%= type %>
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def restore_id!: () -> void
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def clear_id_change: () -> void
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def saved_change_to_id?: (?from: untyped, ?to: untyped) -> bool
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def saved_change_to_id: () -> [<%%= type %>, <%%= type %>]?
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def id_before_last_save: () -> <%%= type %>
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def will_save_change_to_id?: (?from: untyped, ?to: untyped) -> bool
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def id_change_to_be_saved: () -> [<%%= type %>, <%%= type %>]?
+              <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
               def id_in_database: () -> <%%= type %>
             <%%- end -%>
           end
@@ -112,6 +154,7 @@ module ActiveRecord
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= name %>: () -> <%= type %>
 
                 <%-# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/write.rb -%>
@@ -119,6 +162,7 @@ module ActiveRecord
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= name %>=: (<%= type %> value) -> void
 
                 <%-# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/before_type_cast.rb -%>
@@ -126,17 +170,20 @@ module ActiveRecord
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= name %>_before_type_cast: () -> untyped
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_for_database"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= name %>_for_database: () -> untyped
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= name %>_came_from_user?: () -> bool
 
                 <%-# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/query.rb -%>
@@ -144,6 +191,7 @@ module ActiveRecord
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= name %>?: () -> bool
 
                 <%-# https://github.com/rails/rails/blob/v8.1.3/activemodel/lib/active_model/dirty.rb -%>
@@ -151,54 +199,63 @@ module ActiveRecord
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= name %>_change: () -> [<%= type %>, <%= type %>]?
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= name %>_will_change!: () -> void
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= name %>_was: () -> <%= type %>
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= name %>_previous_change: () -> [<%= type %>, <%= type %>]?
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= name %>_previously_was: () -> <%= type %>
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def restore_<%%= name %>!: () -> void
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def clear_<%%= name %>_change: () -> void
 
                 <%-# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/dirty.rb -%>
@@ -206,36 +263,42 @@ module ActiveRecord
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def saved_change_to_<%%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def saved_change_to_<%%= name %>: () -> [<%= type %>, <%= type %>]?
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= name %>_before_last_save: () -> <%= type %>
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def will_save_change_to_<%%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= name %>_change_to_be_saved: () -> [<%= type %>, <%= type %>]?
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
+                <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
                 def <%%= name %>_in_database: () -> <%= type %>
               <%% end %>
             end

@@ -5,4 +5,10 @@ require_relative "config/application"
 
 Rails.application.load_tasks
 
+task :run_siggen do
+  ENV["SIGGEN_DEBUG"] = "1"
+  sh %|../../exe/rbs-siggen --rails --siggen_dir=../../siggen > sig/siggen.rbs|
+  sh %|rake test|
+end
+
 task default: %i[test]
