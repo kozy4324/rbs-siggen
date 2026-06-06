@@ -24,4 +24,11 @@ task :run_erb do
   sh %|ruby -rerb -e 'ERB.new(File.read("#{infile}"), trim_mode: ?-).run' > #{outfile}|
 end
 
+desc "E2E test for siggen"
+task e2e_siggen: [:run_erb] do
+  Dir.chdir("siggen-test/activerecord_model_sqlite3") do
+    sh %(rake run_siggen)
+  end
+end
+
 task install: :run_erb
