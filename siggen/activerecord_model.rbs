@@ -757,7 +757,7 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
                 <%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
-                def <%= name %>=: (::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %> value) -> void
+                def <%= name %>=: ((::ActiveSupport::TimeWithZone | ::Time)<%= "?" unless options[:null] == false %> value) -> void
 
                 # ```ruby
                 # <%= ___source %>
@@ -1842,7 +1842,7 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
                 <%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
-                def <%= name %>=: (::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %> value) -> void
+                def <%= name %>=: ((::ActiveSupport::TimeWithZone | ::Time)<%= "?" unless options[:null] == false %> value) -> void
 
                 # ```ruby
                 # <%= ___source %>
@@ -1997,7 +1997,7 @@ module ActiveRecord
                 # ```
                 # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
                 <%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
-                def <%= name %>=: (::ActiveSupport::TimeWithZone<%= "?" unless options[:null] == false %> value) -> void
+                def <%= name %>=: ((::ActiveSupport::TimeWithZone | ::Time)<%= "?" unless options[:null] == false %> value) -> void
 
                 # ```ruby
                 # <%= ___source %>

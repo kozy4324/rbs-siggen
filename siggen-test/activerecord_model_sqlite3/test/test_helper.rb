@@ -3,7 +3,7 @@ require_relative "../config/environment"
 require "rails/test_help"
 
 require_relative "./tester_patch"
-# ENV["RBS_TEST_LOGLEVEL"] = "warn"
+ENV["RBS_TEST_LOGLEVEL"] = "warn"
 ENV["RBS_TEST_TARGET"] = 'Account,Article,PostTag,Post,Tagging'
 require "rbs/test/setup"
 

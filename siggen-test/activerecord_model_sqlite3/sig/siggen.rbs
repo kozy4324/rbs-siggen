@@ -1052,7 +1052,7 @@ class Post < ::ApplicationRecord
     # ```
     #
     %a{rbs:test:target}
-    def created_at=: (::ActiveSupport::TimeWithZone value) -> void
+    def created_at=: (::ActiveSupport::TimeWithZone | ::Time value) -> void
 
     # ```ruby
     # t.datetime "created_at", null: false
@@ -2366,7 +2366,7 @@ class Post < ::ApplicationRecord
     # ```
     #
     %a{rbs:test:target}
-    def start_time=: (::ActiveSupport::TimeWithZone? value) -> void
+    def start_time=: ((::ActiveSupport::TimeWithZone | ::Time)? value) -> void
 
     # ```ruby
     # t.time "start_time"
@@ -2804,7 +2804,7 @@ class Post < ::ApplicationRecord
     # ```
     #
     %a{rbs:test:target}
-    def updated_at=: (::ActiveSupport::TimeWithZone value) -> void
+    def updated_at=: (::ActiveSupport::TimeWithZone | ::Time value) -> void
 
     # ```ruby
     # t.datetime "updated_at", null: false

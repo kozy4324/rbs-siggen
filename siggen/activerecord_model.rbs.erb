@@ -145,7 +145,15 @@ module ActiveRecord
           <%%- map = <%= map.to_a %>.to_h -%>
           <%- type = "<" + "%= map[options[:type]] %" + ">" -%>
           <%- end -%>
-          <%- type = type + '<' + '%= "?" unless options[:null] == false %' + '>' -%>
+          <%- if type == "::ActiveSupport::TimeWithZone" -%>
+            <%- in_type = "(::ActiveSupport::TimeWithZone | ::Time)" -%>
+            <%- ot_type = type -%>
+          <%- else -%>
+            <%- in_type = type -%>
+            <%- ot_type = type -%>
+          <%- end -%>
+          <%- in_type = in_type + '<' + '%= "?" unless options[:null] == false %' + '>' -%>
+          <%- ot_type = ot_type + '<' + '%= "?" unless options[:null] == false %' + '>' -%>
           class <%%= create_table.table_name.classify %>
             module GeneratedAttributeMethods
               <%% names.each do |name| %>
@@ -155,7 +163,7 @@ module ActiveRecord
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
                 <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
-                def <%%= name %>: () -> <%= type %>
+                def <%%= name %>: () -> <%= ot_type %>
 
                 <%-# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/write.rb -%>
                 # ```ruby
@@ -163,7 +171,7 @@ module ActiveRecord
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
                 <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
-                def <%%= name %>=: (<%= type %> value) -> void
+                def <%%= name %>=: (<%= in_type %> value) -> void
 
                 <%-# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/before_type_cast.rb -%>
                 # ```ruby
@@ -214,7 +222,7 @@ module ActiveRecord
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
                 <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
-                def <%%= name %>_change: () -> [<%= type %>, <%= type %>]?
+                def <%%= name %>_change: () -> [<%= ot_type %>, <%= ot_type %>]?
 
                 # ```ruby
                 # <%%= ___source %>
@@ -228,21 +236,21 @@ module ActiveRecord
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
                 <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
-                def <%%= name %>_was: () -> <%= type %>
+                def <%%= name %>_was: () -> <%= ot_type %>
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
                 <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
-                def <%%= name %>_previous_change: () -> [<%= type %>, <%= type %>]?
+                def <%%= name %>_previous_change: () -> [<%= ot_type %>, <%= ot_type %>]?
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveModel::Dirty"] %>
                 <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
-                def <%%= name %>_previously_was: () -> <%= type %>
+                def <%%= name %>_previously_was: () -> <%= ot_type %>
 
                 # ```ruby
                 # <%%= ___source %>
@@ -271,14 +279,14 @@ module ActiveRecord
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
                 <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
-                def saved_change_to_<%%= name %>: () -> [<%= type %>, <%= type %>]?
+                def saved_change_to_<%%= name %>: () -> [<%= ot_type %>, <%= ot_type %>]?
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
                 <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
-                def <%%= name %>_before_last_save: () -> <%= type %>
+                def <%%= name %>_before_last_save: () -> <%= ot_type %>
 
                 # ```ruby
                 # <%%= ___source %>
@@ -292,14 +300,14 @@ module ActiveRecord
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
                 <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
-                def <%%= name %>_change_to_be_saved: () -> [<%= type %>, <%= type %>]?
+                def <%%= name %>_change_to_be_saved: () -> [<%= ot_type %>, <%= ot_type %>]?
 
                 # ```ruby
                 # <%%= ___source %>
                 # ```
                 # <%%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
                 <%%= ENV["SIGGEN_DEBUG"] ? '%a[rbs:test:target]' : '' %>
-                def <%%= name %>_in_database: () -> <%= type %>
+                def <%%= name %>_in_database: () -> <%= ot_type %>
               <%% end %>
             end
           end
