@@ -25,7 +25,9 @@ task :run_erb do
 end
 
 desc "E2E test for siggen"
-task e2e_siggen: [:run_erb] do
+task :e2e_siggen do
+  ENV["SIGGEN_DEBUG"] = "1"
+  Rake::Task[:run_erb].invoke
   Dir.chdir("siggen-test/activerecord_model_sqlite3") do
     sh %(rake run_siggen)
   end
