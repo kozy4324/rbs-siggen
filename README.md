@@ -78,12 +78,7 @@ class A
 end
 ```
 
-### Special variables
-
-| Variable | Description |
-|---|---|
-| `___source` | Source text of the call site, formatted as comment lines |
-| `___comment_of["Type#method"]` | RBS comment of an existing method definition (`Type#method` for instance, `Type.method` for singleton) |
+For more details, see [docs/template_variable.md](docs/template_variable.md).
 
 ### CLI
 
