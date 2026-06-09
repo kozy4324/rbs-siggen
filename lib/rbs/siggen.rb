@@ -421,7 +421,7 @@ module RBS
         method = definition.methods[name.to_sym]
         return "" unless method
 
-        method.defs.map(&:member).map(&:comment).compact.map(&:string).join("\n")
+        method.defs.map(&:member).map(&:comment).compact.map(&:string).join("\n") # steep:ignore
       else
         entry = definition.entry
         return "" if entry.is_a?(::RBS::Environment::InterfaceEntry)
