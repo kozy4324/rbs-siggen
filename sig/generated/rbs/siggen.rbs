@@ -35,6 +35,12 @@ module RBS
     # : (Parser::AST::Node, untyped) -> Hash[Symbol, untyped]
     def create_arg_hash: (Parser::AST::Node, untyped) -> Hash[Symbol, untyped]
 
+    # : (Parser::AST::Node, untyped) -> Hash[Symbol, untyped]
+    def create_block_variable: (Parser::AST::Node, untyped) -> Hash[Symbol, untyped]
+
+    # : (untyped, Symbol) -> Array[Parser::AST::Node]
+    def collect_block_param_sends: (untyped, Symbol) -> Array[Parser::AST::Node]
+
     # : (Parser::AST::Node) -> untyped
     def ast_node_to_value: (Parser::AST::Node) -> untyped
 

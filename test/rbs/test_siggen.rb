@@ -190,6 +190,186 @@ module RBS
       assert_equal expected, siggen.generate
     end
 
+    def test_block_variable
+      ruby_string = <<~RUBY
+        Schema.build do
+          create_table "articles" do |t|
+            t.text "body", null: false
+            t.text "title"
+            t.integer "views"
+          end
+        end
+      RUBY
+      sig_string = <<~SIG
+        class Schema
+          def self.build: () { () [self: instance] -> void } -> void
+
+          %a{siggen:
+            class <%= table_name.classify %>
+              <% ___block.t.each do |col, arg| %>
+                def <%= arg.name %>: () -> untyped
+              <% end %>
+            end
+          }
+          def create_table: (String table_name, **untyped options)
+                            { (T t) -> void } -> void
+        end
+
+        class T
+          def text: (String name, **untyped options) -> void
+          def integer: (String name, **untyped options) -> void
+        end
+      SIG
+      expected = <<~SIGGEN
+        class Article
+          def body: () -> untyped
+
+          def title: () -> untyped
+
+          def views: () -> untyped
+        end
+      SIGGEN
+      siggen = RBS::Siggen.new
+      siggen.add_signature(sig_string)
+      siggen.analyze_ruby(ruby_string)
+
+      assert_equal expected, siggen.generate
+    end
+
+    def test_block_variable_uses_method_name
+      ruby_string = <<~RUBY
+        Schema.build do
+          create_table "articles" do |t|
+            t.text "body", null: false
+            t.text "title"
+            t.integer "views"
+          end
+        end
+      RUBY
+      sig_string = <<~SIG
+        class Schema
+          def self.build: () { () [self: instance] -> void } -> void
+
+          %a{siggen:
+            class <%= table_name.classify %>
+              <% ___block.t.each do |col, arg| %>
+                # type: <%= col %>
+                def <%= arg.name %>: () -> untyped
+              <% end %>
+            end
+          }
+          def create_table: (String table_name, **untyped options)
+                            { (T t) -> void } -> void
+        end
+
+        class T
+          def text: (String name, **untyped options) -> void
+          def integer: (String name, **untyped options) -> void
+        end
+      SIG
+      expected = <<~SIGGEN
+        class Article
+          # type: text
+          def body: () -> untyped
+
+          # type: text
+          def title: () -> untyped
+
+          # type: integer
+          def views: () -> untyped
+        end
+      SIGGEN
+      siggen = RBS::Siggen.new
+      siggen.add_signature(sig_string)
+      siggen.analyze_ruby(ruby_string)
+
+      assert_equal expected, siggen.generate
+    end
+
+    def test_block_variable_same_method_multiple_times
+      ruby_string = <<~RUBY
+        Schema.build do
+          create_table "articles" do |t|
+            t.text "body"
+            t.text "title"
+          end
+        end
+      RUBY
+      sig_string = <<~SIG
+        class Schema
+          def self.build: () { () [self: instance] -> void } -> void
+
+          %a{siggen:
+            class <%= table_name.classify %>
+              <% ___block.t.each do |col, arg| %>
+                def <%= arg.name %>: () -> String
+              <% end %>
+            end
+          }
+          def create_table: (String table_name, **untyped options)
+                            { (T t) -> void } -> void
+        end
+
+        class T
+          def text: (String name, **untyped options) -> void
+        end
+      SIG
+      expected = <<~SIGGEN
+        class Article
+          def body: () -> String
+
+          def title: () -> String
+        end
+      SIGGEN
+      siggen = RBS::Siggen.new
+      siggen.add_signature(sig_string)
+      siggen.analyze_ruby(ruby_string)
+
+      assert_equal expected, siggen.generate
+    end
+
+    def test_block_variable_keyword_args
+      ruby_string = <<~RUBY
+        Schema.build do
+          create_table "articles" do |t|
+            t.text "body", null: false
+            t.text "title"
+          end
+        end
+      RUBY
+      sig_string = <<~SIG
+        class Schema
+          def self.build: () { () [self: instance] -> void } -> void
+
+          %a{siggen:
+            class <%= table_name.classify %>
+              <% ___block.t.each do |col, arg| %>
+                def <%= arg.name %>: () -> <%= arg.options[:null] == false ? "String" : "String?" %>
+              <% end %>
+            end
+          }
+          def create_table: (String table_name, **untyped options)
+                            { (T t) -> void } -> void
+        end
+
+        class T
+          def text: (String name, **untyped options) -> void
+        end
+      SIG
+      expected = <<~SIGGEN
+        class Article
+          def body: () -> String
+
+          def title: () -> String?
+        end
+      SIGGEN
+      siggen = RBS::Siggen.new
+      siggen.add_signature(sig_string)
+      siggen.analyze_ruby(ruby_string)
+
+      assert_equal expected, siggen.generate
+    end
+
     def test_capturing_arguments
       ruby_string = <<~RUBY
         class A#{" "}

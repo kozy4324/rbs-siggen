@@ -165,7 +165,7 @@ module RBS
         node.children.each do |child|
           traverse(child, stack, &block)
         end
-      elsif %i[send block].include?(node.type) # steep:ignore
+      elsif %i[send block].include?(node.type)
         call_of.method_decls.each do |method_decl|
           annos = method_decl.method_def
                              .member_annotations
@@ -178,6 +178,7 @@ module RBS
             arg_hash.merge!({ c.method_name.to_sym => hash_to_data(create_arg_hash(n, c.method_decls.first)) })
           end
           arg_hash.merge!(create_arg_hash(node, method_decl))
+          arg_hash[:___block] = hash_to_data(create_block_variable(node, method_decl)) if node.type == :block
 
           annos.each { |anno| yield(create_class_name(self_type_of(node), method_decl), anno, arg_hash) }
         end
@@ -252,6 +253,62 @@ module RBS
       end
       hash[type.rest_keywords.name] = keyword_args.dup unless type.rest_keywords.nil?
       hash
+    end
+
+    #: (Parser::AST::Node, untyped) -> Hash[Symbol, untyped]
+    def create_block_variable(block_node, method_decl)
+      # steep:ignore:start
+      block_type = method_decl.method_def.type.block
+      return {} unless block_type
+
+      rbs_param_names = block_type.type.required_positionals.map(&:name)
+      return {} if rbs_param_names.empty?
+
+      ruby_param_names = block_node.children[1].children.map { |arg| arg.children[0] }
+      block_body = block_node.children[2]
+
+      result = rbs_param_names.each_with_object({}) { |name, h| h[name] = [] } #: Hash[Symbol, Array[untyped]]
+
+      rbs_param_names.each_with_index do |rbs_name, i|
+        ruby_name = ruby_param_names[i]
+        next unless ruby_name
+
+        collect_block_param_sends(block_body, ruby_name).each do |send_node|
+          call = begin
+            @typing.call_of(node: send_node)
+          rescue StandardError
+            nil
+          end
+          next if call.nil? ||
+                  call.is_a?(Steep::TypeInference::MethodCall::NoMethodError) ||
+                  call.is_a?(Steep::TypeInference::MethodCall::Untyped)
+
+          inner_method_decl = call.method_decls.first
+          next unless inner_method_decl
+
+          result[rbs_name] << [call.method_name, hash_to_data(create_arg_hash(send_node, inner_method_decl))]
+        end
+      end
+      # steep:ignore:end
+
+      result
+    end
+
+    #: (untyped, Symbol) -> Array[Parser::AST::Node]
+    def collect_block_param_sends(node, param_name)
+      return [] unless node.is_a?(::Parser::AST::Node)
+
+      results = [] #: Array[Parser::AST::Node]
+      if node.type == :send
+        receiver = node.children[0]
+        results << node if receiver&.type == :lvar && receiver.children[0] == param_name
+      end
+
+      node.children.each do |child|
+        results.concat(collect_block_param_sends(child, param_name))
+      end
+
+      results
     end
 
     #: (Parser::AST::Node) -> untyped

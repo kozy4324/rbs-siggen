@@ -66,12 +66,81 @@ then the following attributes are available on the `create_table` Data object:
 
 Nesting is handled recursively: if there are multiple levels of nested blocks, all ancestor calls are available, each keyed by their method name.
 
+## Block argument variables (`___block`)
+
+When annotating a method that accepts a block, `___block` is available in the ERB template. It is a Data object with one attribute per block parameter name as declared in the RBS signature. Each attribute holds an **Array of `[method_name, args]` pairs** representing every method call made on that block parameter at the call site.
+
+Given this RBS declaration:
+
+```rbs
+def create_table: (String table_name, **untyped options)
+                  { (TableDefinition t) -> void } -> void
+```
+
+and this Ruby call site:
+
+```ruby
+create_table "articles" do |t|
+  t.text "body", null: false
+  t.text "title"
+  t.integer "views"
+end
+```
+
+The annotation on `create_table` can iterate over all calls on `t`:
+
+```rbs
+%a{siggen:
+  <% ___block.t.each do |col, arg| %>
+  # <%= col %>: <%= arg.name %>
+  <% end %>
+}
+def create_table: (String table_name, **untyped options)
+                  { (TableDefinition t) -> void } -> void
+```
+
+Output:
+
+```
+# text: body
+# text: title
+# integer: views
+```
+
+### Structure of each pair
+
+Each element of `___block.t` is a 2-element array `[col, arg]`:
+
+| Element | Type | Description |
+|---|---|---|
+| `col` (1st) | `Symbol` | The method name called on the block parameter (e.g., `:text`, `:integer`) |
+| `arg` (2nd) | `Data` | Arguments of that call, keyed by the parameter names declared in the callee's RBS signature |
+
+The `arg` Data object follows the same convention as direct method argument variables — attributes correspond to the RBS parameter names of the called method. For example, if `TableDefinition#text` is declared as:
+
+```rbs
+def text: (String name, **untyped options) -> void
+```
+
+then `arg.name` returns `"body"` and `arg.options` returns `{ null: false }`.
+
+### Multiple calls to the same method
+
+Because `___block.t` is an Array (not a Hash), repeated calls to the same method appear as separate entries in order:
+
+```ruby
+t.text "body"
+t.text "title"
+# ___block.t => [[:text, Data(name: "body", ...)], [:text, Data(name: "title", ...)]]
+```
+
 ## Special variables
 
 | Variable | Type | Description |
 |---|---|---|
 | `___source` | `String` | Source text of the call site, formatted as Ruby comment lines (each line prefixed with `# `) |
 | `___comment_of["Type#method"]` | `String` | RBS doc comment of an existing method definition. Use `Type#method` for instance methods and `Type.method` for singleton methods. |
+| `___block` | `Data` | Block argument calls; one attribute per block parameter name, each returning an Array of `[Symbol, Data]` pairs (see above) |
 
 Example using `___source`:
 
@@ -114,6 +183,7 @@ When siggen renders an ERB template for a call site, it builds a flat Hash and p
 4. **Special keys**: The following keys are merged into the binding hash:
    - `:___source` — `String`; call-site source lines joined as `# line\n` comments.
    - `:___comment_of` — a callable object; `___comment_of["Type#method"]` returns the RBS comment string for that method.
+   - `:___block` — a Data object; one attribute per block parameter name declared in the RBS block type. Each attribute is an Array of `[Symbol, Data]` pairs collected by scanning the block body for method calls on that parameter.
 
 ### ERB binding structure (pseudo-type)
 
@@ -130,6 +200,7 @@ binding = {
   # --- special variables ---
   ___source:     String,
   ___comment_of: ^(String) -> String,
+  ___block:      Data(block_param_name: Array[[Symbol, Data]], ...),
 }
 ```
 
