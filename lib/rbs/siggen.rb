@@ -267,7 +267,7 @@ module RBS
       ruby_param_names = block_node.children[1].children.map { |arg| arg.children[0] }
       block_body = block_node.children[2]
 
-      result = rbs_param_names.each_with_object({}) { |name, h| h[name] = [] } #: Hash[Symbol, Array[untyped]]
+      result = rbs_param_names.to_h { |name| [name, []] } #: Hash[Symbol, Array[untyped]]
 
       rbs_param_names.each_with_index do |rbs_name, i|
         ruby_name = ruby_param_names[i]
