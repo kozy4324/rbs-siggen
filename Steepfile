@@ -20,4 +20,7 @@ target :siggen_test_activerecord_model_sqlite3 do
   unreferenced!
   signature "siggen-test/activerecord_model_sqlite3/sig"
   check "siggen-test/activerecord_model_sqlite3/test"
+
+  library "activerecord"
+  library "activemodel"
 end

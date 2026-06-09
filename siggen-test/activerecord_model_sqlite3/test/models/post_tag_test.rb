@@ -7,14 +7,14 @@ require "test_helper"
 
 # PostTagIdFalseTest: id: false means no def id appears in the generated RBS.
 # The absence of id method is verified at the RBS level (Steep would reject post_tag.id).
-class PostTagIdFalseTest < ActiveSupport::TestCase
+class PostTagIdFalseTest < ActiveSupport::TestCase # steep:ignore
   test "id: false model loads without a primary key column" do
     post_tag = PostTag.find_by!(tag_name: "rails")
     assert_instance_of PostTag, post_tag
   end
 end
 
-class PostTagPostIdTest < ActiveSupport::TestCase
+class PostTagPostIdTest < ActiveSupport::TestCase # steep:ignore
   test "post_id is typed as Integer" do
     post_tag = PostTag.find_by!(tag_name: "rails")
     assert_instance_of Integer, post_tag.post_id
@@ -128,8 +128,10 @@ class PostTagPostIdTest < ActiveSupport::TestCase
   end
 end
 
-class PostTagTagNameTest < ActiveSupport::TestCase
+class PostTagTagNameTest < ActiveSupport::TestCase # steep:ignore
+  # @type const ORIGINAL_TAG_NAME: String
   ORIGINAL_TAG_NAME = "rails"
+  # @type const NEW_TAG_NAME: String
   NEW_TAG_NAME = "crystal"
 
   test "tag_name is typed as String" do
