@@ -120,8 +120,9 @@ module RBS
     #: () -> String
     def generate
       io = ::StringIO.new
-      traverse(@node) do |class_name, anno, arg_hash|
-        generated = ERB.new(anno, trim_mode: "-").result_with_hash(arg_hash)
+      traverse(@node) do |class_name, anno, base_dir, arg_hash|
+        template, extra_vars = resolve_annotation(anno, base_dir)
+        generated = ERB.new(template, trim_mode: "-").result_with_hash(arg_hash.merge(extra_vars))
         surround_class_def = false
         begin
           ::RBS::Parser.parse_signature(generated)
@@ -149,7 +150,28 @@ module RBS
       io.read || ""
     end
 
-    #: (Parser::AST::Node node, ?Array[untyped] stack) ?{ (String, untyped, Hash[untyped, untyped]) -> void } -> void
+    #: (String anno, String base_dir) -> [String, Hash[Symbol, String]]
+    def resolve_annotation(anno, base_dir)
+      return [anno, {}] unless anno.start_with?("file(")
+
+      paren_end = anno.index(")")
+      return [anno, {}] unless paren_end
+
+      path = File.expand_path(anno[5...paren_end], base_dir)
+      rest = anno[(paren_end + 1)..]
+
+      params = {}
+      if rest&.start_with?(":")
+        rest[1..].scan(/(?:"[^"]*"|[^,])+/).each do |token|
+          k, v = token.strip.split("=", 2)
+          params[k.downcase.to_sym] = v&.delete_prefix('"')&.delete_suffix('"') || ""
+        end
+      end
+
+      [File.read(path), params]
+    end
+
+    #: (Parser::AST::Node node, ?Array[untyped] stack) ?{ (String, untyped, String, Hash[untyped, untyped]) -> void } -> void
     def traverse(node, stack = [], &block)
       return unless node.is_a?(::Parser::AST::Node)
 
@@ -170,7 +192,11 @@ module RBS
           annos = method_decl.method_def
                              .member_annotations
                              .filter { |a| a.string.include?("siggen:") }
-                             .map { |a| a.string.split("siggen:")[1].strip }
+                             .map do |a|
+                               content = a.string.split("siggen:")[1].strip
+                               base_dir = a.location&.buffer&.name&.then { |p| File.dirname(p.to_s) } || "."
+                               [content, base_dir]
+                             end
           next if annos.empty?
 
           arg_hash = {} #: Hash[untyped, untyped]
@@ -180,7 +206,7 @@ module RBS
           arg_hash.merge!(create_arg_hash(node, method_decl))
           arg_hash[:___block] = hash_to_data(create_block_variable(node, method_decl)) if node.type == :block
 
-          annos.each { |anno| yield(create_class_name(self_type_of(node), method_decl), anno, arg_hash) }
+          annos.each { |anno, base_dir| yield(create_class_name(self_type_of(node), method_decl), anno, base_dir, arg_hash) }
         end
 
         if node.type == :block

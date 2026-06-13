@@ -370,6 +370,41 @@ module RBS
       assert_equal expected, siggen.generate
     end
 
+    def test_external_file_annotation
+      require "tmpdir"
+      Dir.mktmpdir do |dir|
+        File.write(File.join(dir, "tmpl.rbs.erb"), <<~ERB)
+          class A
+            <%- hash = { result: type } -%>
+            def self.<%= name %>: () -> <%= hash[:result] %>
+          end
+        ERB
+
+        ruby_string = <<~RUBY
+          class A
+            foo :bar
+          end
+        RUBY
+        sig_string = <<~SIG
+          class A
+            %a{siggen:file(tmpl.rbs.erb):TYPE=String}
+            def self.foo: (Symbol name) -> void
+          end
+        SIG
+        expected = <<~SIGGEN
+          class A
+            def self.bar: () -> String
+          end
+        SIGGEN
+
+        siggen = RBS::Siggen.new
+        siggen.add_signature(sig_string, name: File.join(dir, "test.rbs"))
+        siggen.analyze_ruby(ruby_string)
+
+        assert_equal expected, siggen.generate
+      end
+    end
+
     def test_capturing_arguments
       ruby_string = <<~RUBY
         class A#{" "}
