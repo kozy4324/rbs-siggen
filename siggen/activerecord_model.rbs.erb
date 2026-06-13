@@ -38,13 +38,21 @@ module ActiveRecord
             <%%- opt_primary_key = options[:primary_key] -%>
             <%%- unless opt_id == false -%>
               <%%- if opt_primary_key.is_a?(Array) -%>
-                <%%- type = "Array[untyped]?" -%>
+                <%%- in_type = "Array[untyped]?" -%>
+                <%%- ot_type = "Array[untyped]?" -%>
               <%%- elsif opt_primary_key.is_a?(String) || opt_primary_key.is_a?(Symbol) -%>
                 <%%- type = map[opt_id] || "Integer?" -%>
+                <%%- if type == "::ActiveSupport::TimeWithZone" -%>
+                  <%%- in_type = "(::ActiveSupport::TimeWithZone | ::Time)" -%>
+                  <%%- ot_type = type -%>
+                <%%- else -%>
+                  <%%- in_type = type -%>
+                  <%%- ot_type = type -%>
+                <%%- end -%>
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-                def <%%= opt_primary_key %>: () -> <%%= type %>
+                def <%%= opt_primary_key %>: () -> <%%= ot_type %>
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-                def <%%= opt_primary_key %>=: (<%%= type %> value) -> void
+                def <%%= opt_primary_key %>=: (<%%= in_type %> value) -> void
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
                 def <%%= opt_primary_key %>_before_type_cast: () -> untyped
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
@@ -58,15 +66,15 @@ module ActiveRecord
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
                 def <%%= opt_primary_key %>_changed?: (?from: untyped, ?to: untyped) -> bool
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-                def <%%= opt_primary_key %>_change: () -> [<%%= type %>, <%%= type %>]?
+                def <%%= opt_primary_key %>_change: () -> [<%%= ot_type %>, <%%= ot_type %>]?
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
                 def <%%= opt_primary_key %>_will_change!: () -> void
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-                def <%%= opt_primary_key %>_was: () -> <%%= type %>
+                def <%%= opt_primary_key %>_was: () -> <%%= ot_type %>
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-                def <%%= opt_primary_key %>_previous_change: () -> [<%%= type %>, <%%= type %>]?
+                def <%%= opt_primary_key %>_previous_change: () -> [<%%= ot_type %>, <%%= ot_type %>]?
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-                def <%%= opt_primary_key %>_previously_was: () -> <%%= type %>
+                def <%%= opt_primary_key %>_previously_was: () -> <%%= ot_type %>
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
                 def restore_<%%= opt_primary_key %>!: () -> void
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
@@ -74,22 +82,29 @@ module ActiveRecord
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
                 def saved_change_to_<%%= opt_primary_key %>?: (?from: untyped, ?to: untyped) -> bool
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-                def saved_change_to_<%%= opt_primary_key %>: () -> [<%%= type %>, <%%= type %>]?
+                def saved_change_to_<%%= opt_primary_key %>: () -> [<%%= ot_type %>, <%%= ot_type %>]?
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-                def <%%= opt_primary_key %>_before_last_save: () -> <%%= type %>
+                def <%%= opt_primary_key %>_before_last_save: () -> <%%= ot_type %>
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
                 def will_save_change_to_<%%= opt_primary_key %>?: (?from: untyped, ?to: untyped) -> bool
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-                def <%%= opt_primary_key %>_change_to_be_saved: () -> [<%%= type %>, <%%= type %>]?
+                def <%%= opt_primary_key %>_change_to_be_saved: () -> [<%%= ot_type %>, <%%= ot_type %>]?
                 <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-                def <%%= opt_primary_key %>_in_database: () -> <%%= type %>
+                def <%%= opt_primary_key %>_in_database: () -> <%%= ot_type %>
               <%%- else -%>
                 <%%- type = map[opt_id] || "Integer?" -%>
+                <%%- if type == "::ActiveSupport::TimeWithZone" -%>
+                  <%%- in_type = "(::ActiveSupport::TimeWithZone | ::Time)" -%>
+                  <%%- ot_type = type -%>
+                <%%- else -%>
+                  <%%- in_type = type -%>
+                  <%%- ot_type = type -%>
+                <%%- end -%>
               <%%- end -%>
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-              def id: () -> <%%= type %>
+              def id: () -> <%%= ot_type %>
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-              def id=: (<%%= type %> value) -> void
+              def id=: (<%%= in_type %> value) -> void
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
               def id_before_type_cast: () -> untyped
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
@@ -103,15 +118,15 @@ module ActiveRecord
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
               def id_changed?: (?from: untyped, ?to: untyped) -> bool
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-              def id_change: () -> [<%%= type %>, <%%= type %>]?
+              def id_change: () -> [<%%= ot_type %>, <%%= ot_type %>]?
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
               def id_will_change!: () -> void
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-              def id_was: () -> <%%= type %>
+              def id_was: () -> <%%= ot_type %>
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-              def id_previous_change: () -> [<%%= type %>, <%%= type %>]?
+              def id_previous_change: () -> [<%%= ot_type %>, <%%= ot_type %>]?
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-              def id_previously_was: () -> <%%= type %>
+              def id_previously_was: () -> <%%= ot_type %>
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
               def restore_id!: () -> void
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
@@ -119,18 +134,33 @@ module ActiveRecord
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
               def saved_change_to_id?: (?from: untyped, ?to: untyped) -> bool
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-              def saved_change_to_id: () -> [<%%= type %>, <%%= type %>]?
+              def saved_change_to_id: () -> [<%%= ot_type %>, <%%= ot_type %>]?
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-              def id_before_last_save: () -> <%%= type %>
+              def id_before_last_save: () -> <%%= ot_type %>
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
               def will_save_change_to_id?: (?from: untyped, ?to: untyped) -> bool
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-              def id_change_to_be_saved: () -> [<%%= type %>, <%%= type %>]?
+              def id_change_to_be_saved: () -> [<%%= ot_type %>, <%%= ot_type %>]?
               <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
-              def id_in_database: () -> <%%= type %>
+              def id_in_database: () -> <%%= ot_type %>
             <%%- end -%>
           end
           include GeneratedAttributeMethods
+
+          <%% attributes = [] %>
+          <%% ___block.t.each do |col, arg| %>
+            <%% arg.names.each do |name| %>
+              <%% next if col == :virtual %>
+              <%%- type = map[col] -%>
+              <%%- if type == "::ActiveSupport::TimeWithZone" -%>
+                <%%- type = "(::ActiveSupport::TimeWithZone | ::Time)" -%>
+              <%%- end -%>
+              <%% attributes << "?" + name +": " + type %>
+            <%% end %>
+          <%% end %>
+          <%% attributes = attributes.join(",") %>
+          def self.create: (<%%= attributes %>) -> instance
+                         | (Array[untyped]) -> Array[instance]
         end
       }
       def create_table: (untyped table_name, **untyped options) { (ActiveRecord::ConnectionAdapters::ColumnMethods t) -> void } -> void

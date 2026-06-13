@@ -2,8 +2,12 @@ require "test_helper"
 
 class PostTest < ActiveSupport::TestCase # steep:ignore
   test "create" do
-    post = Post.create
-    refute_nil post
+    post1 = Post.create(body: "post1", created_at: Time.now)
+    assert_equal "post1", post1.body
+
+    posts = Post.create([{body: "post2"}, {body: "post3"}])
+    assert_equal "post2", posts[0].body
+    assert_equal "post3", posts[1].body
   end
 end
 
