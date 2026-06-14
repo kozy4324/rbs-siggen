@@ -105,6 +105,6 @@ class <%= table_name.classify %> < ::ApplicationRecord
     <% end %>
   <% end %>
   <% attributes = attributes.join(",") %>
-  def self.create: (<%= attributes %>) -> instance
-                 | (Array[untyped]) -> Array[instance]
+  def self.create: (<%= attributes %>) ?{ (instance) -> void } -> instance
+                 | (Array[untyped]) ?{ (instance) -> void } -> Array[instance]
 end

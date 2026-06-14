@@ -5,9 +5,20 @@ class PostTest < ActiveSupport::TestCase # steep:ignore
     post1 = Post.create(body: "post1", created_at: Time.now)
     assert_equal "post1", post1.body
 
-    posts = Post.create([{body: "post2"}, {body: "post3"}])
-    assert_equal "post2", posts[0].body
-    assert_equal "post3", posts[1].body
+    post2 = Post.create(body: "post2") do |p|
+      p.body = "#{p.body} updated"
+    end
+    assert_equal "post2 updated", post2.body
+
+    posts = Post.create([{body: "post3"}, {body: "post4"}])
+    assert_equal "post3", posts[0].body
+    assert_equal "post4", posts[1].body
+
+    posts_with_block = Post.create([{body: "post5"}, {body: "post6"}]) do |p|
+      p.body = "#{p.body} updated"
+    end
+    assert_equal "post5 updated", posts_with_block[0].body
+    assert_equal "post6 updated", posts_with_block[1].body
   end
 end
 

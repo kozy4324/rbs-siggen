@@ -239,8 +239,8 @@ class Account < ::ApplicationRecord
   end
   include GeneratedAttributeMethods
 
-  def self.create: (?name: ::String) -> instance
-                 | (Array[untyped]) -> Array[instance]
+  def self.create: (?name: ::String) ?{ (instance) -> void } -> instance
+                 | (Array[untyped]) ?{ (instance) -> void } -> Array[instance]
 end
 
 # In schema.rb, this model is declared as:
@@ -442,8 +442,8 @@ class Article < ::ApplicationRecord
   end
   include GeneratedAttributeMethods
 
-  def self.create: (?name: ::String) -> instance
-                 | (Array[untyped]) -> Array[instance]
+  def self.create: (?name: ::String) ?{ (instance) -> void } -> instance
+                 | (Array[untyped]) ?{ (instance) -> void } -> Array[instance]
 end
 
 # In schema.rb, this model is declared as:
@@ -750,8 +750,8 @@ class PostTag < ::ApplicationRecord
   end
   include GeneratedAttributeMethods
 
-  def self.create: (?post_id: ::Integer, ?tag_name: ::String) -> instance
-                 | (Array[untyped]) -> Array[instance]
+  def self.create: (?post_id: ::Integer, ?tag_name: ::String) ?{ (instance) -> void } -> instance
+                 | (Array[untyped]) ?{ (instance) -> void } -> Array[instance]
 end
 
 # In schema.rb, this model is declared as:
@@ -3011,8 +3011,8 @@ class Post < ::ApplicationRecord
   end
   include GeneratedAttributeMethods
 
-  def self.create: (?body: ::String, ?created_at: ::ActiveSupport::TimeWithZone | ::Time, ?likes_count: ::Integer, ?metadata: untyped, ?price: ::BigDecimal, ?published: bool, ?published_on: ::Date, ?rating: ::Float, ?start_time: ::ActiveSupport::TimeWithZone | ::Time, ?thumbnail: ::String, ?title: ::String, ?updated_at: ::ActiveSupport::TimeWithZone | ::Time, ?views_count: ::Integer) -> instance
-                 | (Array[untyped]) -> Array[instance]
+  def self.create: (?body: ::String, ?created_at: ::ActiveSupport::TimeWithZone | ::Time, ?likes_count: ::Integer, ?metadata: untyped, ?price: ::BigDecimal, ?published: bool, ?published_on: ::Date, ?rating: ::Float, ?start_time: ::ActiveSupport::TimeWithZone | ::Time, ?thumbnail: ::String, ?title: ::String, ?updated_at: ::ActiveSupport::TimeWithZone | ::Time, ?views_count: ::Integer) ?{ (instance) -> void } -> instance
+                 | (Array[untyped]) ?{ (instance) -> void } -> Array[instance]
 end
 
 # In schema.rb, this model is declared as:
@@ -3508,6 +3508,6 @@ class Tagging < ::ApplicationRecord
   end
   include GeneratedAttributeMethods
 
-  def self.create: (?context: ::String, ?post_id: ::Integer, ?tag_id: ::Integer) -> instance
-                 | (Array[untyped]) -> Array[instance]
+  def self.create: (?context: ::String, ?post_id: ::Integer, ?tag_id: ::Integer) ?{ (instance) -> void } -> instance
+                 | (Array[untyped]) ?{ (instance) -> void } -> Array[instance]
 end
