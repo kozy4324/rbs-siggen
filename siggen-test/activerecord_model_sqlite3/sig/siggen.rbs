@@ -7,130 +7,88 @@
 # ```
 class Account < ::ApplicationRecord
   module GeneratedAttributeMethods
-    %a{rbs:test:target}
     def account_code: () -> ::String
 
-    %a{rbs:test:target}
     def account_code=: (::String value) -> void
 
-    %a{rbs:test:target}
     def account_code_before_type_cast: () -> untyped
 
-    %a{rbs:test:target}
     def account_code_for_database: () -> untyped
 
-    %a{rbs:test:target}
     def account_code_came_from_user?: () -> bool
 
-    %a{rbs:test:target}
     def account_code?: () -> bool
 
-    %a{rbs:test:target}
     def account_code_previously_changed?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def account_code_changed?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def account_code_change: () -> [ ::String, ::String ]?
 
-    %a{rbs:test:target}
     def account_code_will_change!: () -> void
 
-    %a{rbs:test:target}
     def account_code_was: () -> ::String
 
-    %a{rbs:test:target}
     def account_code_previous_change: () -> [ ::String, ::String ]?
 
-    %a{rbs:test:target}
     def account_code_previously_was: () -> ::String
 
-    %a{rbs:test:target}
     def restore_account_code!: () -> void
 
-    %a{rbs:test:target}
     def clear_account_code_change: () -> void
 
-    %a{rbs:test:target}
     def saved_change_to_account_code?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def saved_change_to_account_code: () -> [ ::String, ::String ]?
 
-    %a{rbs:test:target}
     def account_code_before_last_save: () -> ::String
 
-    %a{rbs:test:target}
     def will_save_change_to_account_code?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def account_code_change_to_be_saved: () -> [ ::String, ::String ]?
 
-    %a{rbs:test:target}
     def account_code_in_database: () -> ::String
 
-    %a{rbs:test:target}
     def id: () -> ::String
 
-    %a{rbs:test:target}
     def id=: (::String value) -> void
 
-    %a{rbs:test:target}
     def id_before_type_cast: () -> untyped
 
-    %a{rbs:test:target}
     def id_for_database: () -> untyped
 
-    %a{rbs:test:target}
     def id_came_from_user?: () -> bool
 
-    %a{rbs:test:target}
     def id?: () -> bool
 
-    %a{rbs:test:target}
     def id_previously_changed?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def id_changed?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def id_change: () -> [ ::String, ::String ]?
 
-    %a{rbs:test:target}
     def id_will_change!: () -> void
 
-    %a{rbs:test:target}
     def id_was: () -> ::String
 
-    %a{rbs:test:target}
     def id_previous_change: () -> [ ::String, ::String ]?
 
-    %a{rbs:test:target}
     def id_previously_was: () -> ::String
 
-    %a{rbs:test:target}
     def restore_id!: () -> void
 
-    %a{rbs:test:target}
     def clear_id_change: () -> void
 
-    %a{rbs:test:target}
     def saved_change_to_id?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def saved_change_to_id: () -> [ ::String, ::String ]?
 
-    %a{rbs:test:target}
     def id_before_last_save: () -> ::String
 
-    %a{rbs:test:target}
     def will_save_change_to_id?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def id_change_to_be_saved: () -> [ ::String, ::String ]?
 
-    %a{rbs:test:target}
     def id_in_database: () -> ::String
 
     # ```ruby
@@ -294,67 +252,46 @@ end
 # ```
 class Article < ::ApplicationRecord
   module GeneratedAttributeMethods
-    %a{rbs:test:target}
     def id: () -> ::String
 
-    %a{rbs:test:target}
     def id=: (::String value) -> void
 
-    %a{rbs:test:target}
     def id_before_type_cast: () -> untyped
 
-    %a{rbs:test:target}
     def id_for_database: () -> untyped
 
-    %a{rbs:test:target}
     def id_came_from_user?: () -> bool
 
-    %a{rbs:test:target}
     def id?: () -> bool
 
-    %a{rbs:test:target}
     def id_previously_changed?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def id_changed?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def id_change: () -> [ ::String, ::String ]?
 
-    %a{rbs:test:target}
     def id_will_change!: () -> void
 
-    %a{rbs:test:target}
     def id_was: () -> ::String
 
-    %a{rbs:test:target}
     def id_previous_change: () -> [ ::String, ::String ]?
 
-    %a{rbs:test:target}
     def id_previously_was: () -> ::String
 
-    %a{rbs:test:target}
     def restore_id!: () -> void
 
-    %a{rbs:test:target}
     def clear_id_change: () -> void
 
-    %a{rbs:test:target}
     def saved_change_to_id?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def saved_change_to_id: () -> [ ::String, ::String ]?
 
-    %a{rbs:test:target}
     def id_before_last_save: () -> ::String
 
-    %a{rbs:test:target}
     def will_save_change_to_id?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def id_change_to_be_saved: () -> [ ::String, ::String ]?
 
-    %a{rbs:test:target}
     def id_in_database: () -> ::String
 
     # ```ruby
@@ -840,67 +777,46 @@ end
 # ```
 class Post < ::ApplicationRecord
   module GeneratedAttributeMethods
-    %a{rbs:test:target}
     def id: () -> Integer?
 
-    %a{rbs:test:target}
     def id=: (Integer? value) -> void
 
-    %a{rbs:test:target}
     def id_before_type_cast: () -> untyped
 
-    %a{rbs:test:target}
     def id_for_database: () -> untyped
 
-    %a{rbs:test:target}
     def id_came_from_user?: () -> bool
 
-    %a{rbs:test:target}
     def id?: () -> bool
 
-    %a{rbs:test:target}
     def id_previously_changed?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def id_changed?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def id_change: () -> [ Integer?, Integer? ]?
 
-    %a{rbs:test:target}
     def id_will_change!: () -> void
 
-    %a{rbs:test:target}
     def id_was: () -> Integer?
 
-    %a{rbs:test:target}
     def id_previous_change: () -> [ Integer?, Integer? ]?
 
-    %a{rbs:test:target}
     def id_previously_was: () -> Integer?
 
-    %a{rbs:test:target}
     def restore_id!: () -> void
 
-    %a{rbs:test:target}
     def clear_id_change: () -> void
 
-    %a{rbs:test:target}
     def saved_change_to_id?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def saved_change_to_id: () -> [ Integer?, Integer? ]?
 
-    %a{rbs:test:target}
     def id_before_last_save: () -> Integer?
 
-    %a{rbs:test:target}
     def will_save_change_to_id?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def id_change_to_be_saved: () -> [ Integer?, Integer? ]?
 
-    %a{rbs:test:target}
     def id_in_database: () -> Integer?
 
     # ```ruby
@@ -3110,67 +3026,46 @@ end
 # ```
 class Tagging < ::ApplicationRecord
   module GeneratedAttributeMethods
-    %a{rbs:test:target}
     def id: () -> Array[untyped]?
 
-    %a{rbs:test:target}
     def id=: (Array[untyped]? value) -> void
 
-    %a{rbs:test:target}
     def id_before_type_cast: () -> untyped
 
-    %a{rbs:test:target}
     def id_for_database: () -> untyped
 
-    %a{rbs:test:target}
     def id_came_from_user?: () -> bool
 
-    %a{rbs:test:target}
     def id?: () -> bool
 
-    %a{rbs:test:target}
     def id_previously_changed?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def id_changed?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def id_change: () -> [ Array[untyped]?, Array[untyped]? ]?
 
-    %a{rbs:test:target}
     def id_will_change!: () -> void
 
-    %a{rbs:test:target}
     def id_was: () -> Array[untyped]?
 
-    %a{rbs:test:target}
     def id_previous_change: () -> [ Array[untyped]?, Array[untyped]? ]?
 
-    %a{rbs:test:target}
     def id_previously_was: () -> Array[untyped]?
 
-    %a{rbs:test:target}
     def restore_id!: () -> void
 
-    %a{rbs:test:target}
     def clear_id_change: () -> void
 
-    %a{rbs:test:target}
     def saved_change_to_id?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def saved_change_to_id: () -> [ Array[untyped]?, Array[untyped]? ]?
 
-    %a{rbs:test:target}
     def id_before_last_save: () -> Array[untyped]?
 
-    %a{rbs:test:target}
     def will_save_change_to_id?: (?from: untyped, ?to: untyped) -> bool
 
-    %a{rbs:test:target}
     def id_change_to_be_saved: () -> [ Array[untyped]?, Array[untyped]? ]?
 
-    %a{rbs:test:target}
     def id_in_database: () -> Array[untyped]?
 
     # ```ruby
