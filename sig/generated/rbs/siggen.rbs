@@ -23,8 +23,11 @@ module RBS
     # : () -> String
     def generate: () -> String
 
-    # : (Parser::AST::Node node, ?Array[untyped] stack) ?{ (String, untyped, Hash[untyped, untyped]) -> void } -> void
-    def traverse: (Parser::AST::Node node, ?Array[untyped] stack) ?{ (String, untyped, Hash[untyped, untyped]) -> void } -> void
+    # : (String anno, String base_dir) -> [String, Hash[Symbol, String]]
+    def resolve_annotation: (String anno, String base_dir) -> [ String, Hash[Symbol, String] ]
+
+    # : (Parser::AST::Node node, ?Array[untyped] stack) ?{ (String, untyped, String, Hash[untyped, untyped]) -> void } -> void # rubocop:disable Layout/LineLength
+    def traverse: (Parser::AST::Node node, ?Array[untyped] stack) ?{ (String, untyped, String, Hash[untyped, untyped]) -> void } -> void
 
     # : (Parser::AST::Node) -> untyped
     def self_type_of: (Parser::AST::Node) -> untyped
@@ -66,4 +69,3 @@ module RBS
     def []: (String) -> String
   end
 end
-

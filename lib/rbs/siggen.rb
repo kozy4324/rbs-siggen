@@ -157,13 +157,17 @@ module RBS
       paren_end = anno.index(")")
       return [anno, {}] unless paren_end
 
-      path = File.expand_path(anno[5...paren_end], base_dir)
+      path = File.expand_path(anno[5...paren_end] || "", base_dir)
       rest = anno[(paren_end + 1)..]
 
-      params = {}
+      params = {} #: Hash[Symbol, String]
       if rest&.start_with?(":")
-        rest[1..].scan(/(?:"[^"]*"|[^,])+/).each do |token|
+        (rest[1..] || "").scan(/(?:"[^"]*"|[^,])+/).each do |token|
+          next unless token.is_a?(String)
+
           k, v = token.strip.split("=", 2)
+          next unless k
+
           params[k.downcase.to_sym] = v&.delete_prefix('"')&.delete_suffix('"') || ""
         end
       end
@@ -171,7 +175,7 @@ module RBS
       [File.read(path), params]
     end
 
-    #: (Parser::AST::Node node, ?Array[untyped] stack) ?{ (String, untyped, String, Hash[untyped, untyped]) -> void } -> void
+    #: (Parser::AST::Node node, ?Array[untyped] stack) ?{ (String, untyped, String, Hash[untyped, untyped]) -> void } -> void # rubocop:disable Layout/LineLength
     def traverse(node, stack = [], &block)
       return unless node.is_a?(::Parser::AST::Node)
 
@@ -194,7 +198,7 @@ module RBS
                              .filter { |a| a.string.include?("siggen:") }
                              .map do |a|
                                content = a.string.split("siggen:")[1].strip
-                               base_dir = a.location&.buffer&.name&.then { |p| File.dirname(p.to_s) } || "."
+                               base_dir = a.location&.buffer&.name&.then { |p| File.dirname(p.to_s) } || "." # rubocop:disable Style/SafeNavigationChainLength
                                [content, base_dir]
                              end
           next if annos.empty?
@@ -206,7 +210,9 @@ module RBS
           arg_hash.merge!(create_arg_hash(node, method_decl))
           arg_hash[:___block] = hash_to_data(create_block_variable(node, method_decl)) if node.type == :block
 
-          annos.each { |anno, base_dir| yield(create_class_name(self_type_of(node), method_decl), anno, base_dir, arg_hash) }
+          annos.each do |anno, base_dir|
+            yield(create_class_name(self_type_of(node), method_decl), anno, base_dir, arg_hash)
+          end
         end
 
         if node.type == :block
