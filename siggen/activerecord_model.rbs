@@ -14,48 +14,47 @@ module ActiveRecord
 
   module ConnectionAdapters
     module ColumnMethods
-        %a{siggen:file(activerecord_model_attribute_methods.erb):key="bigint",type="::Integer"}
-        def bigint: (*Array[untyped] names, **untyped options) -> void
+      %a{siggen:file(activerecord_model_attribute_methods.erb):key="bigint",type="::Integer"}
+      def bigint: (*Array[untyped] names, **untyped options) -> void
 
-        %a{siggen:file(activerecord_model_attribute_methods.erb):key="binary",type="::String"}
-        def binary: (*Array[untyped] names, **untyped options) -> void
+      %a{siggen:file(activerecord_model_attribute_methods.erb):key="binary",type="::String"}
+      def binary: (*Array[untyped] names, **untyped options) -> void
 
-        %a{siggen:file(activerecord_model_attribute_methods.erb):key="boolean",type="bool"}
-        def boolean: (*Array[untyped] names, **untyped options) -> void
+      %a{siggen:file(activerecord_model_attribute_methods.erb):key="boolean",type="bool"}
+      def boolean: (*Array[untyped] names, **untyped options) -> void
 
-        %a{siggen:file(activerecord_model_attribute_methods.erb):key="date",type="::Date"}
-        def date: (*Array[untyped] names, **untyped options) -> void
+      %a{siggen:file(activerecord_model_attribute_methods.erb):key="date",type="::Date"}
+      def date: (*Array[untyped] names, **untyped options) -> void
 
-        %a{siggen:file(activerecord_model_attribute_methods.erb):key="datetime",type="::ActiveSupport::TimeWithZone"}
-        def datetime: (*Array[untyped] names, **untyped options) -> void
+      %a{siggen:file(activerecord_model_attribute_methods.erb):key="datetime",type="::ActiveSupport::TimeWithZone"}
+      def datetime: (*Array[untyped] names, **untyped options) -> void
 
-        %a{siggen:file(activerecord_model_attribute_methods.erb):key="decimal",type="::BigDecimal"}
-        def decimal: (*Array[untyped] names, **untyped options) -> void
+      %a{siggen:file(activerecord_model_attribute_methods.erb):key="decimal",type="::BigDecimal"}
+      def decimal: (*Array[untyped] names, **untyped options) -> void
 
-        %a{siggen:file(activerecord_model_attribute_methods.erb):key="float",type="::Float"}
-        def float: (*Array[untyped] names, **untyped options) -> void
+      %a{siggen:file(activerecord_model_attribute_methods.erb):key="float",type="::Float"}
+      def float: (*Array[untyped] names, **untyped options) -> void
 
-        %a{siggen:file(activerecord_model_attribute_methods.erb):key="integer",type="::Integer"}
-        def integer: (*Array[untyped] names, **untyped options) -> void
+      %a{siggen:file(activerecord_model_attribute_methods.erb):key="integer",type="::Integer"}
+      def integer: (*Array[untyped] names, **untyped options) -> void
 
-        %a{siggen:file(activerecord_model_attribute_methods.erb):key="json",type="untyped"}
-        def json: (*Array[untyped] names, **untyped options) -> void
+      %a{siggen:file(activerecord_model_attribute_methods.erb):key="json",type="untyped"}
+      def json: (*Array[untyped] names, **untyped options) -> void
 
-        %a{siggen:file(activerecord_model_attribute_methods.erb):key="string",type="::String"}
-        def string: (*Array[untyped] names, **untyped options) -> void
+      %a{siggen:file(activerecord_model_attribute_methods.erb):key="string",type="::String"}
+      def string: (*Array[untyped] names, **untyped options) -> void
 
-        %a{siggen:file(activerecord_model_attribute_methods.erb):key="text",type="::String"}
-        def text: (*Array[untyped] names, **untyped options) -> void
+      %a{siggen:file(activerecord_model_attribute_methods.erb):key="text",type="::String"}
+      def text: (*Array[untyped] names, **untyped options) -> void
 
-        %a{siggen:file(activerecord_model_attribute_methods.erb):key="time",type="::ActiveSupport::TimeWithZone"}
-        def time: (*Array[untyped] names, **untyped options) -> void
+      %a{siggen:file(activerecord_model_attribute_methods.erb):key="time",type="::ActiveSupport::TimeWithZone"}
+      def time: (*Array[untyped] names, **untyped options) -> void
 
-        %a{siggen:file(activerecord_model_attribute_methods.erb):key="timestamp",type="::ActiveSupport::TimeWithZone"}
-        def timestamp: (*Array[untyped] names, **untyped options) -> void
+      %a{siggen:file(activerecord_model_attribute_methods.erb):key="timestamp",type="::ActiveSupport::TimeWithZone"}
+      def timestamp: (*Array[untyped] names, **untyped options) -> void
 
-        %a{siggen:file(activerecord_model_attribute_methods.erb):key="virtual",type="_"}
-        def virtual: (*Array[untyped] names, **untyped options) -> void
-
+      %a{siggen:file(activerecord_model_attribute_methods.erb):key="virtual",type="_"}
+      def virtual: (*Array[untyped] names, **untyped options) -> void
     end
 
     class TableDefinition

@@ -17,20 +17,11 @@ end
 
 task default: %i[test rubocop steep]
 
-desc "Generate siggen/*.rbs"
-task :run_erb do
-  infile = "siggen/activerecord_model.rbs.erb"
-  outfile = "siggen/activerecord_model.rbs"
-  sh %|ruby -rerb -e 'ERB.new(File.read("#{infile}"), trim_mode: ?-).run' > #{outfile}|
-end
-
 desc "E2E test for siggen"
 task :e2e_siggen do
   ENV["SIGGEN_DEBUG"] = "1"
-  Rake::Task[:run_erb].invoke
   Dir.chdir("siggen-test/activerecord_model_sqlite3") do
     sh %(rake run_siggen)
   end
+  Rake::Task[:steep].invoke
 end
-
-task install: :run_erb
