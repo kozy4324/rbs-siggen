@@ -7,9 +7,9 @@
 # ```
 class Account < ::ApplicationRecord
   module GeneratedAttributeMethods
-    def account_code: () -> ::String
+    def account_code: () -> ::String?
 
-    def account_code=: (::String value) -> void
+    def account_code=: (::String? value) -> void
 
     def account_code_before_type_cast: () -> untyped
 
@@ -23,15 +23,15 @@ class Account < ::ApplicationRecord
 
     def account_code_changed?: (?from: untyped, ?to: untyped) -> bool
 
-    def account_code_change: () -> [ ::String, ::String ]?
+    def account_code_change: () -> [ ::String?, ::String? ]?
 
     def account_code_will_change!: () -> void
 
-    def account_code_was: () -> ::String
+    def account_code_was: () -> ::String?
 
-    def account_code_previous_change: () -> [ ::String, ::String ]?
+    def account_code_previous_change: () -> [ ::String?, ::String? ]?
 
-    def account_code_previously_was: () -> ::String
+    def account_code_previously_was: () -> ::String?
 
     def restore_account_code!: () -> void
 
@@ -39,19 +39,19 @@ class Account < ::ApplicationRecord
 
     def saved_change_to_account_code?: (?from: untyped, ?to: untyped) -> bool
 
-    def saved_change_to_account_code: () -> [ ::String, ::String ]?
+    def saved_change_to_account_code: () -> [ ::String?, ::String? ]?
 
-    def account_code_before_last_save: () -> ::String
+    def account_code_before_last_save: () -> ::String?
 
     def will_save_change_to_account_code?: (?from: untyped, ?to: untyped) -> bool
 
-    def account_code_change_to_be_saved: () -> [ ::String, ::String ]?
+    def account_code_change_to_be_saved: () -> [ ::String?, ::String? ]?
 
-    def account_code_in_database: () -> ::String
+    def account_code_in_database: () -> ::String?
 
-    def id: () -> ::String
+    def id: () -> ::String?
 
-    def id=: (::String value) -> void
+    def id=: (::String? value) -> void
 
     def id_before_type_cast: () -> untyped
 
@@ -65,15 +65,15 @@ class Account < ::ApplicationRecord
 
     def id_changed?: (?from: untyped, ?to: untyped) -> bool
 
-    def id_change: () -> [ ::String, ::String ]?
+    def id_change: () -> [ ::String?, ::String? ]?
 
     def id_will_change!: () -> void
 
-    def id_was: () -> ::String
+    def id_was: () -> ::String?
 
-    def id_previous_change: () -> [ ::String, ::String ]?
+    def id_previous_change: () -> [ ::String?, ::String? ]?
 
-    def id_previously_was: () -> ::String
+    def id_previously_was: () -> ::String?
 
     def restore_id!: () -> void
 
@@ -81,15 +81,15 @@ class Account < ::ApplicationRecord
 
     def saved_change_to_id?: (?from: untyped, ?to: untyped) -> bool
 
-    def saved_change_to_id: () -> [ ::String, ::String ]?
+    def saved_change_to_id: () -> [ ::String?, ::String? ]?
 
-    def id_before_last_save: () -> ::String
+    def id_before_last_save: () -> ::String?
 
     def will_save_change_to_id?: (?from: untyped, ?to: untyped) -> bool
 
-    def id_change_to_be_saved: () -> [ ::String, ::String ]?
+    def id_change_to_be_saved: () -> [ ::String?, ::String? ]?
 
-    def id_in_database: () -> ::String
+    def id_in_database: () -> ::String?
 
     # ```ruby
     # t.string "name"
@@ -252,9 +252,9 @@ end
 # ```
 class Article < ::ApplicationRecord
   module GeneratedAttributeMethods
-    def id: () -> ::String
+    def id: () -> ::String?
 
-    def id=: (::String value) -> void
+    def id=: (::String? value) -> void
 
     def id_before_type_cast: () -> untyped
 
@@ -268,15 +268,15 @@ class Article < ::ApplicationRecord
 
     def id_changed?: (?from: untyped, ?to: untyped) -> bool
 
-    def id_change: () -> [ ::String, ::String ]?
+    def id_change: () -> [ ::String?, ::String? ]?
 
     def id_will_change!: () -> void
 
-    def id_was: () -> ::String
+    def id_was: () -> ::String?
 
-    def id_previous_change: () -> [ ::String, ::String ]?
+    def id_previous_change: () -> [ ::String?, ::String? ]?
 
-    def id_previously_was: () -> ::String
+    def id_previously_was: () -> ::String?
 
     def restore_id!: () -> void
 
@@ -284,15 +284,15 @@ class Article < ::ApplicationRecord
 
     def saved_change_to_id?: (?from: untyped, ?to: untyped) -> bool
 
-    def saved_change_to_id: () -> [ ::String, ::String ]?
+    def saved_change_to_id: () -> [ ::String?, ::String? ]?
 
-    def id_before_last_save: () -> ::String
+    def id_before_last_save: () -> ::String?
 
     def will_save_change_to_id?: (?from: untyped, ?to: untyped) -> bool
 
-    def id_change_to_be_saved: () -> [ ::String, ::String ]?
+    def id_change_to_be_saved: () -> [ ::String?, ::String? ]?
 
-    def id_in_database: () -> ::String
+    def id_in_database: () -> ::String?
 
     # ```ruby
     # t.string "name"

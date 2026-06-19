@@ -29,13 +29,13 @@ class <%= table_name.classify %> < ::ApplicationRecord
         <%- in_type = "Array[untyped]?" -%>
         <%- ot_type = "Array[untyped]?" -%>
       <%- elsif opt_primary_key.is_a?(String) || opt_primary_key.is_a?(Symbol) -%>
-        <%- type = map[opt_id] || "Integer?" -%>
+        <%- type = map[opt_id] || "Integer" -%>
         <%- if type == "::ActiveSupport::TimeWithZone" -%>
-          <%- in_type = "(::ActiveSupport::TimeWithZone | ::Time)" -%>
-          <%- ot_type = type -%>
+          <%- in_type = "(::ActiveSupport::TimeWithZone | ::Time)?" -%>
+          <%- ot_type = "#{type}?" -%>
         <%- else -%>
-          <%- in_type = type -%>
-          <%- ot_type = type -%>
+          <%- in_type = "#{type}?" -%>
+          <%- ot_type = "#{type}?" -%>
         <%- end -%>
         def <%= opt_primary_key %>: () -> <%= ot_type %>
         def <%= opt_primary_key %>=: (<%= in_type %> value) -> void
@@ -59,13 +59,13 @@ class <%= table_name.classify %> < ::ApplicationRecord
         def <%= opt_primary_key %>_change_to_be_saved: () -> [<%= ot_type %>, <%= ot_type %>]?
         def <%= opt_primary_key %>_in_database: () -> <%= ot_type %>
       <%- else -%>
-        <%- type = map[opt_id] || "Integer?" -%>
+        <%- type = map[opt_id] || "Integer" -%>
         <%- if type == "::ActiveSupport::TimeWithZone" -%>
-          <%- in_type = "(::ActiveSupport::TimeWithZone | ::Time)" -%>
-          <%- ot_type = type -%>
+          <%- in_type = "(::ActiveSupport::TimeWithZone | ::Time)?" -%>
+          <%- ot_type = "#{type}?" -%>
         <%- else -%>
-          <%- in_type = type -%>
-          <%- ot_type = type -%>
+          <%- in_type = "#{type}?" -%>
+          <%- ot_type = "#{type}?" -%>
         <%- end -%>
       <%- end -%>
       def id: () -> <%= ot_type %>
