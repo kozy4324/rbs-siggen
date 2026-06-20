@@ -1,6 +1,26 @@
 require "test_helper"
 
 class PostTest < ActiveSupport::TestCase # steep:ignore
+  test "build" do
+    post1 = Post.build(body: "post1", created_at: Time.now)
+    assert_equal "post1", post1.body
+
+    post2 = Post.build(body: "post2") do |p|
+      p.body = "#{p.body} updated"
+    end
+    assert_equal "post2 updated", post2.body
+
+    posts = Post.build([{body: "post3"}, {body: "post4"}])
+    assert_equal "post3", posts[0].body
+    assert_equal "post4", posts[1].body
+
+    posts_with_block = Post.build([{body: "post5"}, {body: "post6"}]) do |p|
+      p.body = "#{p.body} updated"
+    end
+    assert_equal "post5 updated", posts_with_block[0].body
+    assert_equal "post6 updated", posts_with_block[1].body
+  end
+
   test "create" do
     post1 = Post.create(body: "post1", created_at: Time.now)
     assert_equal "post1", post1.body
@@ -19,6 +39,52 @@ class PostTest < ActiveSupport::TestCase # steep:ignore
     end
     assert_equal "post5 updated", posts_with_block[0].body
     assert_equal "post6 updated", posts_with_block[1].body
+  end
+
+  test "create!" do
+    post1 = Post.create!(body: "post1", created_at: Time.now)
+    assert_equal "post1", post1.body
+
+    post2 = Post.create!(body: "post2") do |p|
+      p.body = "#{p.body} updated"
+    end
+    assert_equal "post2 updated", post2.body
+
+    posts = Post.create!([{body: "post3"}, {body: "post4"}])
+    assert_equal "post3", posts[0].body
+    assert_equal "post4", posts[1].body
+
+    posts_with_block = Post.create!([{body: "post5"}, {body: "post6"}]) do |p|
+      p.body = "#{p.body} updated"
+    end
+    assert_equal "post5 updated", posts_with_block[0].body
+    assert_equal "post6 updated", posts_with_block[1].body
+  end
+
+  test "update" do
+    post = Post.create(body: "post")
+
+    post = Post.update(post.id, body: "post updated")
+    assert_equal "post updated", post.body
+
+    posts = Post.update(body: "all post updated")
+    assert_equal "all post updated", posts.first.body
+
+    posts = Post.update(:all, body: "all post updated with :all")
+    assert_equal "all post updated with :all", posts.first.body
+  end
+
+  test "update!" do
+    post = Post.create(body: "post")
+
+    post = Post.update!(post.id, body: "post updated")
+    assert_equal "post updated", post.body
+
+    posts = Post.update!(body: "all post updated")
+    assert_equal "all post updated", posts.first.body
+
+    posts = Post.update!(:all, body: "all post updated with :all")
+    assert_equal "all post updated with :all", posts.first.body
   end
 end
 

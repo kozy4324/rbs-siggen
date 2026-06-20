@@ -239,8 +239,29 @@ class Account < ::ApplicationRecord
   end
   include GeneratedAttributeMethods
 
+  #
+  def self.build: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (instance) -> void } -> instance
+                | (Array[{ ?account_code: ::String?, ?id: ::String?, ?name: ::String? }]) ?{ (instance) -> void } -> Array[instance]
+
+  #
   def self.create: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (instance) -> void } -> instance
                  | (Array[{ ?account_code: ::String?, ?id: ::String?, ?name: ::String? }]) ?{ (instance) -> void } -> Array[instance]
+
+  #
+  def self.create!: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (instance) -> void } -> instance
+                  | (Array[{ ?account_code: ::String?, ?id: ::String?, ?name: ::String? }]) ?{ (instance) -> void } -> Array[instance]
+
+  #
+  def self.update: (::String? id, ?account_code: ::String?, ?id: ::String?, ?name: ::String?) -> instance
+                 | (Array[::String?] id, ?account_code: ::String?, ?id: ::String?, ?name: ::String?) -> Array[instance]
+                 | (:all id, ?account_code: ::String?, ?id: ::String?, ?name: ::String?) -> Array[instance]
+                 | (?account_code: ::String?, ?id: ::String?, ?name: ::String?) -> Array[instance]
+
+  #
+  def self.update!: (::String? id, ?account_code: ::String?, ?id: ::String?, ?name: ::String?) -> instance
+                  | (Array[::String?] id, ?account_code: ::String?, ?id: ::String?, ?name: ::String?) -> Array[instance]
+                  | (:all id, ?account_code: ::String?, ?id: ::String?, ?name: ::String?) -> Array[instance]
+                  | (?account_code: ::String?, ?id: ::String?, ?name: ::String?) -> Array[instance]
 end
 
 # In schema.rb, this model is declared as:
@@ -442,8 +463,29 @@ class Article < ::ApplicationRecord
   end
   include GeneratedAttributeMethods
 
+  #
+  def self.build: (?id: ::String?, ?name: ::String?) ?{ (instance) -> void } -> instance
+                | (Array[{ ?id: ::String?, ?name: ::String? }]) ?{ (instance) -> void } -> Array[instance]
+
+  #
   def self.create: (?id: ::String?, ?name: ::String?) ?{ (instance) -> void } -> instance
                  | (Array[{ ?id: ::String?, ?name: ::String? }]) ?{ (instance) -> void } -> Array[instance]
+
+  #
+  def self.create!: (?id: ::String?, ?name: ::String?) ?{ (instance) -> void } -> instance
+                  | (Array[{ ?id: ::String?, ?name: ::String? }]) ?{ (instance) -> void } -> Array[instance]
+
+  #
+  def self.update: (::String? id, ?id: ::String?, ?name: ::String?) -> instance
+                 | (Array[::String?] id, ?id: ::String?, ?name: ::String?) -> Array[instance]
+                 | (:all id, ?id: ::String?, ?name: ::String?) -> Array[instance]
+                 | (?id: ::String?, ?name: ::String?) -> Array[instance]
+
+  #
+  def self.update!: (::String? id, ?id: ::String?, ?name: ::String?) -> instance
+                  | (Array[::String?] id, ?id: ::String?, ?name: ::String?) -> Array[instance]
+                  | (:all id, ?id: ::String?, ?name: ::String?) -> Array[instance]
+                  | (?id: ::String?, ?name: ::String?) -> Array[instance]
 end
 
 # In schema.rb, this model is declared as:
@@ -750,8 +792,25 @@ class PostTag < ::ApplicationRecord
   end
   include GeneratedAttributeMethods
 
+  #
+  def self.build: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (instance) -> void } -> instance
+                | (Array[{ ?post_id: ::Integer?, ?tag_name: ::String? }]) ?{ (instance) -> void } -> Array[instance]
+
+  #
   def self.create: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (instance) -> void } -> instance
                  | (Array[{ ?post_id: ::Integer?, ?tag_name: ::String? }]) ?{ (instance) -> void } -> Array[instance]
+
+  #
+  def self.create!: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (instance) -> void } -> instance
+                  | (Array[{ ?post_id: ::Integer?, ?tag_name: ::String? }]) ?{ (instance) -> void } -> Array[instance]
+
+  #
+  def self.update: (:all id, ?post_id: ::Integer?, ?tag_name: ::String?) -> Array[instance]
+                 | (?post_id: ::Integer?, ?tag_name: ::String?) -> Array[instance]
+
+  #
+  def self.update!: (:all id, ?post_id: ::Integer?, ?tag_name: ::String?) -> Array[instance]
+                  | (?post_id: ::Integer?, ?tag_name: ::String?) -> Array[instance]
 end
 
 # In schema.rb, this model is declared as:
@@ -3011,8 +3070,29 @@ class Post < ::ApplicationRecord
   end
   include GeneratedAttributeMethods
 
+  #
+  def self.build: (?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (instance) -> void } -> instance
+                | (Array[{ ?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer? }]) ?{ (instance) -> void } -> Array[instance]
+
+  #
   def self.create: (?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (instance) -> void } -> instance
                  | (Array[{ ?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer? }]) ?{ (instance) -> void } -> Array[instance]
+
+  #
+  def self.create!: (?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (instance) -> void } -> instance
+                  | (Array[{ ?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer? }]) ?{ (instance) -> void } -> Array[instance]
+
+  #
+  def self.update: (Integer? id, ?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) -> instance
+                 | (Array[Integer?] id, ?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) -> Array[instance]
+                 | (:all id, ?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) -> Array[instance]
+                 | (?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) -> Array[instance]
+
+  #
+  def self.update!: (Integer? id, ?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) -> instance
+                  | (Array[Integer?] id, ?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) -> Array[instance]
+                  | (:all id, ?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) -> Array[instance]
+                  | (?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) -> Array[instance]
 end
 
 # In schema.rb, this model is declared as:
@@ -3508,6 +3588,27 @@ class Tagging < ::ApplicationRecord
   end
   include GeneratedAttributeMethods
 
+  #
+  def self.build: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (instance) -> void } -> instance
+                | (Array[{ ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer? }]) ?{ (instance) -> void } -> Array[instance]
+
+  #
   def self.create: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (instance) -> void } -> instance
                  | (Array[{ ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer? }]) ?{ (instance) -> void } -> Array[instance]
+
+  #
+  def self.create!: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (instance) -> void } -> instance
+                  | (Array[{ ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer? }]) ?{ (instance) -> void } -> Array[instance]
+
+  #
+  def self.update: (Array[untyped]? id, ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> instance
+                 | (Array[Array[untyped]?] id, ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> Array[instance]
+                 | (:all id, ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> Array[instance]
+                 | (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> Array[instance]
+
+  #
+  def self.update!: (Array[untyped]? id, ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> instance
+                  | (Array[Array[untyped]?] id, ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> Array[instance]
+                  | (:all id, ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> Array[instance]
+                  | (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> Array[instance]
 end

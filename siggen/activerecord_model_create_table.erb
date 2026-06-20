@@ -5,6 +5,7 @@
 # ```
 class <%= table_name.classify %> < ::ApplicationRecord
   <% attributes = [] %>
+  <% id_type = nil %>
 
   module GeneratedAttributeMethods
     <% map = {
@@ -28,10 +29,12 @@ class <%= table_name.classify %> < ::ApplicationRecord
     <% opt_primary_key = options[:primary_key] %>
     <% unless opt_id == false %>
       <% if opt_primary_key.is_a?(Array) %>
+        <% id_type = "Array[untyped]" %>
         <% in_type = "Array[untyped]?" %>
         <% ot_type = "Array[untyped]?" %>
       <% elsif opt_primary_key.is_a?(String) || opt_primary_key.is_a?(Symbol) %>
         <% type = map[opt_id] || "Integer" %>
+        <% id_type = type %>
         <% if type == "::ActiveSupport::TimeWithZone" %>
           <% in_type = "(::ActiveSupport::TimeWithZone | ::Time)?" %>
           <% ot_type = "#{type}?" %>
@@ -63,6 +66,7 @@ class <%= table_name.classify %> < ::ApplicationRecord
         <% attributes << "?#{opt_primary_key}: #{in_type}" %>
       <% else %>
         <% type = map[opt_id] || "Integer" %>
+        <% id_type = type %>
         <% if type == "::ActiveSupport::TimeWithZone" %>
           <% in_type = "(::ActiveSupport::TimeWithZone | ::Time)?" %>
           <% ot_type = "#{type}?" %>
@@ -108,6 +112,38 @@ class <%= table_name.classify %> < ::ApplicationRecord
     <% end %>
   <% end %>
   <% attributes = attributes.join(",") %>
+
+  # <%= ___comment_of["ActiveRecord::Persistence::ClassMethods#build"] %>
+  def self.build: (<%= attributes %>) ?{ (instance) -> void } -> instance
+                | (Array[{<%= attributes %>}]) ?{ (instance) -> void } -> Array[instance]
+
+  # <%= ___comment_of["ActiveRecord::Persistence::ClassMethods#create"] %>
   def self.create: (<%= attributes %>) ?{ (instance) -> void } -> instance
                  | (Array[{<%= attributes %>}]) ?{ (instance) -> void } -> Array[instance]
+
+  # <%= ___comment_of["ActiveRecord::Persistence::ClassMethods#create!"] %>
+  def self.create!: (<%= attributes %>) ?{ (instance) -> void } -> instance
+                  | (Array[{<%= attributes %>}]) ?{ (instance) -> void } -> Array[instance]
+
+  <% if id_type %>
+    # <%= ___comment_of["ActiveRecord::Persistence::ClassMethods#update"] %>
+    def self.update: (<%= id_type %>? id, <%= attributes %>) -> instance
+                   | (Array[<%= id_type %>?] id, <%= attributes %>) -> Array[instance]
+                   | (:all id, <%= attributes %>) -> Array[instance]
+                   | (<%= attributes %>) -> Array[instance]
+
+    # <%= ___comment_of["ActiveRecord::Persistence::ClassMethods#update!"] %>
+    def self.update!: (<%= id_type %>? id, <%= attributes %>) -> instance
+                    | (Array[<%= id_type %>?] id, <%= attributes %>) -> Array[instance]
+                    | (:all id, <%= attributes %>) -> Array[instance]
+                    | (<%= attributes %>) -> Array[instance]
+  <% else %>
+    # <%= ___comment_of["ActiveRecord::Persistence::ClassMethods#update"] %>
+    def self.update: (:all id, <%= attributes %>) -> Array[instance]
+                   | (<%= attributes %>) -> Array[instance]
+
+    # <%= ___comment_of["ActiveRecord::Persistence::ClassMethods#update!"] %>
+    def self.update!: (:all id, <%= attributes %>) -> Array[instance]
+                    | (<%= attributes %>) -> Array[instance]
+  <% end %>
 end
