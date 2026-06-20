@@ -239,7 +239,7 @@ class Account < ::ApplicationRecord
   end
   include GeneratedAttributeMethods
 
-  def self.create: (?name: ::String) ?{ (instance) -> void } -> instance
+  def self.create: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (instance) -> void } -> instance
                  | (Array[untyped]) ?{ (instance) -> void } -> Array[instance]
 end
 
@@ -442,7 +442,7 @@ class Article < ::ApplicationRecord
   end
   include GeneratedAttributeMethods
 
-  def self.create: (?name: ::String) ?{ (instance) -> void } -> instance
+  def self.create: (?id: ::String?, ?name: ::String?) ?{ (instance) -> void } -> instance
                  | (Array[untyped]) ?{ (instance) -> void } -> Array[instance]
 end
 
@@ -750,7 +750,7 @@ class PostTag < ::ApplicationRecord
   end
   include GeneratedAttributeMethods
 
-  def self.create: (?post_id: ::Integer, ?tag_name: ::String) ?{ (instance) -> void } -> instance
+  def self.create: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (instance) -> void } -> instance
                  | (Array[untyped]) ?{ (instance) -> void } -> Array[instance]
 end
 
@@ -3011,7 +3011,7 @@ class Post < ::ApplicationRecord
   end
   include GeneratedAttributeMethods
 
-  def self.create: (?body: ::String, ?created_at: ::ActiveSupport::TimeWithZone | ::Time, ?likes_count: ::Integer, ?metadata: untyped, ?price: ::BigDecimal, ?published: bool, ?published_on: ::Date, ?rating: ::Float, ?start_time: ::ActiveSupport::TimeWithZone | ::Time, ?thumbnail: ::String, ?title: ::String, ?updated_at: ::ActiveSupport::TimeWithZone | ::Time, ?views_count: ::Integer) ?{ (instance) -> void } -> instance
+  def self.create: (?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (instance) -> void } -> instance
                  | (Array[untyped]) ?{ (instance) -> void } -> Array[instance]
 end
 
@@ -3508,6 +3508,6 @@ class Tagging < ::ApplicationRecord
   end
   include GeneratedAttributeMethods
 
-  def self.create: (?context: ::String, ?post_id: ::Integer, ?tag_id: ::Integer) ?{ (instance) -> void } -> instance
+  def self.create: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (instance) -> void } -> instance
                  | (Array[untyped]) ?{ (instance) -> void } -> Array[instance]
 end
