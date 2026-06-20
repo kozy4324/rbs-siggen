@@ -240,7 +240,7 @@ class Account < ::ApplicationRecord
   include GeneratedAttributeMethods
 
   def self.create: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (instance) -> void } -> instance
-                 | (Array[untyped]) ?{ (instance) -> void } -> Array[instance]
+                 | (Array[{ ?account_code: ::String?, ?id: ::String?, ?name: ::String? }]) ?{ (instance) -> void } -> Array[instance]
 end
 
 # In schema.rb, this model is declared as:
@@ -443,7 +443,7 @@ class Article < ::ApplicationRecord
   include GeneratedAttributeMethods
 
   def self.create: (?id: ::String?, ?name: ::String?) ?{ (instance) -> void } -> instance
-                 | (Array[untyped]) ?{ (instance) -> void } -> Array[instance]
+                 | (Array[{ ?id: ::String?, ?name: ::String? }]) ?{ (instance) -> void } -> Array[instance]
 end
 
 # In schema.rb, this model is declared as:
@@ -751,7 +751,7 @@ class PostTag < ::ApplicationRecord
   include GeneratedAttributeMethods
 
   def self.create: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (instance) -> void } -> instance
-                 | (Array[untyped]) ?{ (instance) -> void } -> Array[instance]
+                 | (Array[{ ?post_id: ::Integer?, ?tag_name: ::String? }]) ?{ (instance) -> void } -> Array[instance]
 end
 
 # In schema.rb, this model is declared as:
@@ -3012,7 +3012,7 @@ class Post < ::ApplicationRecord
   include GeneratedAttributeMethods
 
   def self.create: (?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (instance) -> void } -> instance
-                 | (Array[untyped]) ?{ (instance) -> void } -> Array[instance]
+                 | (Array[{ ?id: Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer? }]) ?{ (instance) -> void } -> Array[instance]
 end
 
 # In schema.rb, this model is declared as:
@@ -3509,5 +3509,5 @@ class Tagging < ::ApplicationRecord
   include GeneratedAttributeMethods
 
   def self.create: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (instance) -> void } -> instance
-                 | (Array[untyped]) ?{ (instance) -> void } -> Array[instance]
+                 | (Array[{ ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer? }]) ?{ (instance) -> void } -> Array[instance]
 end
