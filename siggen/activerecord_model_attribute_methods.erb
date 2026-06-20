@@ -1,179 +1,179 @@
-<%- map = {
-      # https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/connection_adapters/abstract/schema_definitions.rb#L331-L332
-      bigint: "::Integer",
-      binary: "::String",
-      boolean: "bool",
-      date: "::Date",
-      datetime: "::ActiveSupport::TimeWithZone",
-      decimal: "::BigDecimal",
-      float: "::Float",
-      integer: "::Integer",
-      json: "untyped",
-      string: "::String",
-      text: "::String",
-      time: "::ActiveSupport::TimeWithZone",
-      timestamp: "::ActiveSupport::TimeWithZone",
-      virtual: "_",
-    } -%>
-<%- type = map[options[:type]] if key == "virtual" -%>
-<%- in_type = type -%>
-<%- ot_type = type -%>
-<%- in_type = "(::ActiveSupport::TimeWithZone | ::Time)" if type == "::ActiveSupport::TimeWithZone" -%>
-<%- in_type = "#{in_type}?" unless options[:null] == false -%>
-<%- ot_type = "#{ot_type}?" unless options[:null] == false -%>
+<% map = {
+     # https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/connection_adapters/abstract/schema_definitions.rb#L331-L332
+     bigint: "::Integer",
+     binary: "::String",
+     boolean: "bool",
+     date: "::Date",
+     datetime: "::ActiveSupport::TimeWithZone",
+     decimal: "::BigDecimal",
+     float: "::Float",
+     integer: "::Integer",
+     json: "untyped",
+     string: "::String",
+     text: "::String",
+     time: "::ActiveSupport::TimeWithZone",
+     timestamp: "::ActiveSupport::TimeWithZone",
+     virtual: "_",
+   } %>
+<% type = map[options[:type]] if key == "virtual" %>
+<% in_type = type %>
+<% ot_type = type %>
+<% in_type = "(::ActiveSupport::TimeWithZone | ::Time)" if type == "::ActiveSupport::TimeWithZone" %>
+<% in_type = "#{in_type}?" unless options[:null] == false %>
+<% ot_type = "#{ot_type}?" unless options[:null] == false %>
 class <%= create_table.table_name.classify %>
   module GeneratedAttributeMethods
     <% names.each do |name| %>
-      <%-# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/read.rb -%>
+      <%# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/read.rb %>
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveRecord::AttributeMethods::Read#read_attribute"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def <%= name %>: () -> <%= ot_type %>
 
-      <%-# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/write.rb -%>
+      <%# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/write.rb %>
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveRecord::AttributeMethods::Write#write_attribute"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def <%= name %>=: (<%= in_type %> value) -> void
 
-      <%-# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/before_type_cast.rb -%>
+      <%# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/before_type_cast.rb %>
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_before_type_cast"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def <%= name %>_before_type_cast: () -> untyped
 
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveRecord::AttributeMethods::BeforeTypeCast#read_attribute_for_database"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def <%= name %>_for_database: () -> untyped
 
       # ```ruby
       # <%= ___source %>
       # ```
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def <%= name %>_came_from_user?: () -> bool
 
-      <%-# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/query.rb -%>
+      <%# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/query.rb %>
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveRecord::AttributeMethods::Query"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def <%= name %>?: () -> bool
 
-      <%-# https://github.com/rails/rails/blob/v8.1.3/activemodel/lib/active_model/dirty.rb -%>
+      <%# https://github.com/rails/rails/blob/v8.1.3/activemodel/lib/active_model/dirty.rb %>
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveModel::Dirty"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def <%= name %>_previously_changed?: (?from: untyped, ?to: untyped) -> bool
 
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveModel::Dirty"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def <%= name %>_changed?: (?from: untyped, ?to: untyped) -> bool
 
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveModel::Dirty"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def <%= name %>_change: () -> [<%= ot_type %>, <%= ot_type %>]?
 
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveModel::Dirty"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def <%= name %>_will_change!: () -> void
 
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveModel::Dirty"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def <%= name %>_was: () -> <%= ot_type %>
 
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveModel::Dirty"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def <%= name %>_previous_change: () -> [<%= ot_type %>, <%= ot_type %>]?
 
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveModel::Dirty"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def <%= name %>_previously_was: () -> <%= ot_type %>
 
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveModel::Dirty"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def restore_<%= name %>!: () -> void
 
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveModel::Dirty"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def clear_<%= name %>_change: () -> void
 
-      <%-# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/dirty.rb -%>
+      <%# https://github.com/rails/rails/blob/v8.1.3/activerecord/lib/active_record/attribute_methods/dirty.rb %>
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute?"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def saved_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#saved_change_to_attribute"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def saved_change_to_<%= name %>: () -> [<%= ot_type %>, <%= ot_type %>]?
 
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_before_last_save"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def <%= name %>_before_last_save: () -> <%= ot_type %>
 
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#will_save_change_to_attribute?"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def will_save_change_to_<%= name %>?: (?from: untyped, ?to: untyped) -> bool
 
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def <%= name %>_change_to_be_saved: () -> [<%= ot_type %>, <%= ot_type %>]?
 
       # ```ruby
       # <%= ___source %>
       # ```
       # <%= ___comment_of["ActiveRecord::AttributeMethods::Dirty#attribute_change_to_be_saved"] %>
-      <%- if ENV["SIGGEN_DEBUG"] -%>%a[rbs:test:target]<%- end -%>
+      <% if ENV["SIGGEN_DEBUG"] %>%a[rbs:test:target]<% end %>
       def <%= name %>_in_database: () -> <%= ot_type %>
     <% end %>
   end
