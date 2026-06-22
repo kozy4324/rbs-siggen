@@ -5,7 +5,7 @@
 #   t.string "name"
 # end
 # ```
-class Account < ::ApplicationRecord
+class Account
   module GeneratedAttributeMethods
     def account_code: () -> ::String?
 
@@ -1581,7 +1581,7 @@ end
 #   t.string "name"
 # end
 # ```
-class Article < ::ApplicationRecord
+class Article
   module GeneratedAttributeMethods
     def id: () -> ::String?
 
@@ -3117,7 +3117,7 @@ end
 #   t.datetime "updated_at", null: false
 # end
 # ```
-class Author < ::ApplicationRecord
+class Author
   module GeneratedAttributeMethods
     def id: () -> Integer?
 
@@ -7450,7 +7450,7 @@ end
 #   t.string "tag_name", null: false
 # end
 # ```
-class PostTag < ::ApplicationRecord
+class PostTag
   module GeneratedAttributeMethods
     # ```ruby
     # t.integer "post_id", null: false
@@ -10353,7 +10353,7 @@ end
 #   t.index ["author_id"], name: "index_posts_on_author_id"
 # end
 # ```
-class Post < ::ApplicationRecord
+class Post
   module GeneratedAttributeMethods
     def id: () -> Integer?
 
@@ -32878,7 +32878,7 @@ end
 #   t.index ["author_id"], name: "index_profiles_on_author_id"
 # end
 # ```
-class Profile < ::ApplicationRecord
+class Profile
   module GeneratedAttributeMethods
     def id: () -> Integer?
 
@@ -41409,7 +41409,7 @@ end
 #   t.integer "tag_id", null: false
 # end
 # ```
-class Tagging < ::ApplicationRecord
+class Tagging
   module GeneratedAttributeMethods
     def id: () -> Array[untyped]?
 
