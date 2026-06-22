@@ -77,6 +77,11 @@ if options[:rails] && lib_path.nil?
     siggen.analyze(path: "#{rails_root}/db/schema.rb") do |siggen, _|
       puts siggen.generate
     end
+
+    siggen.analyze(path: "#{rails_root}/app/models/") do |siggen, _|
+      output = siggen.generate
+      puts output unless output.empty?
+    end
   end
 else
   siggen.analyze(path: Pathname(lib_path)) do |siggen, _|

@@ -9,6 +9,3 @@ module ActiveRecord
   class Base
   end
 end
-
-class ApplicationRecord < ::ActiveRecord::Base
-end

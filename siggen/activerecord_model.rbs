@@ -61,4 +61,14 @@ module ActiveRecord
       include ColumnMethods
     end
   end
+
+  module Associations
+    module ClassMethods
+      %a{siggen:
+        def <%= name %>: () -> <%= name.to_s.classify %>
+      }
+      def belongs_to: (untyped name, ?untyped? scope, **untyped options) -> untyped
+                    | ...
+    end
+  end
 end

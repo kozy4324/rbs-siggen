@@ -6,6 +6,7 @@ require_relative "config/application"
 Rails.application.load_tasks
 
 task :run_siggen do
+  sh %|rbs prototype rb app/models/* > sig/prototype_models.rbs|
   sh %|../../exe/rbs-siggen --rails --siggen_dir=../../siggen > sig/siggen.rbs|
   sh %|rake test|
 end

@@ -45733,3 +45733,9 @@ class Tagging < ::ApplicationRecord
                   | (:all id, ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> Array[instance]
                   | (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> Array[instance]
 end
+class Post
+  def author: () -> Author
+end
+class Profile
+  def author: () -> Author
+end
