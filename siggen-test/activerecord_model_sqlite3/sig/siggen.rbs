@@ -94,18 +94,18 @@ class Account
     # ```ruby
     # t.string "name"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def name: () -> ::String?
 
     # ```ruby
     # t.string "name"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def name=: (::String? value) -> void
 
@@ -133,6 +133,18 @@ class Account
     # ```ruby
     # t.string "name"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def name_for_database: () -> untyped
@@ -145,6 +157,45 @@ class Account
 
     # ```ruby
     # t.string "name"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -1404,11 +1455,13 @@ class Account
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_name?: (?from: untyped, ?to: untyped) -> bool
 
@@ -1446,15 +1499,17 @@ class Account
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_name?: (?from: untyped, ?to: untyped) -> bool
 
@@ -1492,6 +1547,30 @@ class Account
   end
   include GeneratedAttributeMethods
 
+  # Builds an object (or multiple objects) and returns either the built object or a list of built
+  # objects.
+  #
+  # The +attributes+ parameter can be either a Hash or an Array of Hashes. These Hashes describe the
+  # attributes on the objects that are to be built.
+  #
+  # ==== Examples
+  # ```ruby
+  #   # Build a single new object
+  #   User.build(first_name: 'Jamie')
+  #
+  #   # Build an Array of new objects
+  #   User.build([{ first_name: 'Jamie' }, { first_name: 'Jeremy' }])
+  #
+  #   # Build a single object and pass it into a block to set other attributes.
+  #   User.build(first_name: 'Jamie') do |u|
+  #     u.is_admin = false
+  #   end
+  #
+  #   # Building an Array of new objects using a block, where the block is executed for each object:
+  #   User.build([{ first_name: 'Jamie' }, { first_name: 'Jeremy' }]) do |u|
+  #     u.is_admin = false
+  #   end
+  # ```
   #
   def self.build: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (instance) -> void } -> instance
                 | (Array[{ ?account_code: ::String?, ?id: ::String?, ?name: ::String? }]) ?{ (instance) -> void } -> Array[instance]
@@ -1540,6 +1619,7 @@ class Account
   # ==== Parameters
   #
   # * +id+ - This should be the id or an array of ids to be updated.
+  #   Optional argument, defaults to all records in the relation.
   # * +attributes+ - This should be a hash of attributes or an array of hashes.
   #
   # ==== Examples
@@ -1567,7 +1647,8 @@ class Account
                  | (:all id, ?account_code: ::String?, ?id: ::String?, ?name: ::String?) -> Array[instance]
                  | (?account_code: ::String?, ?id: ::String?, ?name: ::String?) -> Array[instance]
 
-  #
+  # Updates the object (or multiple objects) just like #update but calls #update! instead
+  # of +update+, so an exception is raised if the record is invalid and saving will fail.
   def self.update!: (::String? id, ?account_code: ::String?, ?id: ::String?, ?name: ::String?) -> instance
                   | (Array[::String?] id, ?account_code: ::String?, ?id: ::String?, ?name: ::String?) -> Array[instance]
                   | (:all id, ?account_code: ::String?, ?id: ::String?, ?name: ::String?) -> Array[instance]
@@ -1628,18 +1709,18 @@ class Article
     # ```ruby
     # t.string "name"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def name: () -> ::String?
 
     # ```ruby
     # t.string "name"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def name=: (::String? value) -> void
 
@@ -1667,6 +1748,18 @@ class Article
     # ```ruby
     # t.string "name"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def name_for_database: () -> untyped
@@ -1679,6 +1772,45 @@ class Article
 
     # ```ruby
     # t.string "name"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -2938,11 +3070,13 @@ class Article
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_name?: (?from: untyped, ?to: untyped) -> bool
 
@@ -2980,15 +3114,17 @@ class Article
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_name?: (?from: untyped, ?to: untyped) -> bool
 
@@ -3026,6 +3162,30 @@ class Article
   end
   include GeneratedAttributeMethods
 
+  # Builds an object (or multiple objects) and returns either the built object or a list of built
+  # objects.
+  #
+  # The +attributes+ parameter can be either a Hash or an Array of Hashes. These Hashes describe the
+  # attributes on the objects that are to be built.
+  #
+  # ==== Examples
+  # ```ruby
+  #   # Build a single new object
+  #   User.build(first_name: 'Jamie')
+  #
+  #   # Build an Array of new objects
+  #   User.build([{ first_name: 'Jamie' }, { first_name: 'Jeremy' }])
+  #
+  #   # Build a single object and pass it into a block to set other attributes.
+  #   User.build(first_name: 'Jamie') do |u|
+  #     u.is_admin = false
+  #   end
+  #
+  #   # Building an Array of new objects using a block, where the block is executed for each object:
+  #   User.build([{ first_name: 'Jamie' }, { first_name: 'Jeremy' }]) do |u|
+  #     u.is_admin = false
+  #   end
+  # ```
   #
   def self.build: (?id: ::String?, ?name: ::String?) ?{ (instance) -> void } -> instance
                 | (Array[{ ?id: ::String?, ?name: ::String? }]) ?{ (instance) -> void } -> Array[instance]
@@ -3074,6 +3234,7 @@ class Article
   # ==== Parameters
   #
   # * +id+ - This should be the id or an array of ids to be updated.
+  #   Optional argument, defaults to all records in the relation.
   # * +attributes+ - This should be a hash of attributes or an array of hashes.
   #
   # ==== Examples
@@ -3101,7 +3262,8 @@ class Article
                  | (:all id, ?id: ::String?, ?name: ::String?) -> Array[instance]
                  | (?id: ::String?, ?name: ::String?) -> Array[instance]
 
-  #
+  # Updates the object (or multiple objects) just like #update but calls #update! instead
+  # of +update+, so an exception is raised if the record is invalid and saving will fail.
   def self.update!: (::String? id, ?id: ::String?, ?name: ::String?) -> instance
                   | (Array[::String?] id, ?id: ::String?, ?name: ::String?) -> Array[instance]
                   | (:all id, ?id: ::String?, ?name: ::String?) -> Array[instance]
@@ -3164,18 +3326,18 @@ class Author
     # ```ruby
     # t.datetime "created_at", null: false
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def created_at: () -> ::ActiveSupport::TimeWithZone
 
     # ```ruby
     # t.datetime "created_at", null: false
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def created_at=: (::ActiveSupport::TimeWithZone | ::Time value) -> void
 
@@ -3203,6 +3365,18 @@ class Author
     # ```ruby
     # t.datetime "created_at", null: false
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def created_at_for_database: () -> untyped
@@ -3215,6 +3389,45 @@ class Author
 
     # ```ruby
     # t.datetime "created_at", null: false
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -4474,11 +4687,13 @@ class Author
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_created_at?: (?from: untyped, ?to: untyped) -> bool
 
@@ -4516,15 +4731,17 @@ class Author
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_created_at?: (?from: untyped, ?to: untyped) -> bool
 
@@ -4563,18 +4780,18 @@ class Author
     # ```ruby
     # t.string "name"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def name: () -> ::String?
 
     # ```ruby
     # t.string "name"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def name=: (::String? value) -> void
 
@@ -4602,6 +4819,18 @@ class Author
     # ```ruby
     # t.string "name"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def name_for_database: () -> untyped
@@ -4614,6 +4843,45 @@ class Author
 
     # ```ruby
     # t.string "name"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -5873,11 +6141,13 @@ class Author
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_name?: (?from: untyped, ?to: untyped) -> bool
 
@@ -5915,15 +6185,17 @@ class Author
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_name?: (?from: untyped, ?to: untyped) -> bool
 
@@ -5962,18 +6234,18 @@ class Author
     # ```ruby
     # t.datetime "updated_at", null: false
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def updated_at: () -> ::ActiveSupport::TimeWithZone
 
     # ```ruby
     # t.datetime "updated_at", null: false
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def updated_at=: (::ActiveSupport::TimeWithZone | ::Time value) -> void
 
@@ -6001,6 +6273,18 @@ class Author
     # ```ruby
     # t.datetime "updated_at", null: false
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def updated_at_for_database: () -> untyped
@@ -6013,6 +6297,45 @@ class Author
 
     # ```ruby
     # t.datetime "updated_at", null: false
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -7272,11 +7595,13 @@ class Author
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_updated_at?: (?from: untyped, ?to: untyped) -> bool
 
@@ -7314,15 +7639,17 @@ class Author
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_updated_at?: (?from: untyped, ?to: untyped) -> bool
 
@@ -7360,6 +7687,30 @@ class Author
   end
   include GeneratedAttributeMethods
 
+  # Builds an object (or multiple objects) and returns either the built object or a list of built
+  # objects.
+  #
+  # The +attributes+ parameter can be either a Hash or an Array of Hashes. These Hashes describe the
+  # attributes on the objects that are to be built.
+  #
+  # ==== Examples
+  # ```ruby
+  #   # Build a single new object
+  #   User.build(first_name: 'Jamie')
+  #
+  #   # Build an Array of new objects
+  #   User.build([{ first_name: 'Jamie' }, { first_name: 'Jeremy' }])
+  #
+  #   # Build a single object and pass it into a block to set other attributes.
+  #   User.build(first_name: 'Jamie') do |u|
+  #     u.is_admin = false
+  #   end
+  #
+  #   # Building an Array of new objects using a block, where the block is executed for each object:
+  #   User.build([{ first_name: 'Jamie' }, { first_name: 'Jeremy' }]) do |u|
+  #     u.is_admin = false
+  #   end
+  # ```
   #
   def self.build: (?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) ?{ (instance) -> void } -> instance
                 | (Array[{ ?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)? }]) ?{ (instance) -> void } -> Array[instance]
@@ -7408,6 +7759,7 @@ class Author
   # ==== Parameters
   #
   # * +id+ - This should be the id or an array of ids to be updated.
+  #   Optional argument, defaults to all records in the relation.
   # * +attributes+ - This should be a hash of attributes or an array of hashes.
   #
   # ==== Examples
@@ -7435,7 +7787,8 @@ class Author
                  | (:all id, ?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) -> Array[instance]
                  | (?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) -> Array[instance]
 
-  #
+  # Updates the object (or multiple objects) just like #update but calls #update! instead
+  # of +update+, so an exception is raised if the record is invalid and saving will fail.
   def self.update!: (Integer? id, ?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) -> instance
                   | (Array[Integer?] id, ?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) -> Array[instance]
                   | (:all id, ?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) -> Array[instance]
@@ -7455,18 +7808,18 @@ class PostTag
     # ```ruby
     # t.integer "post_id", null: false
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def post_id: () -> ::Integer
 
     # ```ruby
     # t.integer "post_id", null: false
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def post_id=: (::Integer value) -> void
 
@@ -7494,6 +7847,18 @@ class PostTag
     # ```ruby
     # t.integer "post_id", null: false
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def post_id_for_database: () -> untyped
@@ -7506,6 +7871,45 @@ class PostTag
 
     # ```ruby
     # t.integer "post_id", null: false
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -8765,11 +9169,13 @@ class PostTag
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_post_id?: (?from: untyped, ?to: untyped) -> bool
 
@@ -8807,15 +9213,17 @@ class PostTag
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_post_id?: (?from: untyped, ?to: untyped) -> bool
 
@@ -8854,18 +9262,18 @@ class PostTag
     # ```ruby
     # t.string "tag_name", null: false
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def tag_name: () -> ::String
 
     # ```ruby
     # t.string "tag_name", null: false
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def tag_name=: (::String value) -> void
 
@@ -8893,6 +9301,18 @@ class PostTag
     # ```ruby
     # t.string "tag_name", null: false
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def tag_name_for_database: () -> untyped
@@ -8905,6 +9325,45 @@ class PostTag
 
     # ```ruby
     # t.string "tag_name", null: false
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -10164,11 +10623,13 @@ class PostTag
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_tag_name?: (?from: untyped, ?to: untyped) -> bool
 
@@ -10206,15 +10667,17 @@ class PostTag
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_tag_name?: (?from: untyped, ?to: untyped) -> bool
 
@@ -10252,6 +10715,30 @@ class PostTag
   end
   include GeneratedAttributeMethods
 
+  # Builds an object (or multiple objects) and returns either the built object or a list of built
+  # objects.
+  #
+  # The +attributes+ parameter can be either a Hash or an Array of Hashes. These Hashes describe the
+  # attributes on the objects that are to be built.
+  #
+  # ==== Examples
+  # ```ruby
+  #   # Build a single new object
+  #   User.build(first_name: 'Jamie')
+  #
+  #   # Build an Array of new objects
+  #   User.build([{ first_name: 'Jamie' }, { first_name: 'Jeremy' }])
+  #
+  #   # Build a single object and pass it into a block to set other attributes.
+  #   User.build(first_name: 'Jamie') do |u|
+  #     u.is_admin = false
+  #   end
+  #
+  #   # Building an Array of new objects using a block, where the block is executed for each object:
+  #   User.build([{ first_name: 'Jamie' }, { first_name: 'Jeremy' }]) do |u|
+  #     u.is_admin = false
+  #   end
+  # ```
   #
   def self.build: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (instance) -> void } -> instance
                 | (Array[{ ?post_id: ::Integer?, ?tag_name: ::String? }]) ?{ (instance) -> void } -> Array[instance]
@@ -10300,6 +10787,7 @@ class PostTag
   # ==== Parameters
   #
   # * +id+ - This should be the id or an array of ids to be updated.
+  #   Optional argument, defaults to all records in the relation.
   # * +attributes+ - This should be a hash of attributes or an array of hashes.
   #
   # ==== Examples
@@ -10325,7 +10813,8 @@ class PostTag
   def self.update: (:all id, ?post_id: ::Integer?, ?tag_name: ::String?) -> Array[instance]
                  | (?post_id: ::Integer?, ?tag_name: ::String?) -> Array[instance]
 
-  #
+  # Updates the object (or multiple objects) just like #update but calls #update! instead
+  # of +update+, so an exception is raised if the record is invalid and saving will fail.
   def self.update!: (:all id, ?post_id: ::Integer?, ?tag_name: ::String?) -> Array[instance]
                   | (?post_id: ::Integer?, ?tag_name: ::String?) -> Array[instance]
 end
@@ -10400,18 +10889,18 @@ class Post
     # ```ruby
     # t.integer "author_id"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def author_id: () -> ::Integer?
 
     # ```ruby
     # t.integer "author_id"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def author_id=: (::Integer? value) -> void
 
@@ -10439,6 +10928,18 @@ class Post
     # ```ruby
     # t.integer "author_id"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def author_id_for_database: () -> untyped
@@ -10451,6 +10952,45 @@ class Post
 
     # ```ruby
     # t.integer "author_id"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -11710,11 +12250,13 @@ class Post
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_author_id?: (?from: untyped, ?to: untyped) -> bool
 
@@ -11752,15 +12294,17 @@ class Post
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_author_id?: (?from: untyped, ?to: untyped) -> bool
 
@@ -11799,18 +12343,18 @@ class Post
     # ```ruby
     # t.text "body"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def body: () -> ::String?
 
     # ```ruby
     # t.text "body"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def body=: (::String? value) -> void
 
@@ -11838,6 +12382,18 @@ class Post
     # ```ruby
     # t.text "body"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def body_for_database: () -> untyped
@@ -11850,6 +12406,45 @@ class Post
 
     # ```ruby
     # t.text "body"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -13109,11 +13704,13 @@ class Post
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_body?: (?from: untyped, ?to: untyped) -> bool
 
@@ -13151,15 +13748,17 @@ class Post
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_body?: (?from: untyped, ?to: untyped) -> bool
 
@@ -13198,18 +13797,18 @@ class Post
     # ```ruby
     # t.datetime "created_at", null: false
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def created_at: () -> ::ActiveSupport::TimeWithZone
 
     # ```ruby
     # t.datetime "created_at", null: false
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def created_at=: (::ActiveSupport::TimeWithZone | ::Time value) -> void
 
@@ -13237,6 +13836,18 @@ class Post
     # ```ruby
     # t.datetime "created_at", null: false
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def created_at_for_database: () -> untyped
@@ -13249,6 +13860,45 @@ class Post
 
     # ```ruby
     # t.datetime "created_at", null: false
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -14508,11 +15158,13 @@ class Post
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_created_at?: (?from: untyped, ?to: untyped) -> bool
 
@@ -14550,15 +15202,17 @@ class Post
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_created_at?: (?from: untyped, ?to: untyped) -> bool
 
@@ -14597,18 +15251,18 @@ class Post
     # ```ruby
     # t.virtual "engagement_count", type: :integer, as: "likes_count + views_count", stored: true
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def engagement_count: () -> ::Integer?
 
     # ```ruby
     # t.virtual "engagement_count", type: :integer, as: "likes_count + views_count", stored: true
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def engagement_count=: (::Integer? value) -> void
 
@@ -14636,6 +15290,18 @@ class Post
     # ```ruby
     # t.virtual "engagement_count", type: :integer, as: "likes_count + views_count", stored: true
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def engagement_count_for_database: () -> untyped
@@ -14648,6 +15314,45 @@ class Post
 
     # ```ruby
     # t.virtual "engagement_count", type: :integer, as: "likes_count + views_count", stored: true
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -15907,11 +16612,13 @@ class Post
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_engagement_count?: (?from: untyped, ?to: untyped) -> bool
 
@@ -15949,15 +16656,17 @@ class Post
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_engagement_count?: (?from: untyped, ?to: untyped) -> bool
 
@@ -15996,18 +16705,18 @@ class Post
     # ```ruby
     # t.integer "likes_count"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def likes_count: () -> ::Integer?
 
     # ```ruby
     # t.integer "likes_count"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def likes_count=: (::Integer? value) -> void
 
@@ -16035,6 +16744,18 @@ class Post
     # ```ruby
     # t.integer "likes_count"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def likes_count_for_database: () -> untyped
@@ -16047,6 +16768,45 @@ class Post
 
     # ```ruby
     # t.integer "likes_count"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -17306,11 +18066,13 @@ class Post
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_likes_count?: (?from: untyped, ?to: untyped) -> bool
 
@@ -17348,15 +18110,17 @@ class Post
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_likes_count?: (?from: untyped, ?to: untyped) -> bool
 
@@ -17395,18 +18159,18 @@ class Post
     # ```ruby
     # t.json "metadata"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def metadata: () -> untyped?
 
     # ```ruby
     # t.json "metadata"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def metadata=: (untyped? value) -> void
 
@@ -17434,6 +18198,18 @@ class Post
     # ```ruby
     # t.json "metadata"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def metadata_for_database: () -> untyped
@@ -17446,6 +18222,45 @@ class Post
 
     # ```ruby
     # t.json "metadata"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -18705,11 +19520,13 @@ class Post
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_metadata?: (?from: untyped, ?to: untyped) -> bool
 
@@ -18747,15 +19564,17 @@ class Post
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_metadata?: (?from: untyped, ?to: untyped) -> bool
 
@@ -18794,18 +19613,18 @@ class Post
     # ```ruby
     # t.decimal "price"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def price: () -> ::BigDecimal?
 
     # ```ruby
     # t.decimal "price"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def price=: (::BigDecimal? value) -> void
 
@@ -18833,6 +19652,18 @@ class Post
     # ```ruby
     # t.decimal "price"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def price_for_database: () -> untyped
@@ -18845,6 +19676,45 @@ class Post
 
     # ```ruby
     # t.decimal "price"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -20104,11 +20974,13 @@ class Post
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_price?: (?from: untyped, ?to: untyped) -> bool
 
@@ -20146,15 +21018,17 @@ class Post
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_price?: (?from: untyped, ?to: untyped) -> bool
 
@@ -20193,18 +21067,18 @@ class Post
     # ```ruby
     # t.boolean "published"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def published: () -> bool?
 
     # ```ruby
     # t.boolean "published"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def published=: (bool? value) -> void
 
@@ -20232,6 +21106,18 @@ class Post
     # ```ruby
     # t.boolean "published"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def published_for_database: () -> untyped
@@ -20244,6 +21130,45 @@ class Post
 
     # ```ruby
     # t.boolean "published"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -21503,11 +22428,13 @@ class Post
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_published?: (?from: untyped, ?to: untyped) -> bool
 
@@ -21545,15 +22472,17 @@ class Post
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_published?: (?from: untyped, ?to: untyped) -> bool
 
@@ -21592,18 +22521,18 @@ class Post
     # ```ruby
     # t.date "published_on"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def published_on: () -> ::Date?
 
     # ```ruby
     # t.date "published_on"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def published_on=: (::Date? value) -> void
 
@@ -21631,6 +22560,18 @@ class Post
     # ```ruby
     # t.date "published_on"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def published_on_for_database: () -> untyped
@@ -21643,6 +22584,45 @@ class Post
 
     # ```ruby
     # t.date "published_on"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -22902,11 +23882,13 @@ class Post
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_published_on?: (?from: untyped, ?to: untyped) -> bool
 
@@ -22944,15 +23926,17 @@ class Post
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_published_on?: (?from: untyped, ?to: untyped) -> bool
 
@@ -22991,18 +23975,18 @@ class Post
     # ```ruby
     # t.float "rating"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def rating: () -> ::Float?
 
     # ```ruby
     # t.float "rating"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def rating=: (::Float? value) -> void
 
@@ -23030,6 +24014,18 @@ class Post
     # ```ruby
     # t.float "rating"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def rating_for_database: () -> untyped
@@ -23042,6 +24038,45 @@ class Post
 
     # ```ruby
     # t.float "rating"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -24301,11 +25336,13 @@ class Post
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_rating?: (?from: untyped, ?to: untyped) -> bool
 
@@ -24343,15 +25380,17 @@ class Post
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_rating?: (?from: untyped, ?to: untyped) -> bool
 
@@ -24390,18 +25429,18 @@ class Post
     # ```ruby
     # t.virtual "slug", type: :string, as: "lower(title)", stored: true
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def slug: () -> ::String?
 
     # ```ruby
     # t.virtual "slug", type: :string, as: "lower(title)", stored: true
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def slug=: (::String? value) -> void
 
@@ -24429,6 +25468,18 @@ class Post
     # ```ruby
     # t.virtual "slug", type: :string, as: "lower(title)", stored: true
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def slug_for_database: () -> untyped
@@ -24441,6 +25492,45 @@ class Post
 
     # ```ruby
     # t.virtual "slug", type: :string, as: "lower(title)", stored: true
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -25700,11 +26790,13 @@ class Post
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_slug?: (?from: untyped, ?to: untyped) -> bool
 
@@ -25742,15 +26834,17 @@ class Post
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_slug?: (?from: untyped, ?to: untyped) -> bool
 
@@ -25789,18 +26883,18 @@ class Post
     # ```ruby
     # t.time "start_time"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def start_time: () -> ::ActiveSupport::TimeWithZone?
 
     # ```ruby
     # t.time "start_time"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def start_time=: ((::ActiveSupport::TimeWithZone | ::Time)? value) -> void
 
@@ -25828,6 +26922,18 @@ class Post
     # ```ruby
     # t.time "start_time"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def start_time_for_database: () -> untyped
@@ -25840,6 +26946,45 @@ class Post
 
     # ```ruby
     # t.time "start_time"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -27099,11 +28244,13 @@ class Post
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_start_time?: (?from: untyped, ?to: untyped) -> bool
 
@@ -27141,15 +28288,17 @@ class Post
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_start_time?: (?from: untyped, ?to: untyped) -> bool
 
@@ -27188,18 +28337,18 @@ class Post
     # ```ruby
     # t.binary "thumbnail"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def thumbnail: () -> ::String?
 
     # ```ruby
     # t.binary "thumbnail"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def thumbnail=: (::String? value) -> void
 
@@ -27227,6 +28376,18 @@ class Post
     # ```ruby
     # t.binary "thumbnail"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def thumbnail_for_database: () -> untyped
@@ -27239,6 +28400,45 @@ class Post
 
     # ```ruby
     # t.binary "thumbnail"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -28498,11 +29698,13 @@ class Post
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_thumbnail?: (?from: untyped, ?to: untyped) -> bool
 
@@ -28540,15 +29742,17 @@ class Post
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_thumbnail?: (?from: untyped, ?to: untyped) -> bool
 
@@ -28587,18 +29791,18 @@ class Post
     # ```ruby
     # t.string "title"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def title: () -> ::String?
 
     # ```ruby
     # t.string "title"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def title=: (::String? value) -> void
 
@@ -28626,6 +29830,18 @@ class Post
     # ```ruby
     # t.string "title"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def title_for_database: () -> untyped
@@ -28638,6 +29854,45 @@ class Post
 
     # ```ruby
     # t.string "title"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -29897,11 +31152,13 @@ class Post
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_title?: (?from: untyped, ?to: untyped) -> bool
 
@@ -29939,15 +31196,17 @@ class Post
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_title?: (?from: untyped, ?to: untyped) -> bool
 
@@ -29986,18 +31245,18 @@ class Post
     # ```ruby
     # t.datetime "updated_at", null: false
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def updated_at: () -> ::ActiveSupport::TimeWithZone
 
     # ```ruby
     # t.datetime "updated_at", null: false
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def updated_at=: (::ActiveSupport::TimeWithZone | ::Time value) -> void
 
@@ -30025,6 +31284,18 @@ class Post
     # ```ruby
     # t.datetime "updated_at", null: false
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def updated_at_for_database: () -> untyped
@@ -30037,6 +31308,45 @@ class Post
 
     # ```ruby
     # t.datetime "updated_at", null: false
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -31296,11 +32606,13 @@ class Post
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_updated_at?: (?from: untyped, ?to: untyped) -> bool
 
@@ -31338,15 +32650,17 @@ class Post
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_updated_at?: (?from: untyped, ?to: untyped) -> bool
 
@@ -31385,18 +32699,18 @@ class Post
     # ```ruby
     # t.bigint "views_count"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def views_count: () -> ::Integer?
 
     # ```ruby
     # t.bigint "views_count"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def views_count=: (::Integer? value) -> void
 
@@ -31424,6 +32738,18 @@ class Post
     # ```ruby
     # t.bigint "views_count"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def views_count_for_database: () -> untyped
@@ -31436,6 +32762,45 @@ class Post
 
     # ```ruby
     # t.bigint "views_count"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -32695,11 +34060,13 @@ class Post
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_views_count?: (?from: untyped, ?to: untyped) -> bool
 
@@ -32737,15 +34104,17 @@ class Post
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_views_count?: (?from: untyped, ?to: untyped) -> bool
 
@@ -32783,6 +34152,30 @@ class Post
   end
   include GeneratedAttributeMethods
 
+  # Builds an object (or multiple objects) and returns either the built object or a list of built
+  # objects.
+  #
+  # The +attributes+ parameter can be either a Hash or an Array of Hashes. These Hashes describe the
+  # attributes on the objects that are to be built.
+  #
+  # ==== Examples
+  # ```ruby
+  #   # Build a single new object
+  #   User.build(first_name: 'Jamie')
+  #
+  #   # Build an Array of new objects
+  #   User.build([{ first_name: 'Jamie' }, { first_name: 'Jeremy' }])
+  #
+  #   # Build a single object and pass it into a block to set other attributes.
+  #   User.build(first_name: 'Jamie') do |u|
+  #     u.is_admin = false
+  #   end
+  #
+  #   # Building an Array of new objects using a block, where the block is executed for each object:
+  #   User.build([{ first_name: 'Jamie' }, { first_name: 'Jeremy' }]) do |u|
+  #     u.is_admin = false
+  #   end
+  # ```
   #
   def self.build: (?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (instance) -> void } -> instance
                 | (Array[{ ?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer? }]) ?{ (instance) -> void } -> Array[instance]
@@ -32831,6 +34224,7 @@ class Post
   # ==== Parameters
   #
   # * +id+ - This should be the id or an array of ids to be updated.
+  #   Optional argument, defaults to all records in the relation.
   # * +attributes+ - This should be a hash of attributes or an array of hashes.
   #
   # ==== Examples
@@ -32858,7 +34252,8 @@ class Post
                  | (:all id, ?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) -> Array[instance]
                  | (?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) -> Array[instance]
 
-  #
+  # Updates the object (or multiple objects) just like #update but calls #update! instead
+  # of +update+, so an exception is raised if the record is invalid and saving will fail.
   def self.update!: (Integer? id, ?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) -> instance
                   | (Array[Integer?] id, ?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) -> Array[instance]
                   | (:all id, ?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) -> Array[instance]
@@ -32925,18 +34320,18 @@ class Profile
     # ```ruby
     # t.integer "author_id", null: false
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def author_id: () -> ::Integer
 
     # ```ruby
     # t.integer "author_id", null: false
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def author_id=: (::Integer value) -> void
 
@@ -32964,6 +34359,18 @@ class Profile
     # ```ruby
     # t.integer "author_id", null: false
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def author_id_for_database: () -> untyped
@@ -32976,6 +34383,45 @@ class Profile
 
     # ```ruby
     # t.integer "author_id", null: false
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -34235,11 +35681,13 @@ class Profile
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_author_id?: (?from: untyped, ?to: untyped) -> bool
 
@@ -34277,15 +35725,17 @@ class Profile
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_author_id?: (?from: untyped, ?to: untyped) -> bool
 
@@ -34324,18 +35774,18 @@ class Profile
     # ```ruby
     # t.string "avatar_url"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def avatar_url: () -> ::String?
 
     # ```ruby
     # t.string "avatar_url"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def avatar_url=: (::String? value) -> void
 
@@ -34363,6 +35813,18 @@ class Profile
     # ```ruby
     # t.string "avatar_url"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def avatar_url_for_database: () -> untyped
@@ -34375,6 +35837,45 @@ class Profile
 
     # ```ruby
     # t.string "avatar_url"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -35634,11 +37135,13 @@ class Profile
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_avatar_url?: (?from: untyped, ?to: untyped) -> bool
 
@@ -35676,15 +37179,17 @@ class Profile
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_avatar_url?: (?from: untyped, ?to: untyped) -> bool
 
@@ -35723,18 +37228,18 @@ class Profile
     # ```ruby
     # t.text "bio"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def bio: () -> ::String?
 
     # ```ruby
     # t.text "bio"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def bio=: (::String? value) -> void
 
@@ -35762,6 +37267,18 @@ class Profile
     # ```ruby
     # t.text "bio"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def bio_for_database: () -> untyped
@@ -35774,6 +37291,45 @@ class Profile
 
     # ```ruby
     # t.text "bio"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -37033,11 +38589,13 @@ class Profile
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_bio?: (?from: untyped, ?to: untyped) -> bool
 
@@ -37075,15 +38633,17 @@ class Profile
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_bio?: (?from: untyped, ?to: untyped) -> bool
 
@@ -37122,18 +38682,18 @@ class Profile
     # ```ruby
     # t.datetime "created_at", null: false
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def created_at: () -> ::ActiveSupport::TimeWithZone
 
     # ```ruby
     # t.datetime "created_at", null: false
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def created_at=: (::ActiveSupport::TimeWithZone | ::Time value) -> void
 
@@ -37161,6 +38721,18 @@ class Profile
     # ```ruby
     # t.datetime "created_at", null: false
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def created_at_for_database: () -> untyped
@@ -37173,6 +38745,45 @@ class Profile
 
     # ```ruby
     # t.datetime "created_at", null: false
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -38432,11 +40043,13 @@ class Profile
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_created_at?: (?from: untyped, ?to: untyped) -> bool
 
@@ -38474,15 +40087,17 @@ class Profile
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_created_at?: (?from: untyped, ?to: untyped) -> bool
 
@@ -38521,18 +40136,18 @@ class Profile
     # ```ruby
     # t.datetime "updated_at", null: false
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def updated_at: () -> ::ActiveSupport::TimeWithZone
 
     # ```ruby
     # t.datetime "updated_at", null: false
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def updated_at=: (::ActiveSupport::TimeWithZone | ::Time value) -> void
 
@@ -38560,6 +40175,18 @@ class Profile
     # ```ruby
     # t.datetime "updated_at", null: false
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def updated_at_for_database: () -> untyped
@@ -38572,6 +40199,45 @@ class Profile
 
     # ```ruby
     # t.datetime "updated_at", null: false
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -39831,11 +41497,13 @@ class Profile
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_updated_at?: (?from: untyped, ?to: untyped) -> bool
 
@@ -39873,15 +41541,17 @@ class Profile
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_updated_at?: (?from: untyped, ?to: untyped) -> bool
 
@@ -39920,18 +41590,18 @@ class Profile
     # ```ruby
     # t.string "website_url"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def website_url: () -> ::String?
 
     # ```ruby
     # t.string "website_url"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def website_url=: (::String? value) -> void
 
@@ -39959,6 +41629,18 @@ class Profile
     # ```ruby
     # t.string "website_url"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def website_url_for_database: () -> untyped
@@ -39971,6 +41653,45 @@ class Profile
 
     # ```ruby
     # t.string "website_url"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -41230,11 +42951,13 @@ class Profile
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_website_url?: (?from: untyped, ?to: untyped) -> bool
 
@@ -41272,15 +42995,17 @@ class Profile
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_website_url?: (?from: untyped, ?to: untyped) -> bool
 
@@ -41318,6 +43043,30 @@ class Profile
   end
   include GeneratedAttributeMethods
 
+  # Builds an object (or multiple objects) and returns either the built object or a list of built
+  # objects.
+  #
+  # The +attributes+ parameter can be either a Hash or an Array of Hashes. These Hashes describe the
+  # attributes on the objects that are to be built.
+  #
+  # ==== Examples
+  # ```ruby
+  #   # Build a single new object
+  #   User.build(first_name: 'Jamie')
+  #
+  #   # Build an Array of new objects
+  #   User.build([{ first_name: 'Jamie' }, { first_name: 'Jeremy' }])
+  #
+  #   # Build a single object and pass it into a block to set other attributes.
+  #   User.build(first_name: 'Jamie') do |u|
+  #     u.is_admin = false
+  #   end
+  #
+  #   # Building an Array of new objects using a block, where the block is executed for each object:
+  #   User.build([{ first_name: 'Jamie' }, { first_name: 'Jeremy' }]) do |u|
+  #     u.is_admin = false
+  #   end
+  # ```
   #
   def self.build: (?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) ?{ (instance) -> void } -> instance
                 | (Array[{ ?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String? }]) ?{ (instance) -> void } -> Array[instance]
@@ -41366,6 +43115,7 @@ class Profile
   # ==== Parameters
   #
   # * +id+ - This should be the id or an array of ids to be updated.
+  #   Optional argument, defaults to all records in the relation.
   # * +attributes+ - This should be a hash of attributes or an array of hashes.
   #
   # ==== Examples
@@ -41393,7 +43143,8 @@ class Profile
                  | (:all id, ?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) -> Array[instance]
                  | (?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) -> Array[instance]
 
-  #
+  # Updates the object (or multiple objects) just like #update but calls #update! instead
+  # of +update+, so an exception is raised if the record is invalid and saving will fail.
   def self.update!: (Integer? id, ?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) -> instance
                   | (Array[Integer?] id, ?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) -> Array[instance]
                   | (:all id, ?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) -> Array[instance]
@@ -41456,18 +43207,18 @@ class Tagging
     # ```ruby
     # t.string "context"
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def context: () -> ::String?
 
     # ```ruby
     # t.string "context"
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def context=: (::String? value) -> void
 
@@ -41495,6 +43246,18 @@ class Tagging
     # ```ruby
     # t.string "context"
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def context_for_database: () -> untyped
@@ -41507,6 +43270,45 @@ class Tagging
 
     # ```ruby
     # t.string "context"
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -42766,11 +44568,13 @@ class Tagging
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_context?: (?from: untyped, ?to: untyped) -> bool
 
@@ -42808,15 +44612,17 @@ class Tagging
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_context?: (?from: untyped, ?to: untyped) -> bool
 
@@ -42855,18 +44661,18 @@ class Tagging
     # ```ruby
     # t.integer "post_id", null: false
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def post_id: () -> ::Integer
 
     # ```ruby
     # t.integer "post_id", null: false
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def post_id=: (::Integer value) -> void
 
@@ -42894,6 +44700,18 @@ class Tagging
     # ```ruby
     # t.integer "post_id", null: false
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def post_id_for_database: () -> untyped
@@ -42906,6 +44724,45 @@ class Tagging
 
     # ```ruby
     # t.integer "post_id", null: false
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -44165,11 +46022,13 @@ class Tagging
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_post_id?: (?from: untyped, ?to: untyped) -> bool
 
@@ -44207,15 +46066,17 @@ class Tagging
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_post_id?: (?from: untyped, ?to: untyped) -> bool
 
@@ -44254,18 +46115,18 @@ class Tagging
     # ```ruby
     # t.integer "tag_id", null: false
     # ```
-    # Returns the value of the attribute identified by <tt>attr_name</tt> after
-    # it has been typecast (for example, "2004-12-12" in a date column is cast
-    # to a date object, like Date.new(2004, 12, 12)).
+    # Returns the value of the attribute identified by +attr_name+ after it
+    # has been type cast. For example, a date attribute will cast "2004-12-12"
+    # to <tt>Date.new(2004, 12, 12)</tt>. (For information about specific type
+    # casting behavior, see the types under ActiveModel::Type.)
     %a{rbs:test:target}
     def tag_id: () -> ::Integer
 
     # ```ruby
     # t.integer "tag_id", null: false
     # ```
-    # Updates the attribute identified by <tt>attr_name</tt> with the
-    # specified +value+. Empty strings for Integer and Float columns are
-    # turned into +nil+.
+    # Updates the attribute identified by +attr_name+ using the specified
+    # +value+. The attribute value will be type cast upon being read.
     %a{rbs:test:target}
     def tag_id=: (::Integer value) -> void
 
@@ -44293,6 +46154,18 @@ class Tagging
     # ```ruby
     # t.integer "tag_id", null: false
     # ```
+    # Returns the value of the attribute identified by +attr_name+ after
+    # serialization.
+    #
+    # ```ruby
+    #   class Book < ActiveRecord::Base
+    #     enum :status, { draft: 1, published: 2 }
+    #   end
+    #
+    #   book = Book.new(status: "published")
+    #   book.read_attribute(:status)              # => "published"
+    #   book.read_attribute_for_database(:status) # => 2
+    # ```
     #
     %a{rbs:test:target}
     def tag_id_for_database: () -> untyped
@@ -44305,6 +46178,45 @@ class Tagging
 
     # ```ruby
     # t.integer "tag_id", null: false
+    # ```
+    # = Active Record Attribute Methods \Query
+    #
+    # Adds query methods for attributes that return either +true+ or +false+
+    # depending on the attribute type and value.
+    #
+    # For Boolean attributes this will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   class Product < ActiveRecord::Base
+    #   end
+    #
+    #   product = Product.new(archived: false)
+    #   product.archived? # => false
+    #   product.archived = true
+    #   product.archived? # => true
+    # ```
+    #
+    # For Numeric attributes this will return +true+ if the value is a non-zero
+    # number and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.inventory_count = 0
+    #   product.inventory_count? # => false
+    #   product.inventory_count = 1
+    #   product.inventory_count? # => true
+    # ```
+    #
+    # For other attributes it will return +true+ if the value is present
+    # and return +false+ otherwise:
+    #
+    # ```ruby
+    #   product.name = nil
+    #   product.name? # => false
+    #   product.name = " "
+    #   product.name? # => false
+    #   product.name = "Orange"
+    #   product.name? # => true
     # ```
     #
     %a{rbs:test:target}
@@ -45564,11 +47476,13 @@ class Tagging
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value was
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def saved_change_to_tag_id?: (?from: untyped, ?to: untyped) -> bool
 
@@ -45606,15 +47520,17 @@ class Tagging
     # This method is useful in validations and before callbacks to determine
     # if the next call to +save+ will change a particular attribute. It can be
     # invoked as +will_save_change_to_name?+ instead of
-    # <tt>will_save_change_to_attribute("name")</tt>.
+    # <tt>will_save_change_to_attribute?("name")</tt>.
     #
     # ==== Options
     #
-    # +from+ When passed, this method will return false unless the original
-    # value is equal to the given option
+    # [+from+]
+    #   When specified, this method will return false unless the original
+    #   value is equal to the given value.
     #
-    # +to+ When passed, this method will return false unless the value will be
-    # changed to the given value
+    # [+to+]
+    #   When specified, this method will return false unless the value will be
+    #   changed to the given value.
     %a{rbs:test:target}
     def will_save_change_to_tag_id?: (?from: untyped, ?to: untyped) -> bool
 
@@ -45652,6 +47568,30 @@ class Tagging
   end
   include GeneratedAttributeMethods
 
+  # Builds an object (or multiple objects) and returns either the built object or a list of built
+  # objects.
+  #
+  # The +attributes+ parameter can be either a Hash or an Array of Hashes. These Hashes describe the
+  # attributes on the objects that are to be built.
+  #
+  # ==== Examples
+  # ```ruby
+  #   # Build a single new object
+  #   User.build(first_name: 'Jamie')
+  #
+  #   # Build an Array of new objects
+  #   User.build([{ first_name: 'Jamie' }, { first_name: 'Jeremy' }])
+  #
+  #   # Build a single object and pass it into a block to set other attributes.
+  #   User.build(first_name: 'Jamie') do |u|
+  #     u.is_admin = false
+  #   end
+  #
+  #   # Building an Array of new objects using a block, where the block is executed for each object:
+  #   User.build([{ first_name: 'Jamie' }, { first_name: 'Jeremy' }]) do |u|
+  #     u.is_admin = false
+  #   end
+  # ```
   #
   def self.build: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (instance) -> void } -> instance
                 | (Array[{ ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer? }]) ?{ (instance) -> void } -> Array[instance]
@@ -45700,6 +47640,7 @@ class Tagging
   # ==== Parameters
   #
   # * +id+ - This should be the id or an array of ids to be updated.
+  #   Optional argument, defaults to all records in the relation.
   # * +attributes+ - This should be a hash of attributes or an array of hashes.
   #
   # ==== Examples
@@ -45727,15 +47668,10 @@ class Tagging
                  | (:all id, ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> Array[instance]
                  | (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> Array[instance]
 
-  #
+  # Updates the object (or multiple objects) just like #update but calls #update! instead
+  # of +update+, so an exception is raised if the record is invalid and saving will fail.
   def self.update!: (Array[untyped]? id, ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> instance
                   | (Array[Array[untyped]?] id, ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> Array[instance]
                   | (:all id, ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> Array[instance]
                   | (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> Array[instance]
-end
-class Post
-  def author: () -> Author
-end
-class Profile
-  def author: () -> Author
 end
