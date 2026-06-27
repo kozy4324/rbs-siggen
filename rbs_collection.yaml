@@ -15,4 +15,10 @@ path: .gem_rbs_collection
 
 gems:
   - name: activerecord
+    source:
+      type: git
+      name: rails_rbs_collection
+      remote: https://github.com/kozy4324/rails_rbs_collection.git
+      revision: main
+      repo_dir: gems
   - name: activemodel
