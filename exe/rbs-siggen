@@ -49,10 +49,17 @@ siggen = RBS::Siggen.new do |env_loader|
     env_loader.add path: Pathname(dir)
   end
 
-  Dir.glob("#{Dir.pwd}/**/rbs_collection.yaml").each do |path|
-    content = YAML.load_file(path)
-    env_loader.add path: Pathname(content["path"]) if Dir.exist?(content["path"])
+  config_path = RBS::Collection::Config.find_config_path || RBS::Collection::Config::PATH
+  if config_path
+    lock_path = RBS::Collection::Config.to_lockfile_path(config_path)
+    if lock_path.file?
+      lock = RBS::Collection::Config::Lockfile.from_lockfile(
+        lockfile_path: lock_path,
+        data: YAML.load_file(lock_path.to_s)
+      )
+    end
   end
+  env_loader.add_collection(lock) if lock
 
   if options[:rails]
     if options[:siggen_dir]
