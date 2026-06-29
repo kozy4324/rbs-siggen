@@ -18,7 +18,7 @@ end
 task default: %i[test rubocop steep]
 
 desc "E2E test for siggen"
-task :e2e_siggen do
+task :e2e do
   ENV["SIGGEN_DEBUG"] = "1"
   Dir.chdir("siggen-test/activerecord_model_sqlite3") do
     sh %(rake run_siggen)

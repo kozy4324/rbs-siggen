@@ -12,11 +12,8 @@ gems:
 - name: activerecord
   version: '8.1'
   source:
-    type: git
-    name: rails_rbs_collection
-    revision: ff97ae1db6b2bac9174f567c0280af0741cac21c
-    remote: https://github.com/kozy4324/rails_rbs_collection.git
-    repo_dir: gems
+    type: local
+    path: tmp/rails_rbs_collection/gems/
 - name: activesupport
   version: '7.0'
   source:
