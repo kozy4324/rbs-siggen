@@ -15,7 +15,7 @@ path: .gem_rbs_collection
 
 gems:
   - name: activerecord
-    source:
-      type: local
-      path: tmp/rails_rbs_collection/gems/
+    # source:
+    #   type: local
+    #   path: tmp/rails_rbs_collection/gems/
   - name: activemodel
