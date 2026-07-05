@@ -146,4 +146,15 @@ class <%= table_name.classify %>
     def self.update!: (:all id, <%= attributes %>) -> Array[instance]
                     | (<%= attributes %>) -> Array[instance]
   <% end %>
+
+  # <%= ___comment_of["ActiveRecord::Scoping::Named::ClassMethods#all"] %>
+  def self.all: (?all_queries: untyped?) -> <%= table_name.classify %>::ActiveRecord_Relation
+
+  class ActiveRecord_Relation
+    # <%= ___comment_of["ActiveRecord::FinderMethods#first"] %>
+    def first: (?Integer? limit) -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#first!"] %>
+    def first!: () -> <%= table_name.classify %>
+  end
 end

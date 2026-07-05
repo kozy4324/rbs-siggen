@@ -1653,6 +1653,41 @@ class Account
                   | (Array[::String?] id, ?account_code: ::String?, ?id: ::String?, ?name: ::String?) -> Array[instance]
                   | (:all id, ?account_code: ::String?, ?id: ::String?, ?name: ::String?) -> Array[instance]
                   | (?account_code: ::String?, ?id: ::String?, ?name: ::String?) -> Array[instance]
+
+  # Returns an ActiveRecord::Relation scope object.
+  #
+  # ```ruby
+  #   posts = Post.all
+  #   posts.size # Fires "select count(*) from  posts" and returns the count
+  #   posts.each {|p| puts p.name } # Fires "select * from posts" and loads post objects
+  #
+  #   fruits = Fruit.all
+  #   fruits = fruits.where(color: 'red') if options[:red_only]
+  #   fruits = fruits.limit(10) if limited?
+  # ```
+  #
+  # You can define a scope that applies to all finders using
+  # {default_scope}[rdoc-ref:Scoping::Default::ClassMethods#default_scope].
+  def self.all: (?all_queries: untyped?) -> Account::ActiveRecord_Relation
+
+  class ActiveRecord_Relation
+    # Find the first record (or first N records if a parameter is supplied).
+    # If no order is defined it will order by primary key.
+    #
+    # ```ruby
+    #   Person.first # returns the first object fetched by SELECT * FROM people ORDER BY people.id LIMIT 1
+    #   Person.where(["user_name = ?", user_name]).first
+    #   Person.where(["user_name = :u", { u: user_name }]).first
+    #   Person.order("created_on DESC").offset(5).first
+    #   Person.first(3) # returns the first three objects fetched by SELECT * FROM people ORDER BY people.id LIMIT 3
+    # ```
+    #
+    def first: (?Integer? limit) -> Account
+
+    # Same as #first but raises ActiveRecord::RecordNotFound if no record
+    # is found. Note that #first! accepts no arguments.
+    def first!: () -> Account
+  end
 end
 
 # In schema.rb, this model is declared as:
@@ -3268,6 +3303,41 @@ class Article
                   | (Array[::String?] id, ?id: ::String?, ?name: ::String?) -> Array[instance]
                   | (:all id, ?id: ::String?, ?name: ::String?) -> Array[instance]
                   | (?id: ::String?, ?name: ::String?) -> Array[instance]
+
+  # Returns an ActiveRecord::Relation scope object.
+  #
+  # ```ruby
+  #   posts = Post.all
+  #   posts.size # Fires "select count(*) from  posts" and returns the count
+  #   posts.each {|p| puts p.name } # Fires "select * from posts" and loads post objects
+  #
+  #   fruits = Fruit.all
+  #   fruits = fruits.where(color: 'red') if options[:red_only]
+  #   fruits = fruits.limit(10) if limited?
+  # ```
+  #
+  # You can define a scope that applies to all finders using
+  # {default_scope}[rdoc-ref:Scoping::Default::ClassMethods#default_scope].
+  def self.all: (?all_queries: untyped?) -> Article::ActiveRecord_Relation
+
+  class ActiveRecord_Relation
+    # Find the first record (or first N records if a parameter is supplied).
+    # If no order is defined it will order by primary key.
+    #
+    # ```ruby
+    #   Person.first # returns the first object fetched by SELECT * FROM people ORDER BY people.id LIMIT 1
+    #   Person.where(["user_name = ?", user_name]).first
+    #   Person.where(["user_name = :u", { u: user_name }]).first
+    #   Person.order("created_on DESC").offset(5).first
+    #   Person.first(3) # returns the first three objects fetched by SELECT * FROM people ORDER BY people.id LIMIT 3
+    # ```
+    #
+    def first: (?Integer? limit) -> Article
+
+    # Same as #first but raises ActiveRecord::RecordNotFound if no record
+    # is found. Note that #first! accepts no arguments.
+    def first!: () -> Article
+  end
 end
 
 # In schema.rb, this model is declared as:
@@ -7793,6 +7863,41 @@ class Author
                   | (Array[Integer?] id, ?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) -> Array[instance]
                   | (:all id, ?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) -> Array[instance]
                   | (?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) -> Array[instance]
+
+  # Returns an ActiveRecord::Relation scope object.
+  #
+  # ```ruby
+  #   posts = Post.all
+  #   posts.size # Fires "select count(*) from  posts" and returns the count
+  #   posts.each {|p| puts p.name } # Fires "select * from posts" and loads post objects
+  #
+  #   fruits = Fruit.all
+  #   fruits = fruits.where(color: 'red') if options[:red_only]
+  #   fruits = fruits.limit(10) if limited?
+  # ```
+  #
+  # You can define a scope that applies to all finders using
+  # {default_scope}[rdoc-ref:Scoping::Default::ClassMethods#default_scope].
+  def self.all: (?all_queries: untyped?) -> Author::ActiveRecord_Relation
+
+  class ActiveRecord_Relation
+    # Find the first record (or first N records if a parameter is supplied).
+    # If no order is defined it will order by primary key.
+    #
+    # ```ruby
+    #   Person.first # returns the first object fetched by SELECT * FROM people ORDER BY people.id LIMIT 1
+    #   Person.where(["user_name = ?", user_name]).first
+    #   Person.where(["user_name = :u", { u: user_name }]).first
+    #   Person.order("created_on DESC").offset(5).first
+    #   Person.first(3) # returns the first three objects fetched by SELECT * FROM people ORDER BY people.id LIMIT 3
+    # ```
+    #
+    def first: (?Integer? limit) -> Author
+
+    # Same as #first but raises ActiveRecord::RecordNotFound if no record
+    # is found. Note that #first! accepts no arguments.
+    def first!: () -> Author
+  end
 end
 
 # In schema.rb, this model is declared as:
@@ -10817,6 +10922,41 @@ class PostTag
   # of +update+, so an exception is raised if the record is invalid and saving will fail.
   def self.update!: (:all id, ?post_id: ::Integer?, ?tag_name: ::String?) -> Array[instance]
                   | (?post_id: ::Integer?, ?tag_name: ::String?) -> Array[instance]
+
+  # Returns an ActiveRecord::Relation scope object.
+  #
+  # ```ruby
+  #   posts = Post.all
+  #   posts.size # Fires "select count(*) from  posts" and returns the count
+  #   posts.each {|p| puts p.name } # Fires "select * from posts" and loads post objects
+  #
+  #   fruits = Fruit.all
+  #   fruits = fruits.where(color: 'red') if options[:red_only]
+  #   fruits = fruits.limit(10) if limited?
+  # ```
+  #
+  # You can define a scope that applies to all finders using
+  # {default_scope}[rdoc-ref:Scoping::Default::ClassMethods#default_scope].
+  def self.all: (?all_queries: untyped?) -> PostTag::ActiveRecord_Relation
+
+  class ActiveRecord_Relation
+    # Find the first record (or first N records if a parameter is supplied).
+    # If no order is defined it will order by primary key.
+    #
+    # ```ruby
+    #   Person.first # returns the first object fetched by SELECT * FROM people ORDER BY people.id LIMIT 1
+    #   Person.where(["user_name = ?", user_name]).first
+    #   Person.where(["user_name = :u", { u: user_name }]).first
+    #   Person.order("created_on DESC").offset(5).first
+    #   Person.first(3) # returns the first three objects fetched by SELECT * FROM people ORDER BY people.id LIMIT 3
+    # ```
+    #
+    def first: (?Integer? limit) -> PostTag
+
+    # Same as #first but raises ActiveRecord::RecordNotFound if no record
+    # is found. Note that #first! accepts no arguments.
+    def first!: () -> PostTag
+  end
 end
 
 # In schema.rb, this model is declared as:
@@ -34258,6 +34398,41 @@ class Post
                   | (Array[Integer?] id, ?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) -> Array[instance]
                   | (:all id, ?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) -> Array[instance]
                   | (?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) -> Array[instance]
+
+  # Returns an ActiveRecord::Relation scope object.
+  #
+  # ```ruby
+  #   posts = Post.all
+  #   posts.size # Fires "select count(*) from  posts" and returns the count
+  #   posts.each {|p| puts p.name } # Fires "select * from posts" and loads post objects
+  #
+  #   fruits = Fruit.all
+  #   fruits = fruits.where(color: 'red') if options[:red_only]
+  #   fruits = fruits.limit(10) if limited?
+  # ```
+  #
+  # You can define a scope that applies to all finders using
+  # {default_scope}[rdoc-ref:Scoping::Default::ClassMethods#default_scope].
+  def self.all: (?all_queries: untyped?) -> Post::ActiveRecord_Relation
+
+  class ActiveRecord_Relation
+    # Find the first record (or first N records if a parameter is supplied).
+    # If no order is defined it will order by primary key.
+    #
+    # ```ruby
+    #   Person.first # returns the first object fetched by SELECT * FROM people ORDER BY people.id LIMIT 1
+    #   Person.where(["user_name = ?", user_name]).first
+    #   Person.where(["user_name = :u", { u: user_name }]).first
+    #   Person.order("created_on DESC").offset(5).first
+    #   Person.first(3) # returns the first three objects fetched by SELECT * FROM people ORDER BY people.id LIMIT 3
+    # ```
+    #
+    def first: (?Integer? limit) -> Post
+
+    # Same as #first but raises ActiveRecord::RecordNotFound if no record
+    # is found. Note that #first! accepts no arguments.
+    def first!: () -> Post
+  end
 end
 
 # In schema.rb, this model is declared as:
@@ -43149,6 +43324,41 @@ class Profile
                   | (Array[Integer?] id, ?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) -> Array[instance]
                   | (:all id, ?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) -> Array[instance]
                   | (?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) -> Array[instance]
+
+  # Returns an ActiveRecord::Relation scope object.
+  #
+  # ```ruby
+  #   posts = Post.all
+  #   posts.size # Fires "select count(*) from  posts" and returns the count
+  #   posts.each {|p| puts p.name } # Fires "select * from posts" and loads post objects
+  #
+  #   fruits = Fruit.all
+  #   fruits = fruits.where(color: 'red') if options[:red_only]
+  #   fruits = fruits.limit(10) if limited?
+  # ```
+  #
+  # You can define a scope that applies to all finders using
+  # {default_scope}[rdoc-ref:Scoping::Default::ClassMethods#default_scope].
+  def self.all: (?all_queries: untyped?) -> Profile::ActiveRecord_Relation
+
+  class ActiveRecord_Relation
+    # Find the first record (or first N records if a parameter is supplied).
+    # If no order is defined it will order by primary key.
+    #
+    # ```ruby
+    #   Person.first # returns the first object fetched by SELECT * FROM people ORDER BY people.id LIMIT 1
+    #   Person.where(["user_name = ?", user_name]).first
+    #   Person.where(["user_name = :u", { u: user_name }]).first
+    #   Person.order("created_on DESC").offset(5).first
+    #   Person.first(3) # returns the first three objects fetched by SELECT * FROM people ORDER BY people.id LIMIT 3
+    # ```
+    #
+    def first: (?Integer? limit) -> Profile
+
+    # Same as #first but raises ActiveRecord::RecordNotFound if no record
+    # is found. Note that #first! accepts no arguments.
+    def first!: () -> Profile
+  end
 end
 
 # In schema.rb, this model is declared as:
@@ -47674,4 +47884,39 @@ class Tagging
                   | (Array[Array[untyped]?] id, ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> Array[instance]
                   | (:all id, ?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> Array[instance]
                   | (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) -> Array[instance]
+
+  # Returns an ActiveRecord::Relation scope object.
+  #
+  # ```ruby
+  #   posts = Post.all
+  #   posts.size # Fires "select count(*) from  posts" and returns the count
+  #   posts.each {|p| puts p.name } # Fires "select * from posts" and loads post objects
+  #
+  #   fruits = Fruit.all
+  #   fruits = fruits.where(color: 'red') if options[:red_only]
+  #   fruits = fruits.limit(10) if limited?
+  # ```
+  #
+  # You can define a scope that applies to all finders using
+  # {default_scope}[rdoc-ref:Scoping::Default::ClassMethods#default_scope].
+  def self.all: (?all_queries: untyped?) -> Tagging::ActiveRecord_Relation
+
+  class ActiveRecord_Relation
+    # Find the first record (or first N records if a parameter is supplied).
+    # If no order is defined it will order by primary key.
+    #
+    # ```ruby
+    #   Person.first # returns the first object fetched by SELECT * FROM people ORDER BY people.id LIMIT 1
+    #   Person.where(["user_name = ?", user_name]).first
+    #   Person.where(["user_name = :u", { u: user_name }]).first
+    #   Person.order("created_on DESC").offset(5).first
+    #   Person.first(3) # returns the first three objects fetched by SELECT * FROM people ORDER BY people.id LIMIT 3
+    # ```
+    #
+    def first: (?Integer? limit) -> Tagging
+
+    # Same as #first but raises ActiveRecord::RecordNotFound if no record
+    # is found. Note that #first! accepts no arguments.
+    def first!: () -> Tagging
+  end
 end

@@ -14,7 +14,7 @@ gems:
   source:
     type: git
     name:
-    revision: fe8686019808e1503049ae66241a39e57aec01e0
+    revision: 44be6360b035ac100ce858780bdc1889b5304823
     remote: https://github.com/kozy4324/rails_rbs_collection.git
     repo_dir: gems
 - name: activesupport
