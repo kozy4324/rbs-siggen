@@ -7,7 +7,6 @@ end
 
 module ActiveRecord
   class Base
-    def self.all: () -> untyped
     def self.find_by!: (untyped) -> untyped
   end
 end
