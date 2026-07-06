@@ -150,7 +150,44 @@ class <%= table_name.classify %>
   # <%= ___comment_of["ActiveRecord::Scoping::Named::ClassMethods#all"] %>
   def self.all: (?all_queries: untyped?) -> <%= table_name.classify %>::ActiveRecord_Relation
 
-  class ActiveRecord_Relation
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    # <%= ___comment_of["ActiveRecord::Relation#new"] %>
+    def new: (<%= attributes %>) ?{ (<%= table_name.classify %>) -> void } -> <%= table_name.classify %>
+
+    alias build new
+
+    # <%= ___comment_of["ActiveRecord::Relation#create"] %>
+    def create: (<%= attributes %>) ?{ (<%= table_name.classify %>) -> void } -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::Relation#create!"] %>
+    def create!: (<%= attributes %>) ?{ (<%= table_name.classify %>) -> void } -> <%= table_name.classify %>
+
+    def first_or_create: (<%= attributes %>) ?{ (<%= table_name.classify %>) -> void } -> <%= table_name.classify %>
+
+    def first_or_create!: (<%= attributes %>) ?{ (<%= table_name.classify %>) -> void } -> <%= table_name.classify %>
+
+    def first_or_initialize: (<%= attributes %>) ?{ (<%= table_name.classify %>) -> void } -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::Relation#find_or_create_by"] %>
+    def find_or_create_by: (<%= attributes %>) ?{ (<%= table_name.classify %>) -> void } -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::Relation#find_or_create_by!"] %>
+    def find_or_create_by!: (<%= attributes %>) ?{ (<%= table_name.classify %>) -> void } -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::Relation#create_or_find_by"] %>
+    def create_or_find_by: (<%= attributes %>) ?{ (<%= table_name.classify %>) -> void } -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::Relation#create_or_find_by!"] %>
+    def create_or_find_by!: (<%= attributes %>) ?{ (<%= table_name.classify %>) -> void } -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::Relation#find_or_initialize_by"] %>
+    def find_or_initialize_by: (<%= attributes %>) ?{ (<%= table_name.classify %>) -> void } -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::Relation#to_ary"] %>
+    def to_ary: () -> Array[<%= table_name.classify %>]
+
+    alias to_a to_ary
+
     # <%= ___comment_of["ActiveRecord::FinderMethods#first"] %>
     def first: (?Integer? limit) -> <%= table_name.classify %>
 

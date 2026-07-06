@@ -1670,7 +1670,167 @@ class Account
   # {default_scope}[rdoc-ref:Scoping::Default::ClassMethods#default_scope].
   def self.all: (?all_queries: untyped?) -> Account::ActiveRecord_Relation
 
-  class ActiveRecord_Relation
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    # Initializes new record from relation while maintaining the current
+    # scope.
+    #
+    # Expects arguments in the same format as {ActiveRecord::Base.new}[rdoc-ref:Core.new].
+    #
+    # ```ruby
+    #   users = User.where(name: 'DHH')
+    #   user = users.new # => #<User id: nil, name: "DHH", created_at: nil, updated_at: nil>
+    # ```
+    #
+    # You can also pass a block to new with the new record as argument:
+    #
+    # ```ruby
+    #   user = users.new { |user| user.name = 'Oscar' }
+    #   user.name # => Oscar
+    # ```
+    #
+    def new: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (Account) -> void } -> Account
+
+    alias build new
+
+    # Tries to create a new record with the same scoped attributes
+    # defined in the relation. Returns the initialized object if validation fails.
+    #
+    # Expects arguments in the same format as
+    # {ActiveRecord::Base.create}[rdoc-ref:Persistence::ClassMethods#create].
+    #
+    # ==== Examples
+    #
+    # ```ruby
+    #   users = User.where(name: 'Oscar')
+    #   users.create # => #<User id: 3, name: "Oscar", ...>
+    #
+    #   users.create(name: 'fxn')
+    #   users.create # => #<User id: 4, name: "fxn", ...>
+    #
+    #   users.create { |user| user.name = 'tenderlove' }
+    #   # => #<User id: 5, name: "tenderlove", ...>
+    #
+    #   users.create(name: nil) # validation on name
+    #   # => #<User id: nil, name: nil, ...>
+    # ```
+    #
+    def create: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (Account) -> void } -> Account
+
+    # Similar to #create, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!]
+    # on the base class. Raises an exception if a validation error occurs.
+    #
+    # Expects arguments in the same format as
+    # {ActiveRecord::Base.create!}[rdoc-ref:Persistence::ClassMethods#create!].
+    def create!: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (Account) -> void } -> Account
+
+    def first_or_create: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (Account) -> void } -> Account
+
+    def first_or_create!: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (Account) -> void } -> Account
+
+    def first_or_initialize: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (Account) -> void } -> Account
+
+    # Finds the first record with the given attributes, or creates a record
+    # with the attributes if one is not found:
+    #
+    # ```ruby
+    #   # Find the first user named "Penélope" or create a new one.
+    #   User.find_or_create_by(first_name: 'Penélope')
+    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #
+    #   # Find the first user named "Penélope" or create a new one.
+    #   # We already have one so the existing record will be returned.
+    #   User.find_or_create_by(first_name: 'Penélope')
+    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #
+    #   # Find the first user named "Scarlett" or create a new one with
+    #   # a particular last name.
+    #   User.create_with(last_name: 'Johansson').find_or_create_by(first_name: 'Scarlett')
+    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
+    # ```
+    #
+    # This method accepts a block, which is passed down to #create. The last example
+    # above can be alternatively written this way:
+    #
+    # ```ruby
+    #   # Find the first user named "Scarlett" or create a new one with a
+    #   # particular last name.
+    #   User.find_or_create_by(first_name: 'Scarlett') do |user|
+    #     user.last_name = 'Johansson'
+    #   end
+    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
+    # ```
+    #
+    # This method always returns a record, but if creation was attempted and
+    # failed due to validation errors it won't be persisted, you get what
+    # #create returns in such situation.
+    #
+    # If creation failed because of a unique constraint, this method will
+    # assume it encountered a race condition and will try finding the record
+    # once more. If somehow the second find still does not find a record
+    # because a concurrent DELETE happened, it will then raise an
+    # ActiveRecord::RecordNotFound exception.
+    #
+    # Please note <b>this method is not atomic</b>, it runs first a SELECT,
+    # and if there are no results an INSERT is attempted. So if the table
+    # doesn't have a relevant unique constraint it could be the case that
+    # you end up with two or more similar records.
+    def find_or_create_by: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (Account) -> void } -> Account
+
+    # Like #find_or_create_by, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!] so an exception
+    # is raised if the created record is invalid.
+    def find_or_create_by!: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (Account) -> void } -> Account
+
+    # Attempts to create a record with the given attributes in a table that has a unique database constraint
+    # on one or several of its columns. If a row already exists with one or several of these
+    # unique constraints, the exception such an insertion would normally raise is caught,
+    # and the existing record with those attributes is found using #find_by!.
+    #
+    # This is similar to #find_or_create_by, but tries to create the record first. As such it is
+    # better suited for cases where the record is most likely not to exist yet.
+    #
+    # There are several drawbacks to #create_or_find_by, though:
+    #
+    # * The underlying table must have the relevant columns defined with unique database constraints.
+    # * A unique constraint violation may be triggered by only one, or at least less than all,
+    #   of the given attributes. This means that the subsequent #find_by! may fail to find a
+    #   matching record, which will then raise an ActiveRecord::RecordNotFound exception,
+    #   rather than a record with the given attributes.
+    # * While we avoid the race condition between SELECT -> INSERT from #find_or_create_by,
+    #   we actually have another race condition between INSERT -> SELECT, which can be triggered
+    #   if a DELETE between those two statements is run by another client. But for most applications,
+    #   that's a significantly less likely condition to hit.
+    # * It relies on exception handling to handle control flow, which may be marginally slower.
+    # * The primary key may auto-increment on each create, even if it fails. This can accelerate
+    #   the problem of running out of integers, if the underlying table is still stuck on a primary
+    #   key of type int (note: All \Rails apps since 5.1+ have defaulted to bigint, which is not liable
+    #   to this problem).
+    # * Columns with unique database constraints should not have uniqueness validations defined,
+    # ```ruby
+    #   otherwise #create will fail due to validation errors and #find_by will never be called.
+    # ```
+    #
+    # This method will return a record if all given attributes are covered by unique constraints
+    # (unless the INSERT -> DELETE -> SELECT race condition is triggered), but if creation was attempted
+    # and failed due to validation errors it won't be persisted, you get what #create returns in
+    # such situation.
+    def create_or_find_by: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (Account) -> void } -> Account
+
+    # Like #create_or_find_by, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!] so an exception
+    # is raised if the created record is invalid.
+    def create_or_find_by!: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (Account) -> void } -> Account
+
+    # Like #find_or_create_by, but calls {new}[rdoc-ref:Core.new]
+    # instead of {create}[rdoc-ref:Persistence::ClassMethods#create].
+    def find_or_initialize_by: (?account_code: ::String?, ?id: ::String?, ?name: ::String?) ?{ (Account) -> void } -> Account
+
+    # Converts relation objects to Array.
+    def to_ary: () -> Array[Account]
+
+    alias to_a to_ary
+
     # Find the first record (or first N records if a parameter is supplied).
     # If no order is defined it will order by primary key.
     #
@@ -3320,7 +3480,167 @@ class Article
   # {default_scope}[rdoc-ref:Scoping::Default::ClassMethods#default_scope].
   def self.all: (?all_queries: untyped?) -> Article::ActiveRecord_Relation
 
-  class ActiveRecord_Relation
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    # Initializes new record from relation while maintaining the current
+    # scope.
+    #
+    # Expects arguments in the same format as {ActiveRecord::Base.new}[rdoc-ref:Core.new].
+    #
+    # ```ruby
+    #   users = User.where(name: 'DHH')
+    #   user = users.new # => #<User id: nil, name: "DHH", created_at: nil, updated_at: nil>
+    # ```
+    #
+    # You can also pass a block to new with the new record as argument:
+    #
+    # ```ruby
+    #   user = users.new { |user| user.name = 'Oscar' }
+    #   user.name # => Oscar
+    # ```
+    #
+    def new: (?id: ::String?, ?name: ::String?) ?{ (Article) -> void } -> Article
+
+    alias build new
+
+    # Tries to create a new record with the same scoped attributes
+    # defined in the relation. Returns the initialized object if validation fails.
+    #
+    # Expects arguments in the same format as
+    # {ActiveRecord::Base.create}[rdoc-ref:Persistence::ClassMethods#create].
+    #
+    # ==== Examples
+    #
+    # ```ruby
+    #   users = User.where(name: 'Oscar')
+    #   users.create # => #<User id: 3, name: "Oscar", ...>
+    #
+    #   users.create(name: 'fxn')
+    #   users.create # => #<User id: 4, name: "fxn", ...>
+    #
+    #   users.create { |user| user.name = 'tenderlove' }
+    #   # => #<User id: 5, name: "tenderlove", ...>
+    #
+    #   users.create(name: nil) # validation on name
+    #   # => #<User id: nil, name: nil, ...>
+    # ```
+    #
+    def create: (?id: ::String?, ?name: ::String?) ?{ (Article) -> void } -> Article
+
+    # Similar to #create, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!]
+    # on the base class. Raises an exception if a validation error occurs.
+    #
+    # Expects arguments in the same format as
+    # {ActiveRecord::Base.create!}[rdoc-ref:Persistence::ClassMethods#create!].
+    def create!: (?id: ::String?, ?name: ::String?) ?{ (Article) -> void } -> Article
+
+    def first_or_create: (?id: ::String?, ?name: ::String?) ?{ (Article) -> void } -> Article
+
+    def first_or_create!: (?id: ::String?, ?name: ::String?) ?{ (Article) -> void } -> Article
+
+    def first_or_initialize: (?id: ::String?, ?name: ::String?) ?{ (Article) -> void } -> Article
+
+    # Finds the first record with the given attributes, or creates a record
+    # with the attributes if one is not found:
+    #
+    # ```ruby
+    #   # Find the first user named "Penélope" or create a new one.
+    #   User.find_or_create_by(first_name: 'Penélope')
+    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #
+    #   # Find the first user named "Penélope" or create a new one.
+    #   # We already have one so the existing record will be returned.
+    #   User.find_or_create_by(first_name: 'Penélope')
+    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #
+    #   # Find the first user named "Scarlett" or create a new one with
+    #   # a particular last name.
+    #   User.create_with(last_name: 'Johansson').find_or_create_by(first_name: 'Scarlett')
+    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
+    # ```
+    #
+    # This method accepts a block, which is passed down to #create. The last example
+    # above can be alternatively written this way:
+    #
+    # ```ruby
+    #   # Find the first user named "Scarlett" or create a new one with a
+    #   # particular last name.
+    #   User.find_or_create_by(first_name: 'Scarlett') do |user|
+    #     user.last_name = 'Johansson'
+    #   end
+    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
+    # ```
+    #
+    # This method always returns a record, but if creation was attempted and
+    # failed due to validation errors it won't be persisted, you get what
+    # #create returns in such situation.
+    #
+    # If creation failed because of a unique constraint, this method will
+    # assume it encountered a race condition and will try finding the record
+    # once more. If somehow the second find still does not find a record
+    # because a concurrent DELETE happened, it will then raise an
+    # ActiveRecord::RecordNotFound exception.
+    #
+    # Please note <b>this method is not atomic</b>, it runs first a SELECT,
+    # and if there are no results an INSERT is attempted. So if the table
+    # doesn't have a relevant unique constraint it could be the case that
+    # you end up with two or more similar records.
+    def find_or_create_by: (?id: ::String?, ?name: ::String?) ?{ (Article) -> void } -> Article
+
+    # Like #find_or_create_by, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!] so an exception
+    # is raised if the created record is invalid.
+    def find_or_create_by!: (?id: ::String?, ?name: ::String?) ?{ (Article) -> void } -> Article
+
+    # Attempts to create a record with the given attributes in a table that has a unique database constraint
+    # on one or several of its columns. If a row already exists with one or several of these
+    # unique constraints, the exception such an insertion would normally raise is caught,
+    # and the existing record with those attributes is found using #find_by!.
+    #
+    # This is similar to #find_or_create_by, but tries to create the record first. As such it is
+    # better suited for cases where the record is most likely not to exist yet.
+    #
+    # There are several drawbacks to #create_or_find_by, though:
+    #
+    # * The underlying table must have the relevant columns defined with unique database constraints.
+    # * A unique constraint violation may be triggered by only one, or at least less than all,
+    #   of the given attributes. This means that the subsequent #find_by! may fail to find a
+    #   matching record, which will then raise an ActiveRecord::RecordNotFound exception,
+    #   rather than a record with the given attributes.
+    # * While we avoid the race condition between SELECT -> INSERT from #find_or_create_by,
+    #   we actually have another race condition between INSERT -> SELECT, which can be triggered
+    #   if a DELETE between those two statements is run by another client. But for most applications,
+    #   that's a significantly less likely condition to hit.
+    # * It relies on exception handling to handle control flow, which may be marginally slower.
+    # * The primary key may auto-increment on each create, even if it fails. This can accelerate
+    #   the problem of running out of integers, if the underlying table is still stuck on a primary
+    #   key of type int (note: All \Rails apps since 5.1+ have defaulted to bigint, which is not liable
+    #   to this problem).
+    # * Columns with unique database constraints should not have uniqueness validations defined,
+    # ```ruby
+    #   otherwise #create will fail due to validation errors and #find_by will never be called.
+    # ```
+    #
+    # This method will return a record if all given attributes are covered by unique constraints
+    # (unless the INSERT -> DELETE -> SELECT race condition is triggered), but if creation was attempted
+    # and failed due to validation errors it won't be persisted, you get what #create returns in
+    # such situation.
+    def create_or_find_by: (?id: ::String?, ?name: ::String?) ?{ (Article) -> void } -> Article
+
+    # Like #create_or_find_by, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!] so an exception
+    # is raised if the created record is invalid.
+    def create_or_find_by!: (?id: ::String?, ?name: ::String?) ?{ (Article) -> void } -> Article
+
+    # Like #find_or_create_by, but calls {new}[rdoc-ref:Core.new]
+    # instead of {create}[rdoc-ref:Persistence::ClassMethods#create].
+    def find_or_initialize_by: (?id: ::String?, ?name: ::String?) ?{ (Article) -> void } -> Article
+
+    # Converts relation objects to Array.
+    def to_ary: () -> Array[Article]
+
+    alias to_a to_ary
+
     # Find the first record (or first N records if a parameter is supplied).
     # If no order is defined it will order by primary key.
     #
@@ -7880,7 +8200,167 @@ class Author
   # {default_scope}[rdoc-ref:Scoping::Default::ClassMethods#default_scope].
   def self.all: (?all_queries: untyped?) -> Author::ActiveRecord_Relation
 
-  class ActiveRecord_Relation
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    # Initializes new record from relation while maintaining the current
+    # scope.
+    #
+    # Expects arguments in the same format as {ActiveRecord::Base.new}[rdoc-ref:Core.new].
+    #
+    # ```ruby
+    #   users = User.where(name: 'DHH')
+    #   user = users.new # => #<User id: nil, name: "DHH", created_at: nil, updated_at: nil>
+    # ```
+    #
+    # You can also pass a block to new with the new record as argument:
+    #
+    # ```ruby
+    #   user = users.new { |user| user.name = 'Oscar' }
+    #   user.name # => Oscar
+    # ```
+    #
+    def new: (?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) ?{ (Author) -> void } -> Author
+
+    alias build new
+
+    # Tries to create a new record with the same scoped attributes
+    # defined in the relation. Returns the initialized object if validation fails.
+    #
+    # Expects arguments in the same format as
+    # {ActiveRecord::Base.create}[rdoc-ref:Persistence::ClassMethods#create].
+    #
+    # ==== Examples
+    #
+    # ```ruby
+    #   users = User.where(name: 'Oscar')
+    #   users.create # => #<User id: 3, name: "Oscar", ...>
+    #
+    #   users.create(name: 'fxn')
+    #   users.create # => #<User id: 4, name: "fxn", ...>
+    #
+    #   users.create { |user| user.name = 'tenderlove' }
+    #   # => #<User id: 5, name: "tenderlove", ...>
+    #
+    #   users.create(name: nil) # validation on name
+    #   # => #<User id: nil, name: nil, ...>
+    # ```
+    #
+    def create: (?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) ?{ (Author) -> void } -> Author
+
+    # Similar to #create, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!]
+    # on the base class. Raises an exception if a validation error occurs.
+    #
+    # Expects arguments in the same format as
+    # {ActiveRecord::Base.create!}[rdoc-ref:Persistence::ClassMethods#create!].
+    def create!: (?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) ?{ (Author) -> void } -> Author
+
+    def first_or_create: (?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) ?{ (Author) -> void } -> Author
+
+    def first_or_create!: (?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) ?{ (Author) -> void } -> Author
+
+    def first_or_initialize: (?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) ?{ (Author) -> void } -> Author
+
+    # Finds the first record with the given attributes, or creates a record
+    # with the attributes if one is not found:
+    #
+    # ```ruby
+    #   # Find the first user named "Penélope" or create a new one.
+    #   User.find_or_create_by(first_name: 'Penélope')
+    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #
+    #   # Find the first user named "Penélope" or create a new one.
+    #   # We already have one so the existing record will be returned.
+    #   User.find_or_create_by(first_name: 'Penélope')
+    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #
+    #   # Find the first user named "Scarlett" or create a new one with
+    #   # a particular last name.
+    #   User.create_with(last_name: 'Johansson').find_or_create_by(first_name: 'Scarlett')
+    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
+    # ```
+    #
+    # This method accepts a block, which is passed down to #create. The last example
+    # above can be alternatively written this way:
+    #
+    # ```ruby
+    #   # Find the first user named "Scarlett" or create a new one with a
+    #   # particular last name.
+    #   User.find_or_create_by(first_name: 'Scarlett') do |user|
+    #     user.last_name = 'Johansson'
+    #   end
+    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
+    # ```
+    #
+    # This method always returns a record, but if creation was attempted and
+    # failed due to validation errors it won't be persisted, you get what
+    # #create returns in such situation.
+    #
+    # If creation failed because of a unique constraint, this method will
+    # assume it encountered a race condition and will try finding the record
+    # once more. If somehow the second find still does not find a record
+    # because a concurrent DELETE happened, it will then raise an
+    # ActiveRecord::RecordNotFound exception.
+    #
+    # Please note <b>this method is not atomic</b>, it runs first a SELECT,
+    # and if there are no results an INSERT is attempted. So if the table
+    # doesn't have a relevant unique constraint it could be the case that
+    # you end up with two or more similar records.
+    def find_or_create_by: (?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) ?{ (Author) -> void } -> Author
+
+    # Like #find_or_create_by, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!] so an exception
+    # is raised if the created record is invalid.
+    def find_or_create_by!: (?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) ?{ (Author) -> void } -> Author
+
+    # Attempts to create a record with the given attributes in a table that has a unique database constraint
+    # on one or several of its columns. If a row already exists with one or several of these
+    # unique constraints, the exception such an insertion would normally raise is caught,
+    # and the existing record with those attributes is found using #find_by!.
+    #
+    # This is similar to #find_or_create_by, but tries to create the record first. As such it is
+    # better suited for cases where the record is most likely not to exist yet.
+    #
+    # There are several drawbacks to #create_or_find_by, though:
+    #
+    # * The underlying table must have the relevant columns defined with unique database constraints.
+    # * A unique constraint violation may be triggered by only one, or at least less than all,
+    #   of the given attributes. This means that the subsequent #find_by! may fail to find a
+    #   matching record, which will then raise an ActiveRecord::RecordNotFound exception,
+    #   rather than a record with the given attributes.
+    # * While we avoid the race condition between SELECT -> INSERT from #find_or_create_by,
+    #   we actually have another race condition between INSERT -> SELECT, which can be triggered
+    #   if a DELETE between those two statements is run by another client. But for most applications,
+    #   that's a significantly less likely condition to hit.
+    # * It relies on exception handling to handle control flow, which may be marginally slower.
+    # * The primary key may auto-increment on each create, even if it fails. This can accelerate
+    #   the problem of running out of integers, if the underlying table is still stuck on a primary
+    #   key of type int (note: All \Rails apps since 5.1+ have defaulted to bigint, which is not liable
+    #   to this problem).
+    # * Columns with unique database constraints should not have uniqueness validations defined,
+    # ```ruby
+    #   otherwise #create will fail due to validation errors and #find_by will never be called.
+    # ```
+    #
+    # This method will return a record if all given attributes are covered by unique constraints
+    # (unless the INSERT -> DELETE -> SELECT race condition is triggered), but if creation was attempted
+    # and failed due to validation errors it won't be persisted, you get what #create returns in
+    # such situation.
+    def create_or_find_by: (?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) ?{ (Author) -> void } -> Author
+
+    # Like #create_or_find_by, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!] so an exception
+    # is raised if the created record is invalid.
+    def create_or_find_by!: (?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) ?{ (Author) -> void } -> Author
+
+    # Like #find_or_create_by, but calls {new}[rdoc-ref:Core.new]
+    # instead of {create}[rdoc-ref:Persistence::ClassMethods#create].
+    def find_or_initialize_by: (?id: Integer?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?name: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?) ?{ (Author) -> void } -> Author
+
+    # Converts relation objects to Array.
+    def to_ary: () -> Array[Author]
+
+    alias to_a to_ary
+
     # Find the first record (or first N records if a parameter is supplied).
     # If no order is defined it will order by primary key.
     #
@@ -10939,7 +11419,167 @@ class PostTag
   # {default_scope}[rdoc-ref:Scoping::Default::ClassMethods#default_scope].
   def self.all: (?all_queries: untyped?) -> PostTag::ActiveRecord_Relation
 
-  class ActiveRecord_Relation
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    # Initializes new record from relation while maintaining the current
+    # scope.
+    #
+    # Expects arguments in the same format as {ActiveRecord::Base.new}[rdoc-ref:Core.new].
+    #
+    # ```ruby
+    #   users = User.where(name: 'DHH')
+    #   user = users.new # => #<User id: nil, name: "DHH", created_at: nil, updated_at: nil>
+    # ```
+    #
+    # You can also pass a block to new with the new record as argument:
+    #
+    # ```ruby
+    #   user = users.new { |user| user.name = 'Oscar' }
+    #   user.name # => Oscar
+    # ```
+    #
+    def new: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (PostTag) -> void } -> PostTag
+
+    alias build new
+
+    # Tries to create a new record with the same scoped attributes
+    # defined in the relation. Returns the initialized object if validation fails.
+    #
+    # Expects arguments in the same format as
+    # {ActiveRecord::Base.create}[rdoc-ref:Persistence::ClassMethods#create].
+    #
+    # ==== Examples
+    #
+    # ```ruby
+    #   users = User.where(name: 'Oscar')
+    #   users.create # => #<User id: 3, name: "Oscar", ...>
+    #
+    #   users.create(name: 'fxn')
+    #   users.create # => #<User id: 4, name: "fxn", ...>
+    #
+    #   users.create { |user| user.name = 'tenderlove' }
+    #   # => #<User id: 5, name: "tenderlove", ...>
+    #
+    #   users.create(name: nil) # validation on name
+    #   # => #<User id: nil, name: nil, ...>
+    # ```
+    #
+    def create: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (PostTag) -> void } -> PostTag
+
+    # Similar to #create, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!]
+    # on the base class. Raises an exception if a validation error occurs.
+    #
+    # Expects arguments in the same format as
+    # {ActiveRecord::Base.create!}[rdoc-ref:Persistence::ClassMethods#create!].
+    def create!: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (PostTag) -> void } -> PostTag
+
+    def first_or_create: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (PostTag) -> void } -> PostTag
+
+    def first_or_create!: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (PostTag) -> void } -> PostTag
+
+    def first_or_initialize: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (PostTag) -> void } -> PostTag
+
+    # Finds the first record with the given attributes, or creates a record
+    # with the attributes if one is not found:
+    #
+    # ```ruby
+    #   # Find the first user named "Penélope" or create a new one.
+    #   User.find_or_create_by(first_name: 'Penélope')
+    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #
+    #   # Find the first user named "Penélope" or create a new one.
+    #   # We already have one so the existing record will be returned.
+    #   User.find_or_create_by(first_name: 'Penélope')
+    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #
+    #   # Find the first user named "Scarlett" or create a new one with
+    #   # a particular last name.
+    #   User.create_with(last_name: 'Johansson').find_or_create_by(first_name: 'Scarlett')
+    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
+    # ```
+    #
+    # This method accepts a block, which is passed down to #create. The last example
+    # above can be alternatively written this way:
+    #
+    # ```ruby
+    #   # Find the first user named "Scarlett" or create a new one with a
+    #   # particular last name.
+    #   User.find_or_create_by(first_name: 'Scarlett') do |user|
+    #     user.last_name = 'Johansson'
+    #   end
+    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
+    # ```
+    #
+    # This method always returns a record, but if creation was attempted and
+    # failed due to validation errors it won't be persisted, you get what
+    # #create returns in such situation.
+    #
+    # If creation failed because of a unique constraint, this method will
+    # assume it encountered a race condition and will try finding the record
+    # once more. If somehow the second find still does not find a record
+    # because a concurrent DELETE happened, it will then raise an
+    # ActiveRecord::RecordNotFound exception.
+    #
+    # Please note <b>this method is not atomic</b>, it runs first a SELECT,
+    # and if there are no results an INSERT is attempted. So if the table
+    # doesn't have a relevant unique constraint it could be the case that
+    # you end up with two or more similar records.
+    def find_or_create_by: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (PostTag) -> void } -> PostTag
+
+    # Like #find_or_create_by, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!] so an exception
+    # is raised if the created record is invalid.
+    def find_or_create_by!: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (PostTag) -> void } -> PostTag
+
+    # Attempts to create a record with the given attributes in a table that has a unique database constraint
+    # on one or several of its columns. If a row already exists with one or several of these
+    # unique constraints, the exception such an insertion would normally raise is caught,
+    # and the existing record with those attributes is found using #find_by!.
+    #
+    # This is similar to #find_or_create_by, but tries to create the record first. As such it is
+    # better suited for cases where the record is most likely not to exist yet.
+    #
+    # There are several drawbacks to #create_or_find_by, though:
+    #
+    # * The underlying table must have the relevant columns defined with unique database constraints.
+    # * A unique constraint violation may be triggered by only one, or at least less than all,
+    #   of the given attributes. This means that the subsequent #find_by! may fail to find a
+    #   matching record, which will then raise an ActiveRecord::RecordNotFound exception,
+    #   rather than a record with the given attributes.
+    # * While we avoid the race condition between SELECT -> INSERT from #find_or_create_by,
+    #   we actually have another race condition between INSERT -> SELECT, which can be triggered
+    #   if a DELETE between those two statements is run by another client. But for most applications,
+    #   that's a significantly less likely condition to hit.
+    # * It relies on exception handling to handle control flow, which may be marginally slower.
+    # * The primary key may auto-increment on each create, even if it fails. This can accelerate
+    #   the problem of running out of integers, if the underlying table is still stuck on a primary
+    #   key of type int (note: All \Rails apps since 5.1+ have defaulted to bigint, which is not liable
+    #   to this problem).
+    # * Columns with unique database constraints should not have uniqueness validations defined,
+    # ```ruby
+    #   otherwise #create will fail due to validation errors and #find_by will never be called.
+    # ```
+    #
+    # This method will return a record if all given attributes are covered by unique constraints
+    # (unless the INSERT -> DELETE -> SELECT race condition is triggered), but if creation was attempted
+    # and failed due to validation errors it won't be persisted, you get what #create returns in
+    # such situation.
+    def create_or_find_by: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (PostTag) -> void } -> PostTag
+
+    # Like #create_or_find_by, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!] so an exception
+    # is raised if the created record is invalid.
+    def create_or_find_by!: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (PostTag) -> void } -> PostTag
+
+    # Like #find_or_create_by, but calls {new}[rdoc-ref:Core.new]
+    # instead of {create}[rdoc-ref:Persistence::ClassMethods#create].
+    def find_or_initialize_by: (?post_id: ::Integer?, ?tag_name: ::String?) ?{ (PostTag) -> void } -> PostTag
+
+    # Converts relation objects to Array.
+    def to_ary: () -> Array[PostTag]
+
+    alias to_a to_ary
+
     # Find the first record (or first N records if a parameter is supplied).
     # If no order is defined it will order by primary key.
     #
@@ -34415,7 +35055,167 @@ class Post
   # {default_scope}[rdoc-ref:Scoping::Default::ClassMethods#default_scope].
   def self.all: (?all_queries: untyped?) -> Post::ActiveRecord_Relation
 
-  class ActiveRecord_Relation
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    # Initializes new record from relation while maintaining the current
+    # scope.
+    #
+    # Expects arguments in the same format as {ActiveRecord::Base.new}[rdoc-ref:Core.new].
+    #
+    # ```ruby
+    #   users = User.where(name: 'DHH')
+    #   user = users.new # => #<User id: nil, name: "DHH", created_at: nil, updated_at: nil>
+    # ```
+    #
+    # You can also pass a block to new with the new record as argument:
+    #
+    # ```ruby
+    #   user = users.new { |user| user.name = 'Oscar' }
+    #   user.name # => Oscar
+    # ```
+    #
+    def new: (?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (Post) -> void } -> Post
+
+    alias build new
+
+    # Tries to create a new record with the same scoped attributes
+    # defined in the relation. Returns the initialized object if validation fails.
+    #
+    # Expects arguments in the same format as
+    # {ActiveRecord::Base.create}[rdoc-ref:Persistence::ClassMethods#create].
+    #
+    # ==== Examples
+    #
+    # ```ruby
+    #   users = User.where(name: 'Oscar')
+    #   users.create # => #<User id: 3, name: "Oscar", ...>
+    #
+    #   users.create(name: 'fxn')
+    #   users.create # => #<User id: 4, name: "fxn", ...>
+    #
+    #   users.create { |user| user.name = 'tenderlove' }
+    #   # => #<User id: 5, name: "tenderlove", ...>
+    #
+    #   users.create(name: nil) # validation on name
+    #   # => #<User id: nil, name: nil, ...>
+    # ```
+    #
+    def create: (?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (Post) -> void } -> Post
+
+    # Similar to #create, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!]
+    # on the base class. Raises an exception if a validation error occurs.
+    #
+    # Expects arguments in the same format as
+    # {ActiveRecord::Base.create!}[rdoc-ref:Persistence::ClassMethods#create!].
+    def create!: (?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (Post) -> void } -> Post
+
+    def first_or_create: (?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (Post) -> void } -> Post
+
+    def first_or_create!: (?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (Post) -> void } -> Post
+
+    def first_or_initialize: (?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (Post) -> void } -> Post
+
+    # Finds the first record with the given attributes, or creates a record
+    # with the attributes if one is not found:
+    #
+    # ```ruby
+    #   # Find the first user named "Penélope" or create a new one.
+    #   User.find_or_create_by(first_name: 'Penélope')
+    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #
+    #   # Find the first user named "Penélope" or create a new one.
+    #   # We already have one so the existing record will be returned.
+    #   User.find_or_create_by(first_name: 'Penélope')
+    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #
+    #   # Find the first user named "Scarlett" or create a new one with
+    #   # a particular last name.
+    #   User.create_with(last_name: 'Johansson').find_or_create_by(first_name: 'Scarlett')
+    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
+    # ```
+    #
+    # This method accepts a block, which is passed down to #create. The last example
+    # above can be alternatively written this way:
+    #
+    # ```ruby
+    #   # Find the first user named "Scarlett" or create a new one with a
+    #   # particular last name.
+    #   User.find_or_create_by(first_name: 'Scarlett') do |user|
+    #     user.last_name = 'Johansson'
+    #   end
+    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
+    # ```
+    #
+    # This method always returns a record, but if creation was attempted and
+    # failed due to validation errors it won't be persisted, you get what
+    # #create returns in such situation.
+    #
+    # If creation failed because of a unique constraint, this method will
+    # assume it encountered a race condition and will try finding the record
+    # once more. If somehow the second find still does not find a record
+    # because a concurrent DELETE happened, it will then raise an
+    # ActiveRecord::RecordNotFound exception.
+    #
+    # Please note <b>this method is not atomic</b>, it runs first a SELECT,
+    # and if there are no results an INSERT is attempted. So if the table
+    # doesn't have a relevant unique constraint it could be the case that
+    # you end up with two or more similar records.
+    def find_or_create_by: (?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (Post) -> void } -> Post
+
+    # Like #find_or_create_by, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!] so an exception
+    # is raised if the created record is invalid.
+    def find_or_create_by!: (?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (Post) -> void } -> Post
+
+    # Attempts to create a record with the given attributes in a table that has a unique database constraint
+    # on one or several of its columns. If a row already exists with one or several of these
+    # unique constraints, the exception such an insertion would normally raise is caught,
+    # and the existing record with those attributes is found using #find_by!.
+    #
+    # This is similar to #find_or_create_by, but tries to create the record first. As such it is
+    # better suited for cases where the record is most likely not to exist yet.
+    #
+    # There are several drawbacks to #create_or_find_by, though:
+    #
+    # * The underlying table must have the relevant columns defined with unique database constraints.
+    # * A unique constraint violation may be triggered by only one, or at least less than all,
+    #   of the given attributes. This means that the subsequent #find_by! may fail to find a
+    #   matching record, which will then raise an ActiveRecord::RecordNotFound exception,
+    #   rather than a record with the given attributes.
+    # * While we avoid the race condition between SELECT -> INSERT from #find_or_create_by,
+    #   we actually have another race condition between INSERT -> SELECT, which can be triggered
+    #   if a DELETE between those two statements is run by another client. But for most applications,
+    #   that's a significantly less likely condition to hit.
+    # * It relies on exception handling to handle control flow, which may be marginally slower.
+    # * The primary key may auto-increment on each create, even if it fails. This can accelerate
+    #   the problem of running out of integers, if the underlying table is still stuck on a primary
+    #   key of type int (note: All \Rails apps since 5.1+ have defaulted to bigint, which is not liable
+    #   to this problem).
+    # * Columns with unique database constraints should not have uniqueness validations defined,
+    # ```ruby
+    #   otherwise #create will fail due to validation errors and #find_by will never be called.
+    # ```
+    #
+    # This method will return a record if all given attributes are covered by unique constraints
+    # (unless the INSERT -> DELETE -> SELECT race condition is triggered), but if creation was attempted
+    # and failed due to validation errors it won't be persisted, you get what #create returns in
+    # such situation.
+    def create_or_find_by: (?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (Post) -> void } -> Post
+
+    # Like #create_or_find_by, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!] so an exception
+    # is raised if the created record is invalid.
+    def create_or_find_by!: (?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (Post) -> void } -> Post
+
+    # Like #find_or_create_by, but calls {new}[rdoc-ref:Core.new]
+    # instead of {create}[rdoc-ref:Persistence::ClassMethods#create].
+    def find_or_initialize_by: (?id: Integer?, ?author_id: ::Integer?, ?body: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?likes_count: ::Integer?, ?metadata: untyped?, ?price: ::BigDecimal?, ?published: bool?, ?published_on: ::Date?, ?rating: ::Float?, ?start_time: (::ActiveSupport::TimeWithZone | ::Time)?, ?thumbnail: ::String?, ?title: ::String?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?views_count: ::Integer?) ?{ (Post) -> void } -> Post
+
+    # Converts relation objects to Array.
+    def to_ary: () -> Array[Post]
+
+    alias to_a to_ary
+
     # Find the first record (or first N records if a parameter is supplied).
     # If no order is defined it will order by primary key.
     #
@@ -43341,7 +44141,167 @@ class Profile
   # {default_scope}[rdoc-ref:Scoping::Default::ClassMethods#default_scope].
   def self.all: (?all_queries: untyped?) -> Profile::ActiveRecord_Relation
 
-  class ActiveRecord_Relation
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    # Initializes new record from relation while maintaining the current
+    # scope.
+    #
+    # Expects arguments in the same format as {ActiveRecord::Base.new}[rdoc-ref:Core.new].
+    #
+    # ```ruby
+    #   users = User.where(name: 'DHH')
+    #   user = users.new # => #<User id: nil, name: "DHH", created_at: nil, updated_at: nil>
+    # ```
+    #
+    # You can also pass a block to new with the new record as argument:
+    #
+    # ```ruby
+    #   user = users.new { |user| user.name = 'Oscar' }
+    #   user.name # => Oscar
+    # ```
+    #
+    def new: (?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) ?{ (Profile) -> void } -> Profile
+
+    alias build new
+
+    # Tries to create a new record with the same scoped attributes
+    # defined in the relation. Returns the initialized object if validation fails.
+    #
+    # Expects arguments in the same format as
+    # {ActiveRecord::Base.create}[rdoc-ref:Persistence::ClassMethods#create].
+    #
+    # ==== Examples
+    #
+    # ```ruby
+    #   users = User.where(name: 'Oscar')
+    #   users.create # => #<User id: 3, name: "Oscar", ...>
+    #
+    #   users.create(name: 'fxn')
+    #   users.create # => #<User id: 4, name: "fxn", ...>
+    #
+    #   users.create { |user| user.name = 'tenderlove' }
+    #   # => #<User id: 5, name: "tenderlove", ...>
+    #
+    #   users.create(name: nil) # validation on name
+    #   # => #<User id: nil, name: nil, ...>
+    # ```
+    #
+    def create: (?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) ?{ (Profile) -> void } -> Profile
+
+    # Similar to #create, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!]
+    # on the base class. Raises an exception if a validation error occurs.
+    #
+    # Expects arguments in the same format as
+    # {ActiveRecord::Base.create!}[rdoc-ref:Persistence::ClassMethods#create!].
+    def create!: (?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) ?{ (Profile) -> void } -> Profile
+
+    def first_or_create: (?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) ?{ (Profile) -> void } -> Profile
+
+    def first_or_create!: (?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) ?{ (Profile) -> void } -> Profile
+
+    def first_or_initialize: (?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) ?{ (Profile) -> void } -> Profile
+
+    # Finds the first record with the given attributes, or creates a record
+    # with the attributes if one is not found:
+    #
+    # ```ruby
+    #   # Find the first user named "Penélope" or create a new one.
+    #   User.find_or_create_by(first_name: 'Penélope')
+    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #
+    #   # Find the first user named "Penélope" or create a new one.
+    #   # We already have one so the existing record will be returned.
+    #   User.find_or_create_by(first_name: 'Penélope')
+    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #
+    #   # Find the first user named "Scarlett" or create a new one with
+    #   # a particular last name.
+    #   User.create_with(last_name: 'Johansson').find_or_create_by(first_name: 'Scarlett')
+    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
+    # ```
+    #
+    # This method accepts a block, which is passed down to #create. The last example
+    # above can be alternatively written this way:
+    #
+    # ```ruby
+    #   # Find the first user named "Scarlett" or create a new one with a
+    #   # particular last name.
+    #   User.find_or_create_by(first_name: 'Scarlett') do |user|
+    #     user.last_name = 'Johansson'
+    #   end
+    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
+    # ```
+    #
+    # This method always returns a record, but if creation was attempted and
+    # failed due to validation errors it won't be persisted, you get what
+    # #create returns in such situation.
+    #
+    # If creation failed because of a unique constraint, this method will
+    # assume it encountered a race condition and will try finding the record
+    # once more. If somehow the second find still does not find a record
+    # because a concurrent DELETE happened, it will then raise an
+    # ActiveRecord::RecordNotFound exception.
+    #
+    # Please note <b>this method is not atomic</b>, it runs first a SELECT,
+    # and if there are no results an INSERT is attempted. So if the table
+    # doesn't have a relevant unique constraint it could be the case that
+    # you end up with two or more similar records.
+    def find_or_create_by: (?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) ?{ (Profile) -> void } -> Profile
+
+    # Like #find_or_create_by, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!] so an exception
+    # is raised if the created record is invalid.
+    def find_or_create_by!: (?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) ?{ (Profile) -> void } -> Profile
+
+    # Attempts to create a record with the given attributes in a table that has a unique database constraint
+    # on one or several of its columns. If a row already exists with one or several of these
+    # unique constraints, the exception such an insertion would normally raise is caught,
+    # and the existing record with those attributes is found using #find_by!.
+    #
+    # This is similar to #find_or_create_by, but tries to create the record first. As such it is
+    # better suited for cases where the record is most likely not to exist yet.
+    #
+    # There are several drawbacks to #create_or_find_by, though:
+    #
+    # * The underlying table must have the relevant columns defined with unique database constraints.
+    # * A unique constraint violation may be triggered by only one, or at least less than all,
+    #   of the given attributes. This means that the subsequent #find_by! may fail to find a
+    #   matching record, which will then raise an ActiveRecord::RecordNotFound exception,
+    #   rather than a record with the given attributes.
+    # * While we avoid the race condition between SELECT -> INSERT from #find_or_create_by,
+    #   we actually have another race condition between INSERT -> SELECT, which can be triggered
+    #   if a DELETE between those two statements is run by another client. But for most applications,
+    #   that's a significantly less likely condition to hit.
+    # * It relies on exception handling to handle control flow, which may be marginally slower.
+    # * The primary key may auto-increment on each create, even if it fails. This can accelerate
+    #   the problem of running out of integers, if the underlying table is still stuck on a primary
+    #   key of type int (note: All \Rails apps since 5.1+ have defaulted to bigint, which is not liable
+    #   to this problem).
+    # * Columns with unique database constraints should not have uniqueness validations defined,
+    # ```ruby
+    #   otherwise #create will fail due to validation errors and #find_by will never be called.
+    # ```
+    #
+    # This method will return a record if all given attributes are covered by unique constraints
+    # (unless the INSERT -> DELETE -> SELECT race condition is triggered), but if creation was attempted
+    # and failed due to validation errors it won't be persisted, you get what #create returns in
+    # such situation.
+    def create_or_find_by: (?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) ?{ (Profile) -> void } -> Profile
+
+    # Like #create_or_find_by, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!] so an exception
+    # is raised if the created record is invalid.
+    def create_or_find_by!: (?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) ?{ (Profile) -> void } -> Profile
+
+    # Like #find_or_create_by, but calls {new}[rdoc-ref:Core.new]
+    # instead of {create}[rdoc-ref:Persistence::ClassMethods#create].
+    def find_or_initialize_by: (?id: Integer?, ?author_id: ::Integer?, ?avatar_url: ::String?, ?bio: ::String?, ?created_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?updated_at: (::ActiveSupport::TimeWithZone | ::Time)?, ?website_url: ::String?) ?{ (Profile) -> void } -> Profile
+
+    # Converts relation objects to Array.
+    def to_ary: () -> Array[Profile]
+
+    alias to_a to_ary
+
     # Find the first record (or first N records if a parameter is supplied).
     # If no order is defined it will order by primary key.
     #
@@ -47901,7 +48861,167 @@ class Tagging
   # {default_scope}[rdoc-ref:Scoping::Default::ClassMethods#default_scope].
   def self.all: (?all_queries: untyped?) -> Tagging::ActiveRecord_Relation
 
-  class ActiveRecord_Relation
+  class ActiveRecord_Relation < ::ActiveRecord::Relation
+    # Initializes new record from relation while maintaining the current
+    # scope.
+    #
+    # Expects arguments in the same format as {ActiveRecord::Base.new}[rdoc-ref:Core.new].
+    #
+    # ```ruby
+    #   users = User.where(name: 'DHH')
+    #   user = users.new # => #<User id: nil, name: "DHH", created_at: nil, updated_at: nil>
+    # ```
+    #
+    # You can also pass a block to new with the new record as argument:
+    #
+    # ```ruby
+    #   user = users.new { |user| user.name = 'Oscar' }
+    #   user.name # => Oscar
+    # ```
+    #
+    def new: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (Tagging) -> void } -> Tagging
+
+    alias build new
+
+    # Tries to create a new record with the same scoped attributes
+    # defined in the relation. Returns the initialized object if validation fails.
+    #
+    # Expects arguments in the same format as
+    # {ActiveRecord::Base.create}[rdoc-ref:Persistence::ClassMethods#create].
+    #
+    # ==== Examples
+    #
+    # ```ruby
+    #   users = User.where(name: 'Oscar')
+    #   users.create # => #<User id: 3, name: "Oscar", ...>
+    #
+    #   users.create(name: 'fxn')
+    #   users.create # => #<User id: 4, name: "fxn", ...>
+    #
+    #   users.create { |user| user.name = 'tenderlove' }
+    #   # => #<User id: 5, name: "tenderlove", ...>
+    #
+    #   users.create(name: nil) # validation on name
+    #   # => #<User id: nil, name: nil, ...>
+    # ```
+    #
+    def create: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (Tagging) -> void } -> Tagging
+
+    # Similar to #create, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!]
+    # on the base class. Raises an exception if a validation error occurs.
+    #
+    # Expects arguments in the same format as
+    # {ActiveRecord::Base.create!}[rdoc-ref:Persistence::ClassMethods#create!].
+    def create!: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (Tagging) -> void } -> Tagging
+
+    def first_or_create: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (Tagging) -> void } -> Tagging
+
+    def first_or_create!: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (Tagging) -> void } -> Tagging
+
+    def first_or_initialize: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (Tagging) -> void } -> Tagging
+
+    # Finds the first record with the given attributes, or creates a record
+    # with the attributes if one is not found:
+    #
+    # ```ruby
+    #   # Find the first user named "Penélope" or create a new one.
+    #   User.find_or_create_by(first_name: 'Penélope')
+    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #
+    #   # Find the first user named "Penélope" or create a new one.
+    #   # We already have one so the existing record will be returned.
+    #   User.find_or_create_by(first_name: 'Penélope')
+    #   # => #<User id: 1, first_name: "Penélope", last_name: nil>
+    #
+    #   # Find the first user named "Scarlett" or create a new one with
+    #   # a particular last name.
+    #   User.create_with(last_name: 'Johansson').find_or_create_by(first_name: 'Scarlett')
+    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
+    # ```
+    #
+    # This method accepts a block, which is passed down to #create. The last example
+    # above can be alternatively written this way:
+    #
+    # ```ruby
+    #   # Find the first user named "Scarlett" or create a new one with a
+    #   # particular last name.
+    #   User.find_or_create_by(first_name: 'Scarlett') do |user|
+    #     user.last_name = 'Johansson'
+    #   end
+    #   # => #<User id: 2, first_name: "Scarlett", last_name: "Johansson">
+    # ```
+    #
+    # This method always returns a record, but if creation was attempted and
+    # failed due to validation errors it won't be persisted, you get what
+    # #create returns in such situation.
+    #
+    # If creation failed because of a unique constraint, this method will
+    # assume it encountered a race condition and will try finding the record
+    # once more. If somehow the second find still does not find a record
+    # because a concurrent DELETE happened, it will then raise an
+    # ActiveRecord::RecordNotFound exception.
+    #
+    # Please note <b>this method is not atomic</b>, it runs first a SELECT,
+    # and if there are no results an INSERT is attempted. So if the table
+    # doesn't have a relevant unique constraint it could be the case that
+    # you end up with two or more similar records.
+    def find_or_create_by: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (Tagging) -> void } -> Tagging
+
+    # Like #find_or_create_by, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!] so an exception
+    # is raised if the created record is invalid.
+    def find_or_create_by!: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (Tagging) -> void } -> Tagging
+
+    # Attempts to create a record with the given attributes in a table that has a unique database constraint
+    # on one or several of its columns. If a row already exists with one or several of these
+    # unique constraints, the exception such an insertion would normally raise is caught,
+    # and the existing record with those attributes is found using #find_by!.
+    #
+    # This is similar to #find_or_create_by, but tries to create the record first. As such it is
+    # better suited for cases where the record is most likely not to exist yet.
+    #
+    # There are several drawbacks to #create_or_find_by, though:
+    #
+    # * The underlying table must have the relevant columns defined with unique database constraints.
+    # * A unique constraint violation may be triggered by only one, or at least less than all,
+    #   of the given attributes. This means that the subsequent #find_by! may fail to find a
+    #   matching record, which will then raise an ActiveRecord::RecordNotFound exception,
+    #   rather than a record with the given attributes.
+    # * While we avoid the race condition between SELECT -> INSERT from #find_or_create_by,
+    #   we actually have another race condition between INSERT -> SELECT, which can be triggered
+    #   if a DELETE between those two statements is run by another client. But for most applications,
+    #   that's a significantly less likely condition to hit.
+    # * It relies on exception handling to handle control flow, which may be marginally slower.
+    # * The primary key may auto-increment on each create, even if it fails. This can accelerate
+    #   the problem of running out of integers, if the underlying table is still stuck on a primary
+    #   key of type int (note: All \Rails apps since 5.1+ have defaulted to bigint, which is not liable
+    #   to this problem).
+    # * Columns with unique database constraints should not have uniqueness validations defined,
+    # ```ruby
+    #   otherwise #create will fail due to validation errors and #find_by will never be called.
+    # ```
+    #
+    # This method will return a record if all given attributes are covered by unique constraints
+    # (unless the INSERT -> DELETE -> SELECT race condition is triggered), but if creation was attempted
+    # and failed due to validation errors it won't be persisted, you get what #create returns in
+    # such situation.
+    def create_or_find_by: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (Tagging) -> void } -> Tagging
+
+    # Like #create_or_find_by, but calls
+    # {create!}[rdoc-ref:Persistence::ClassMethods#create!] so an exception
+    # is raised if the created record is invalid.
+    def create_or_find_by!: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (Tagging) -> void } -> Tagging
+
+    # Like #find_or_create_by, but calls {new}[rdoc-ref:Core.new]
+    # instead of {create}[rdoc-ref:Persistence::ClassMethods#create].
+    def find_or_initialize_by: (?id: Array[untyped]?, ?context: ::String?, ?post_id: ::Integer?, ?tag_id: ::Integer?) ?{ (Tagging) -> void } -> Tagging
+
+    # Converts relation objects to Array.
+    def to_ary: () -> Array[Tagging]
+
+    alias to_a to_ary
+
     # Find the first record (or first N records if a parameter is supplied).
     # If no order is defined it will order by primary key.
     #
