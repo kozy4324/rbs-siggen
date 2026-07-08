@@ -5,6 +5,7 @@
 # ```
 class <%= table_name.classify %>
   <% attributes = [] %>
+  <% attributes_query = [] %>
   <% id_type = nil %>
 
   module GeneratedAttributeMethods
@@ -64,6 +65,7 @@ class <%= table_name.classify %>
         def <%= opt_primary_key %>_change_to_be_saved: () -> [<%= ot_type %>, <%= ot_type %>]?
         def <%= opt_primary_key %>_in_database: () -> <%= ot_type %>
         <% attributes << "?#{opt_primary_key}: #{in_type}" %>
+        <% attributes_query << "?#{opt_primary_key}: #{in_type} | Array[#{in_type}]" %>
       <% else %>
         <% type = map[opt_id] || "Integer" %>
         <% id_type = type %>
@@ -97,6 +99,7 @@ class <%= table_name.classify %>
       def id_change_to_be_saved: () -> [<%= ot_type %>, <%= ot_type %>]?
       def id_in_database: () -> <%= ot_type %>
       <% attributes << "?id: #{in_type}" %>
+      <% attributes_query << "?id: #{in_type} | Array[#{in_type}]" %>
     <% end %>
   end
   include GeneratedAttributeMethods
@@ -109,9 +112,107 @@ class <%= table_name.classify %>
         <% type = "(::ActiveSupport::TimeWithZone | ::Time)" %>
       <% end %>
       <% attributes << "?#{name}: #{type}?" %>
+      <% attributes_query << "?#{name}: #{type}? | Array[#{type}]" %>
     <% end %>
   <% end %>
   <% attributes = attributes.join(",") %>
+  <% attributes_query = attributes_query.join(",") %>
+
+  <% if opt_primary_key.is_a?(Array) %>
+    # <%= ___comment_of["ActiveRecord::FinderMethods#find"] %>
+    def self.find: (Array[Array[untyped]] args) -> Array[<%= table_name.classify %>]
+                 | (Array[untyped] args) -> <%= table_name.classify %>
+  <% else %>
+    # <%= ___comment_of["ActiveRecord::FinderMethods#find"] %>
+    def self.find: (Array[untyped] args) -> Array[<%= table_name.classify %>]
+                 | (untyped args) -> <%= table_name.classify %>
+  <% end %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#find_by"] %>
+  def self.find_by: (<%= attributes_query %>) -> <%= table_name.classify %>
+                  | (String arg, *untyped args) -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#find_by!"] %>
+  def self.find_by!: (<%= attributes_query %>) -> <%= table_name.classify %>
+                   | (String arg, *untyped args) -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#take"] %>
+  def self.take: () -> <%= table_name.classify %>
+               | (nil) -> <%= table_name.classify %>
+               | (Integer limit) -> Array[<%= table_name.classify %>]
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#take!"] %>
+  def self.take!: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#sole"] %>
+  def self.sole: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#find_sole_by"] %>
+  def self.find_sole_by: (<%= attributes_query %>) -> <%= table_name.classify %>
+                       | (untyped arg, *untyped args) -> <%= table_name.classify %>
+                       | (Array[untyped]) -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#first"] %>
+  def self.first: () -> <%= table_name.classify %>
+                | (nil) -> <%= table_name.classify %>
+                | (Integer limit) -> Array[<%= table_name.classify %>]
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#first!"] %>
+  def self.first!: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#last"] %>
+  def self.last: () -> <%= table_name.classify %>
+               | (nil) -> <%= table_name.classify %>
+               | (Integer limit) -> Array[<%= table_name.classify %>]
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#last!"] %>
+  def self.last!: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#second"] %>
+  def self.second: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#second!"] %>
+  def self.second!: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#third"] %>
+  def self.third: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#third!"] %>
+  def self.third!: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#fourth"] %>
+  def self.fourth: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#fourth!"] %>
+  def self.fourth!: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#fifth"] %>
+  def self.fifth: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#fifth!"] %>
+  def self.fifth!: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#forty_two"] %>
+  def self.forty_two: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#forty_two!"] %>
+  def self.forty_two!: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#third_to_last"] %>
+  def self.third_to_last: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#third_to_last!"] %>
+  def self.third_to_last!: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#second_to_last"] %>
+  def self.second_to_last: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#second_to_last!"] %>
+  def self.second_to_last!: () -> <%= table_name.classify %>
+
+  # <%= ___comment_of["ActiveRecord::FinderMethods#exists?"] %>
+  def self.exists?: (<%= attributes_query %>) -> bool
+                  | (?untyped? conditions) -> bool
 
   # <%= ___comment_of["ActiveRecord::Persistence::ClassMethods#build"] %>
   def self.build: (<%= attributes %>) ?{ (instance) -> void } -> instance
@@ -188,10 +289,107 @@ class <%= table_name.classify %>
 
     alias to_a to_ary
 
+    <% if opt_primary_key.is_a?(Array) %>
+      # <%= ___comment_of["ActiveRecord::FinderMethods#find"] %>
+      def find: (Array[Array[untyped]] args) -> Array[<%= table_name.classify %>]
+              | (Array[untyped] args) -> <%= table_name.classify %>
+    <% else %>
+      # <%= ___comment_of["ActiveRecord::FinderMethods#find"] %>
+      def find: (Array[untyped] args) -> Array[<%= table_name.classify %>]
+              | (untyped args) -> <%= table_name.classify %>
+    <% end %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#find_by"] %>
+    def find_by: (<%= attributes_query %>) -> <%= table_name.classify %>
+               | (String arg, *untyped args) -> <%= table_name.classify %>
+               | (Array[untyped]) -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#find_by!"] %>
+    def find_by!: (<%= attributes_query %>) -> <%= table_name.classify %>
+                | (String arg, *untyped args) -> <%= table_name.classify %>
+                | (Array[untyped]) -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#take"] %>
+    def take: () -> <%= table_name.classify %>
+            | (nil) -> <%= table_name.classify %>
+            | (Integer limit) -> Array[<%= table_name.classify %>]
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#take!"] %>
+    def take!: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#sole"] %>
+    def sole: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#find_sole_by"] %>
+    def find_sole_by: (<%= attributes_query %>) -> <%= table_name.classify %>
+                    | (untyped arg, *untyped args) -> <%= table_name.classify %>
+                    | (Array[untyped]) -> <%= table_name.classify %>
+
     # <%= ___comment_of["ActiveRecord::FinderMethods#first"] %>
-    def first: (?Integer? limit) -> <%= table_name.classify %>
+    def first: () -> <%= table_name.classify %>
+             | (nil) -> <%= table_name.classify %>
+             | (Integer limit) -> Array[<%= table_name.classify %>]
 
     # <%= ___comment_of["ActiveRecord::FinderMethods#first!"] %>
     def first!: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#last"] %>
+    def last: () -> <%= table_name.classify %>
+            | (nil) -> <%= table_name.classify %>
+            | (Integer limit) -> Array[<%= table_name.classify %>]
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#last!"] %>
+    def last!: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#second"] %>
+    def second: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#second!"] %>
+    def second!: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#third"] %>
+    def third: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#third!"] %>
+    def third!: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#fourth"] %>
+    def fourth: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#fourth!"] %>
+    def fourth!: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#fifth"] %>
+    def fifth: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#fifth!"] %>
+    def fifth!: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#forty_two"] %>
+    def forty_two: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#forty_two!"] %>
+    def forty_two!: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#third_to_last"] %>
+    def third_to_last: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#third_to_last!"] %>
+    def third_to_last!: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#second_to_last"] %>
+    def second_to_last: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#second_to_last!"] %>
+    def second_to_last!: () -> <%= table_name.classify %>
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#exists?"] %>
+    def exists?: (<%= attributes_query %>) -> bool
+               | (?untyped? conditions) -> bool
+
+    # <%= ___comment_of["ActiveRecord::FinderMethods#include?"] %>
+    def include?: (untyped record) -> bool
+
+    alias member? include?
   end
 end
